@@ -1,0 +1,242 @@
+<html><head><base href="https://重新設計業面樣式">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2025年統測倒數計時器 - 全新設計</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Noto+Sans+TC:wght@300;400;700&display=swap');
+
+  :root {
+    --primary-color: #6c5ce7;
+    --secondary-color: #00cec9;
+    --accent-color: #fdcb6e;
+    --text-color: #2d3436;
+    --bg-color: #dfe6e9;
+    --card-bg: #ffffff;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Poppins', 'Noto Sans TC', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #a29bfe 0%, #74b9ff 100%);
+    background-attachment: fixed;
+  }
+
+  .container {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    padding: 40px;
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .container::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+    transform: rotate(30deg);
+    pointer-events: none;
+  }
+
+  h1 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    letter-spacing: 1px;
+  }
+
+  #countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .unit {
+    background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    min-width: 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .value {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 1;
+  }
+
+  .label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--secondary-color);
+    margin-top: 5px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .exam-dates {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    background: linear-gradient(to right, rgba(108, 92, 231, 0.2), rgba(0, 206, 201, 0.2));
+    padding: 12px 25px;
+    border-radius: 30px;
+    display: inline-block;
+    margin-top: 2rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+  }
+
+  .tcte-button {
+    display: inline-block;
+    margin-top: 2rem;
+    padding: 12px 25px;
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: var(--transition);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .tcte-button:hover {
+    background-color: #ffeaa7;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      padding: 30px;
+    }
+    .value {
+      font-size: 2.5rem;
+    }
+    h1 {
+      font-size: 2rem;
+    }
+    .unit {
+      min-width: 100px;
+    }
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+    100% {
+      transform: translateY(0px);
+    }
+  }
+
+  .float {
+    animation: float 4s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>2025年統測倒數</h1>
+  <div id="countdown">
+    <div class="unit float">
+      <div class="value" id="days">00</div>
+      <div class="label">天</div>
+    </div>
+    <div class="unit float" style="animation-delay: 1s;">
+      <div class="value" id="hours">00</div>
+      <div class="label">時</div>
+    </div>
+    <div class="unit float" style="animation-delay: 2s;">
+      <div class="value" id="minutes">00</div>
+      <div class="label">分</div>
+    </div>
+    <div class="unit float" style="animation-delay: 3s;">
+      <div class="value" id="seconds">00</div>
+      <div class="label">秒</div>
+    </div>
+  </div>
+  <div class="exam-dates">
+    考試日期：2025/4/26(六)、4/27(日)
+  </div>
+  <a href="https://www.tcte.edu.tw/" target="_blank" class="tcte-button">進入統測官網</a>
+</div>
+
+<script>
+  const examDate = new Date('2025-04-26T00:00:00').getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = examDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+    if (distance < 0) {
+      clearInterval(countdownTimer);
+      document.getElementById('countdown').innerHTML = "<div class='unit'><div class='value'>統測加油！</div></div>";
+    }
+  }
+
+  const countdownTimer = setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // Add hover effect to countdown units
+  const units = document.querySelectorAll('.unit');
+  units.forEach(unit => {
+    unit.addEventListener('mouseover', () => {
+      unit.style.transform = 'translateY(-5px) scale(1.05)';
+      unit.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.2)';
+    });
+    unit.addEventListener('mouseout', () => {
+      unit.style.transform = '';
+      unit.style.boxShadow = '';
+    });
+  });
+</script>
+</body>
+</html>
