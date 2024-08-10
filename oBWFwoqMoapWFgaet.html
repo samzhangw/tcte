@@ -1,0 +1,173 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title 114年統測倒數計時器</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffecd2, #fcb69f);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+
+  .container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+
+  #countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .unit {
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 5px 5px 15px #d1d1d1, -5px -5px 15px #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .unit:hover {
+    transform: scale(1.05);
+  }
+
+  .value {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: #ff6b6b;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .label {
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: #7f8c8d;
+    margin-top: 5px;
+  }
+
+  .exam-dates {
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    color: #2c3e50;
+    background: rgba(236, 240, 241, 0.8);
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: inline-block;
+  }
+
+  @media (max-width: 600px) {
+    .container {
+      padding: 2rem;
+    }
+    #countdown {
+      flex-wrap: wrap;
+    }
+    .value {
+      font-size: 2.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>2025年統測倒數</h1>
+  <div id="countdown">
+    <div class="unit">
+      <div class="value" id="days">00</div>
+      <div class="label">天</div>
+    </div>
+    <div class="unit">
+      <div class="value" id="hours">00</div>
+      <div class="label">時</div>
+    </div>
+    <div class="unit">
+      <div class="value" id="minutes">00</div>
+      <div class="label">分</div>
+    </div>
+    <div class="unit">
+      <div class="value" id="seconds">00</div>
+      <div class="label">秒</div>
+    </div>
+  </div>
+  <div class="exam-dates">
+    考試日期：2025/4/26(六)、4/27(日)
+  </div>
+</div>
+
+<script>
+  const examDate = new Date('2025-04-26T00:00:00').getTime();
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = examDate - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('days').textContent = days.toString().padStart(2, '0');
+    document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+    document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+    document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+
+    if (distance < 0) {
+      clearInterval(countdownTimer);
+      document.getElementById('countdown').innerHTML = "<div class='unit'><div class='value'>統測加油！</div></div>";
+    }
+  }
+
+  const countdownTimer = setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // 添加簡單的動畫效果
+  const units = document.querySelectorAll('.unit');
+  units.forEach(unit => {
+    unit.addEventListener('mouseover', () => {
+      unit.style.transform = 'scale(1.1) rotate(5deg)';
+    });
+    unit.addEventListener('mouseout', () => {
+      unit.style.transform = 'scale(1) rotate(0deg)';
+    });
+  });
+</script>
+</body>
+</html>
