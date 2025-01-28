@@ -25,12 +25,13 @@ body {
   width: 100%;
   height: 100%;
   z-index: 0;
-  opacity: 0.3;
+  opacity: 0.2;
 }
 
 .shape {
   position: absolute;
   animation: float 20s infinite linear;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
 }
 
 .shape:nth-child(2n) {
@@ -53,77 +54,114 @@ body {
 
 .container {
   text-align: center;
-  padding: 2rem;
+  padding: 2.5rem;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   position: relative;
   z-index: 1;
   border: 1px solid rgba(255, 255, 255, 0.2);
   margin: 1rem auto;
   max-width: 800px;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
 }
 
 h1 {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   margin-bottom: 2.5rem;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   background: linear-gradient(45deg, #ffffff, #c9d6ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  letter-spacing: 1px;
 }
 
 .countdown {
   display: flex;
   justify-content: center;
   gap: 2rem;
-  margin: 2rem 0;
-  margin-bottom: 2.5rem;
+  margin: 2.5rem 0;
 }
 
 .time-block {
   background: rgba(255, 255, 255, 0.15);
-  padding: 1.5rem;
-  border-radius: 15px;
-  min-width: 120px;
+  padding: 1.8rem;
+  border-radius: 20px;
+  min-width: 130px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.time-block::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.time-block:hover::before {
+  left: 100%;
 }
 
 .time-block:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
 .time-block span:first-child {
-  font-size: 3rem;
+  font-size: 3.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
   background: linear-gradient(45deg, #ffffff, #e0e7ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 .label {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   opacity: 0.9;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  font-weight: 500;
 }
 
 .date-info, .reminder {
   margin-top: 2rem;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  padding: 1rem;
+  font-size: 1.3rem;
+  line-height: 1.7;
+  padding: 1.2rem;
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
 }
 
 .reminder {
   animation: pulse 2s infinite;
   background: rgba(255, 255, 255, 0.15);
+  margin-top: 2rem;
+}
+
+.reminder:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 @keyframes pulse {
@@ -132,7 +170,7 @@ h1 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   }
   50% {
-    transform: scale(1.03);
+    transform: scale(1.02);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
   100% {
@@ -168,6 +206,7 @@ h1 {
   width: 30px;
   height: 30px;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease;
 }
 
 .logo-text {
@@ -188,11 +227,12 @@ h1 {
   position: relative;
   padding: 0.5rem 0;
   opacity: 0.9;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, all 0.3s ease;
 }
 
 .nav-links a:hover {
   opacity: 1;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .nav-links a::after {
@@ -381,4 +421,75 @@ h1 {
 
 .copyright p {
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease;
+}
+
+.copyright p:hover {
+  opacity: 1;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.logo:hover svg {
+  transform: rotate(5deg);
+}
+
+.notification-section {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.notification-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+.notification-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.notification-btn.enabled {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: rgba(76, 175, 80, 0.5);
+}
+
+.notification-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.notification-status {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+  .notification-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+  
+  .notification-icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }

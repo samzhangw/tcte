@@ -66,10 +66,134 @@ function toggleMenu() {
   menuBtn.classList.toggle('active');
 }
 
+// Enhancement: Add smooth appear animation for time blocks
+function initializeAnimations() {
+  const timeBlocks = document.querySelectorAll('.time-block');
+  timeBlocks.forEach((block, index) => {
+    block.style.opacity = '0';
+    block.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      block.style.transition = 'all 0.5s ease';
+      block.style.opacity = '1';
+      block.style.transform = 'translateY(0)';
+    }, 100 * index);
+  });
+}
+
+// Enhancement: Add sparkle effect to shapes
+function addSparkleEffect() {
+  const shapes = document.querySelectorAll('.shape');
+  shapes.forEach(shape => {
+    setInterval(() => {
+      shape.style.filter = 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.8))';
+      setTimeout(() => {
+        shape.style.filter = 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.3))';
+      }, 200);
+    }, Math.random() * 5000 + 3000);
+  });
+}
+
+// Notification functionality
+class NotificationManager {
+  constructor() {
+    this.button = document.getElementById('notification-btn');
+    this.statusText = document.querySelector('.notification-status');
+    this.isEnabled = false;
+    this.init();
+  }
+
+  init() {
+    // Check if notifications are supported
+    if (!('Notification' in window)) {
+      this.updateStatus('您的瀏覽器不支援通知功能');
+      this.button.disabled = true;
+      return;
+    }
+
+    // Check if notifications are already enabled
+    if (Notification.permission === 'granted') {
+      this.isEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+      this.updateButtonState();
+    }
+
+    this.button.addEventListener('click', () => this.toggleNotifications());
+  }
+
+  async toggleNotifications() {
+    if (Notification.permission === 'default') {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        this.updateStatus('通知權限已被拒絕');
+        return;
+      }
+    }
+
+    this.isEnabled = !this.isEnabled;
+    localStorage.setItem('notificationsEnabled', this.isEnabled);
+    this.updateButtonState();
+
+    if (this.isEnabled) {
+      this.scheduleNotification();
+      this.updateStatus('每日通知已開啟');
+    } else {
+      this.updateStatus('通知已關閉');
+    }
+  }
+
+  updateButtonState() {
+    this.button.textContent = this.isEnabled ? '關閉每日通知' : '開啟每日通知';
+    this.button.classList.toggle('enabled', this.isEnabled);
+  }
+
+  updateStatus(message) {
+    this.statusText.textContent = message;
+  }
+
+  scheduleNotification() {
+    if (!this.isEnabled) return;
+
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(9, 0, 0, 0); // 設定為每天早上9點
+
+    const timeUntilNotification = tomorrow - now;
+
+    setTimeout(() => {
+      this.showNotification();
+      this.scheduleNotification(); // 設定下一天的通知
+    }, timeUntilNotification);
+  }
+
+  showNotification() {
+    if (!this.isEnabled) return;
+
+    const targetDate = new Date(2025, 3, 26);
+    const now = new Date();
+    const daysLeft = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+
+    new Notification('統測倒數提醒', {
+      body: `距離2025年統測還有 ${daysLeft} 天！加油！`,
+      icon: 'data:image/svg+xml;base64,' + btoa(`
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <rect width="24" height="24" fill="#1e3c72"/>
+          <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/>
+          <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white"/>
+        </svg>
+      `)
+    });
+  }
+}
+
 // Initialize
-createFloatingShapes();
-updateCountdown();
-updateCopyright();
+document.addEventListener('DOMContentLoaded', () => {
+  createFloatingShapes();
+  updateCountdown();
+  updateCopyright();
+  initializeAnimations();
+  addSparkleEffect();
+  new NotificationManager();
+});
 
 // Update countdown every second
 setInterval(updateCountdown, 1000);
