@@ -73,11 +73,33 @@ function initializeAnimations() {
     block.style.opacity = '0';
     block.style.transform = 'translateY(20px)';
     setTimeout(() => {
-      block.style.transition = 'all 0.5s ease';
+      block.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
       block.style.opacity = '1';
       block.style.transform = 'translateY(0)';
     }, 100 * index);
   });
+  
+  // Add staggered animation to container elements
+  const animatedElements = document.querySelectorAll('.date-info, .reminder, .notification-section');
+  animatedElements.forEach((element, index) => {
+    element.style.opacity = '0';
+    element.style.transform = 'translateY(20px)';
+    setTimeout(() => {
+      element.style.transition = 'all 0.5s ease';
+      element.style.opacity = '1';
+      element.style.transform = 'translateY(0)';
+    }, 500 + (100 * index));
+  });
+  
+  // Add title animation
+  const title = document.querySelector('h1');
+  title.style.opacity = '0';
+  title.style.transform = 'scale(0.9)';
+  setTimeout(() => {
+    title.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    title.style.opacity = '1';
+    title.style.transform = 'scale(1)';
+  }, 200);
 }
 
 // Enhancement: Add sparkle effect to shapes
@@ -90,6 +112,17 @@ function addSparkleEffect() {
         shape.style.filter = 'drop-shadow(0 0 5px rgba(255, 255, 255, 0.3))';
       }, 200);
     }, Math.random() * 5000 + 3000);
+  });
+  
+  // Add subtle hover effect to time-blocks
+  const timeBlocks = document.querySelectorAll('.time-block');
+  timeBlocks.forEach(block => {
+    block.addEventListener('mouseover', () => {
+      block.style.transform = 'translateY(-5px) rotateY(10deg)';
+    });
+    block.addEventListener('mouseout', () => {
+      block.style.transform = 'translateY(0) rotateY(0)';
+    });
   });
 }
 
