@@ -135,6 +135,7 @@ class OnPageNotificationManager {
     this.notificationContainer = null;
     this.createNotificationContainer();
     this.init();
+    this.serviceWorkerRegistration = null;
   }
 
   createNotificationContainer() {
@@ -160,9 +161,70 @@ class OnPageNotificationManager {
     if (this.isEnabled) {
       this.checkDailyNotification();
     }
+    
+    // Initialize service worker for push notifications
+    this.initializeServiceWorker();
   }
 
-  toggleNotifications() {
+  async initializeServiceWorker() {
+    if ('serviceWorker' in navigator && 'PushManager' in window) {
+      try {
+        this.serviceWorkerRegistration = await navigator.serviceWorker.register('/sw.js');
+        console.log('Service Worker registered successfully');
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+      }
+    } else {
+      console.warn('Push notifications not supported by the browser');
+      this.statusText.textContent = '您的瀏覽器不支援推送通知';
+    }
+  }
+
+  async toggleNotifications() {
+    if (!this.isEnabled) {
+      // Request notification permission
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') {
+          this.statusText.textContent = '需要開啟通知權限才能收到提醒';
+          return;
+        }
+        
+        // Subscribe to push notifications
+        if (this.serviceWorkerRegistration) {
+          try {
+            const applicationServerKey = this.urlB64ToUint8Array('BNbxGYNMhEIi9zrw5qiavYItzBxqns2CK-D-KIh0aqc4omKn0BnJ_Jul6or4a5iRqgBL3_q33TJCZdDXe6Tsnl4');
+            const subscription = await this.serviceWorkerRegistration.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: applicationServerKey
+            });
+            
+            console.log('User is subscribed:', subscription);
+            // Here you would send the subscription to your server
+            // sendSubscriptionToServer(subscription);
+          } catch (err) {
+            console.error('Failed to subscribe user:', err);
+            this.statusText.textContent = '訂閱推送通知失敗';
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Error requesting notification permission:', error);
+        this.statusText.textContent = '請求通知權限時發生錯誤';
+        return;
+      }
+    } else {
+      // Unsubscribe from push notifications
+      if (this.serviceWorkerRegistration) {
+        const subscription = await this.serviceWorkerRegistration.pushManager.getSubscription();
+        if (subscription) {
+          await subscription.unsubscribe();
+          // Here you would remove the subscription from your server
+          // removeSubscriptionFromServer(subscription);
+        }
+      }
+    }
+    
     this.isEnabled = !this.isEnabled;
     localStorage.setItem('notificationsEnabled', this.isEnabled);
     this.updateButtonState();
@@ -178,6 +240,22 @@ class OnPageNotificationManager {
     }
   }
 
+  // Helper function to convert base64 to Uint8Array for VAPID key
+  urlB64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding)
+      .replace(/\-/g, '+')
+      .replace(/_/g, '/');
+    
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+  
   updateButtonState() {
     this.button.textContent = this.isEnabled ? '關閉每日通知' : '開啟每日通知';
     this.button.classList.toggle('enabled', this.isEnabled);
@@ -214,10 +292,22 @@ class OnPageNotificationManager {
     // Get hours of study per day recommendation
     const hoursPerDay = Math.min(8, Math.max(2, Math.round(300 / daysLeft)));
     
-    this.displayOnPageNotification(
-      '統測倒數提醒', 
-      `距離2025年統測還有 ${daysLeft} 天！建議每日至少讀書 ${hoursPerDay} 小時，加油！`
-    );
+    const title = '統測倒數提醒';
+    const message = `距離2025年統測還有 ${daysLeft} 天！建議每日至少讀書 ${hoursPerDay} 小時，加油！`;
+    
+    this.displayOnPageNotification(title, message);
+    
+    // Also send a push notification if enabled
+    if (this.isEnabled && 'serviceWorker' in navigator) {
+      if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.showNotification(title, {
+            body: message,
+            icon: '/favicon.ico'
+          });
+        });
+      }
+    }
   }
 
   sendTestNotification() {
@@ -230,6 +320,18 @@ class OnPageNotificationManager {
       '測試通知', 
       `這是一則測試通知，距離2025年統測還有 ${daysLeft} 天！`
     );
+    
+    // Also send a push notification if enabled
+    if (this.isEnabled && 'serviceWorker' in navigator) {
+      if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(registration => {
+          registration.showNotification('測試通知', {
+            body: `這是一則測試通知，距離2025年統測還有 ${daysLeft} 天！`,
+            icon: '/favicon.ico'
+          });
+        });
+      }
+    }
     
     this.updateStatus('測試通知已發送！');
     setTimeout(() => {
