@@ -126,47 +126,52 @@ function addSparkleEffect() {
   });
 }
 
-// Notification functionality
-class NotificationManager {
+class OnPageNotificationManager {
   constructor() {
     this.button = document.getElementById('notification-btn');
     this.statusText = document.querySelector('.notification-status');
     this.isEnabled = false;
+    this.testButton = document.getElementById('test-notification-btn');
+    this.notificationContainer = null;
+    this.createNotificationContainer();
     this.init();
   }
 
-  init() {
-    // Check if notifications are supported
-    if (!('Notification' in window)) {
-      this.updateStatus('您的瀏覽器不支援通知功能');
-      this.button.disabled = true;
-      return;
+  createNotificationContainer() {
+    // Create container if it doesn't exist
+    if (!document.querySelector('.on-page-notification')) {
+      this.notificationContainer = document.createElement('div');
+      this.notificationContainer.className = 'on-page-notification';
+      document.body.appendChild(this.notificationContainer);
+    } else {
+      this.notificationContainer = document.querySelector('.on-page-notification');
     }
-
-    // Check if notifications are already enabled
-    if (Notification.permission === 'granted') {
-      this.isEnabled = localStorage.getItem('notificationsEnabled') === 'true';
-      this.updateButtonState();
-    }
-
-    this.button.addEventListener('click', () => this.toggleNotifications());
   }
 
-  async toggleNotifications() {
-    if (Notification.permission === 'default') {
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') {
-        this.updateStatus('通知權限已被拒絕');
-        return;
-      }
-    }
+  init() {
+    // Check if notifications are already enabled from localStorage
+    this.isEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+    this.updateButtonState();
 
+    this.button.addEventListener('click', () => this.toggleNotifications());
+    this.testButton.addEventListener('click', () => this.sendTestNotification());
+    
+    // Check if it's time to show the daily notification
+    if (this.isEnabled) {
+      this.checkDailyNotification();
+    }
+  }
+
+  toggleNotifications() {
     this.isEnabled = !this.isEnabled;
     localStorage.setItem('notificationsEnabled', this.isEnabled);
     this.updateButtonState();
 
     if (this.isEnabled) {
-      this.scheduleNotification();
+      // Show a notification immediately when enabled
+      this.showNotification();
+      // Store the last notification date
+      localStorage.setItem('lastNotificationDate', new Date().toDateString());
       this.updateStatus('每日通知已開啟');
     } else {
       this.updateStatus('通知已關閉');
@@ -182,20 +187,20 @@ class NotificationManager {
     this.statusText.textContent = message;
   }
 
-  scheduleNotification() {
+  checkDailyNotification() {
     if (!this.isEnabled) return;
-
-    const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(9, 0, 0, 0); // 設定為每天早上9點
-
-    const timeUntilNotification = tomorrow - now;
-
-    setTimeout(() => {
+    
+    const lastNotificationDate = localStorage.getItem('lastNotificationDate');
+    const today = new Date().toDateString();
+    
+    // If we haven't shown a notification today, show one
+    if (lastNotificationDate !== today) {
       this.showNotification();
-      this.scheduleNotification(); // 設定下一天的通知
-    }, timeUntilNotification);
+      localStorage.setItem('lastNotificationDate', today);
+    }
+    
+    // Schedule next check - check every hour if notification needs to be shown
+    setTimeout(() => this.checkDailyNotification(), 60 * 60 * 1000);
   }
 
   showNotification() {
@@ -203,18 +208,79 @@ class NotificationManager {
 
     const targetDate = new Date(2025, 3, 26);
     const now = new Date();
-    const daysLeft = Math.ceil((targetDate - now) / (1000 * 60 * 60 * 24));
+    const diffTime = Math.abs(targetDate - now);
+    const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    // Get hours of study per day recommendation
+    const hoursPerDay = Math.min(8, Math.max(2, Math.round(300 / daysLeft)));
+    
+    this.displayOnPageNotification(
+      '統測倒數提醒', 
+      `距離2025年統測還有 ${daysLeft} 天！建議每日至少讀書 ${hoursPerDay} 小時，加油！`
+    );
+  }
 
-    new Notification('統測倒數提醒', {
-      body: `距離2025年統測還有 ${daysLeft} 天！加油！`,
-      icon: 'data:image/svg+xml;base64,' + btoa(`
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <rect width="24" height="24" fill="#1e3c72"/>
-          <path d="M12 3L1 9L12 15L21 10.09V17H23V9L12 3Z" fill="white"/>
-          <path d="M5 13.18V17.18L12 21L19 17.18V13.18L12 17L5 13.18Z" fill="white"/>
-        </svg>
-      `)
+  sendTestNotification() {
+    const targetDate = new Date(2025, 3, 26);
+    const now = new Date();
+    const diffTime = Math.abs(targetDate - now);
+    const daysLeft = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    this.displayOnPageNotification(
+      '測試通知', 
+      `這是一則測試通知，距離2025年統測還有 ${daysLeft} 天！`
+    );
+    
+    this.updateStatus('測試通知已發送！');
+    setTimeout(() => {
+      if (this.isEnabled) {
+        this.updateStatus('每日通知已開啟');
+      } else {
+        this.updateStatus('');
+      }
+    }, 3000);
+  }
+
+  displayOnPageNotification(title, message) {
+    // Clear any existing notification
+    this.notificationContainer.classList.remove('show');
+    
+    // Set up the new notification
+    const closeButton = document.createElement('button');
+    closeButton.className = 'on-page-notification-close';
+    closeButton.innerHTML = '×';
+    closeButton.addEventListener('click', () => {
+      this.notificationContainer.classList.remove('show');
     });
+    
+    const titleElement = document.createElement('div');
+    titleElement.className = 'on-page-notification-title';
+    titleElement.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" fill="#1e3c72"/>
+      </svg>
+      ${title}
+    `;
+    
+    const bodyElement = document.createElement('div');
+    bodyElement.className = 'on-page-notification-body';
+    bodyElement.textContent = message;
+    
+    // Clear and add new content
+    this.notificationContainer.innerHTML = '';
+    this.notificationContainer.appendChild(closeButton);
+    this.notificationContainer.appendChild(titleElement);
+    this.notificationContainer.appendChild(bodyElement);
+    
+    // Show and auto-hide after 10 seconds
+    setTimeout(() => {
+      this.notificationContainer.classList.add('show');
+    }, 100);
+    
+    // Auto-hide after 10 seconds
+    setTimeout(() => {
+      this.notificationContainer.classList.remove('show');
+    }, 10000);
   }
 }
 
@@ -225,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateCopyright();
   initializeAnimations();
   addSparkleEffect();
-  new NotificationManager();
+  new OnPageNotificationManager();
 });
 
 // Update countdown every second
