@@ -1,5 +1,7 @@
-const CACHE_NAME = 'exam-countdown-v2';
+// Service Worker file
+const CACHE_NAME = 'exam-countdown-v1';
 
+// Files to cache
 const urlsToCache = [
   '/',
   '/index.html',
@@ -8,40 +10,46 @@ const urlsToCache = [
   '/favicon.ico'
 ];
 
+// Install event - caches assets
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
+      .then(cache => {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
-  self.skipWaiting();
 });
 
+// Activate event - clean up old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
-          .map(cacheName => caches.delete(cacheName))
+        cacheNames.filter(cacheName => {
+          return cacheName !== CACHE_NAME;
+        }).map(cacheName => {
+          return caches.delete(cacheName);
+        })
       );
-    }).then(() => self.clients.claim())
+    })
   );
 });
 
+// Fetch event - serve cached content when offline
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request).then(fetchResponse => {
-        return caches.open(CACHE_NAME).then(cache => {
-          if (event.request.method === "GET") {
-            cache.put(event.request, fetchResponse.clone());
-          }
-          return fetchResponse;
-        });
-      });
-    }).catch(() => caches.match('/index.html')) // 無網路時回傳首頁
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request);
+      })
   );
 });
 
+// Push event - handle incoming push messages
 self.addEventListener('push', event => {
   let data = {};
   if (event.data) {
@@ -53,15 +61,20 @@ self.addEventListener('push', event => {
     body: data.message || '請繼續努力準備考試！',
     icon: '/favicon.ico',
     badge: '/favicon.ico',
-    requireInteraction: true,
-    data: { url: data.url || '/' }
+    data: {
+      url: data.url || '/'
+    }
   };
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
 });
 
+// Notification click event - open the app when notification is clicked
 self.addEventListener('notificationclick', event => {
   event.notification.close();
+  
   event.waitUntil(
     clients.openWindow(event.notification.data.url || '/')
   );
