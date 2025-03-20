@@ -33,3 +33,9 @@ export const DEFAULT_SUBJECTS = [
   { name: "專業科目一", progress: 0 },
   { name: "專業科目二", progress: 0 }
 ];
+
+// UI settings
+export const UI_SETTINGS = {
+  // Modal background opacity - higher numbers are more opaque
+  modalOpacity: 0.95
+};

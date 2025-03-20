@@ -1,4 +1,4 @@
-import { EXAM_DATE, START_DATE, MESSAGES, TIMER_SETTINGS, DEFAULT_SUBJECTS } from './config.js';
+import { EXAM_DATE, START_DATE, MESSAGES, TIMER_SETTINGS, DEFAULT_SUBJECTS, UI_SETTINGS } from './config.js';
 import { initNotifications, checkNotificationPermission } from './notifications.js';
 
 // DOM 元素
@@ -514,6 +514,11 @@ function renderSubjects() {
 
 // 模態窗口控制
 function initModals() {
+  // Apply custom modal styling from config
+  document.querySelectorAll('.modal').forEach(modal => {
+    modal.style.backgroundColor = `rgba(48, 43, 99, ${UI_SETTINGS.modalOpacity})`;
+  });
+  
   // 打開模態窗口
   timerBtn.addEventListener('click', () => {
     openModal(timerModal);

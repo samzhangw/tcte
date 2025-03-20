@@ -810,7 +810,7 @@ input:checked + .toggle-slider:before {
   max-width: 500px;
   max-height: 80vh;
   overflow-y: auto;
-  background-color: var(--card-bg);
+  background-color: var(--bg-gradient-mid);
   border-radius: 15px;
   padding: 25px;
   z-index: 201;
