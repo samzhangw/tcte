@@ -186,6 +186,7 @@ createFloatingShapes();
 createParticles();
 updateCopyrightYear();
 initMenu();
+checkNotificationPermission();
 
 // 添加倒數數字動畫效果
 document.querySelectorAll('.countdown-item').forEach(item => {
