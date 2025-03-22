@@ -1,0 +1,42 @@
+/* Mobile-specific styles for feature buttons */
+@media (max-width: 768px) {
+  .feature-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 25px 0;
+  }
+  
+  .feature-button {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 8px;
+  }
+  
+  .feature-button i {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+  
+  .feature-button span {
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 400px) {
+  .feature-button {
+    padding: 10px 5px;
+  }
+  
+  .feature-button i {
+    font-size: 1.3rem;
+  }
+  
+  .feature-button span {
+    font-size: 0.8rem;
+  }
+}
+
