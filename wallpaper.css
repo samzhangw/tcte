@@ -50,6 +50,32 @@
   background: linear-gradient(135deg, #24243e, #302b63, #0f0c29);
 }
 
+/* New wallpaper styles */
+.wallpaper-style-gradient1 {
+  background: linear-gradient(135deg, #4e54c8, #8f94fb) !important;
+}
+
+.wallpaper-style-gradient2 {
+  background: linear-gradient(135deg, #f953c6, #b91d73) !important;
+}
+
+.wallpaper-style-gradient3 {
+  background: linear-gradient(to right, #2c3e50, #4ca1af) !important;
+}
+
+.wallpaper-style-pattern1 {
+  background-color: #1a1a2e !important;
+  background-image: radial-gradient(#ffffff33 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.wallpaper-style-pattern2 {
+  background-color: #000000 !important;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.07) 2px, transparent 2px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 2px, transparent 2px);
+  background-size: 50px 50px;
+}
+
 .preview-mobile {
   width: 40% !important;
   margin: 0 auto;
@@ -62,6 +88,29 @@
   color: white;
   text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
+}
+
+/* New countdown styles */
+.countdown-modern {
+  font-family: 'Roboto', sans-serif;
+  font-size: 4rem !important;
+  background: linear-gradient(to right, #ffffff, #f0f0f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none !important;
+}
+
+.countdown-neon {
+  color: #fff !important;
+  text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #0073e6, 0 0 20px #0073e6 !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+.countdown-minimal {
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 5px;
+  border-bottom: 2px solid rgba(255, 204, 0, 0.8);
+  padding-bottom: 10px;
 }
 
 .preview-date {
@@ -99,6 +148,22 @@
   font-size: 0.8rem;
 }
 
+/* Enhanced circle styles */
+.countdown-circle-modern {
+  width: 170px !important;
+  height: 170px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2) !important;
+}
+
+.countdown-circle-accent {
+  background: rgba(255, 204, 0, 0.15) !important;
+  border: 4px solid rgba(255, 204, 0, 0.8) !important;
+  box-shadow: 0 0 25px rgba(255, 204, 0, 0.3) !important;
+}
+
 #download-wallpaper {
   background-color: rgba(255, 204, 0, 0.5);
   font-weight: bold;
@@ -121,4 +186,3 @@
     height: 200px;
   }
 }
-

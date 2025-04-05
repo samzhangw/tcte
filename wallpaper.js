@@ -45,6 +45,60 @@ function initWallpaperGenerator() {
   canvas = document.createElement('canvas');
   canvas.style.display = 'none';
   document.body.appendChild(canvas);
+  
+  // Update wallpaper style options
+  updateWallpaperStyleOptions();
+}
+
+// Add new function to update style options
+function updateWallpaperStyleOptions() {
+  // Clear existing options
+  while (wallpaperStyle.options.length > 0) {
+    wallpaperStyle.remove(0);
+  }
+  
+  // Add enhanced style options
+  const styles = [
+    { value: 'gradient', text: '經典漸層' },
+    { value: 'gradient1', text: '藍紫漸層' },
+    { value: 'gradient2', text: '粉紅漸層' },
+    { value: 'gradient3', text: '青綠漸層' },
+    { value: 'minimal', text: '簡約黑' },
+    { value: 'pattern1', text: '點點圖案' },
+    { value: 'pattern2', text: '網格圖案' },
+    { value: 'dark', text: '深色' },
+    { value: 'light', text: '淺色' }
+  ];
+  
+  styles.forEach(style => {
+    const option = document.createElement('option');
+    option.value = style.value;
+    option.textContent = style.text;
+    wallpaperStyle.appendChild(option);
+  });
+  
+  // Update countdown style options
+  while (countdownStyle.options.length > 0) {
+    countdownStyle.remove(0);
+  }
+  
+  const countdownStyles = [
+    { value: 'large', text: '大數字' },
+    { value: 'modern', text: '現代風' },
+    { value: 'neon', text: '霓虹風' },
+    { value: 'minimal', text: '簡約風' },
+    { value: 'small', text: '小數字' },
+    { value: 'circle', text: '基本圓形' },
+    { value: 'circle-modern', text: '玻璃圓形' },
+    { value: 'circle-accent', text: '強調圓形' }
+  ];
+  
+  countdownStyles.forEach(style => {
+    const option = document.createElement('option');
+    option.value = style.value;
+    option.textContent = style.text;
+    countdownStyle.appendChild(option);
+  });
 }
 
 function openModal(modal) {
@@ -94,7 +148,25 @@ function updatePreview() {
 }
 
 function applyWallpaperStyle() {
+  // Reset any previous classes
+  wallpaperPreview.className = '';
+  
   switch (wallpaperStyle.value) {
+    case 'gradient1':
+      wallpaperPreview.classList.add('wallpaper-style-gradient1');
+      break;
+    case 'gradient2':
+      wallpaperPreview.classList.add('wallpaper-style-gradient2');
+      break;
+    case 'gradient3':
+      wallpaperPreview.classList.add('wallpaper-style-gradient3');
+      break;
+    case 'pattern1':
+      wallpaperPreview.classList.add('wallpaper-style-pattern1');
+      break;
+    case 'pattern2':
+      wallpaperPreview.classList.add('wallpaper-style-pattern2');
+      break;
     case 'minimal':
       wallpaperPreview.style.background = '#1a1a1a';
       break;
@@ -110,6 +182,11 @@ function applyWallpaperStyle() {
       wallpaperPreview.style.background = 'linear-gradient(135deg, #24243e, #302b63, #0f0c29)';
       break;
   }
+  
+  // Add type class back if needed
+  if (wallpaperType.value === 'mobile') {
+    wallpaperPreview.classList.add('preview-mobile');
+  }
 }
 
 function calculateDaysRemaining() {
@@ -121,11 +198,29 @@ function calculateDaysRemaining() {
 }
 
 function createStandardCountdown(daysRemaining) {
-  const isLarge = countdownStyle.value === 'large';
-  
   const countdownElement = document.createElement('div');
   countdownElement.className = 'preview-countdown';
-  countdownElement.style.fontSize = isLarge ? '4rem' : '2.5rem';
+  
+  // Apply specific countdown styles
+  switch (countdownStyle.value) {
+    case 'modern':
+      countdownElement.classList.add('countdown-modern');
+      break;
+    case 'neon':
+      countdownElement.classList.add('countdown-neon');
+      break;
+    case 'minimal':
+      countdownElement.classList.add('countdown-minimal');
+      break;
+    case 'large':
+      countdownElement.style.fontSize = '4rem';
+      break;
+    case 'small':
+    default:
+      countdownElement.style.fontSize = '2.5rem';
+      break;
+  }
+  
   countdownElement.textContent = `${daysRemaining}天`;
   wallpaperPreview.appendChild(countdownElement);
   
@@ -138,6 +233,13 @@ function createStandardCountdown(daysRemaining) {
 function createCircleCountdown(daysRemaining) {
   const circleElement = document.createElement('div');
   circleElement.className = 'countdown-circle';
+  
+  // Apply specific circle styles
+  if (countdownStyle.value === 'circle-modern') {
+    circleElement.classList.add('countdown-circle-modern');
+  } else if (countdownStyle.value === 'circle-accent') {
+    circleElement.classList.add('countdown-circle-accent');
+  }
   
   const countdownElement = document.createElement('div');
   countdownElement.className = 'preview-countdown';
@@ -187,8 +289,68 @@ function generateWallpaper() {
 function drawBackground(ctx, width, height) {
   // Create gradient background based on selected style
   let gradient;
+  let pattern;
   
   switch (wallpaperStyle.value) {
+    case 'gradient1':
+      gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#4e54c8');
+      gradient.addColorStop(1, '#8f94fb');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+      break;
+    case 'gradient2':
+      gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#f953c6');
+      gradient.addColorStop(1, '#b91d73');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+      break;
+    case 'gradient3':
+      gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#2c3e50');
+      gradient.addColorStop(1, '#4ca1af');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+      break;
+    case 'pattern1':
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, width, height);
+      
+      // Draw dots
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      for (let x = 0; x < width; x += 20) {
+        for (let y = 0; y < height; y += 20) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+      break;
+    case 'pattern2':
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+      
+      // Draw grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+      ctx.lineWidth = 2;
+      
+      // Vertical lines
+      for (let x = 0; x < width; x += 50) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      
+      // Horizontal lines
+      for (let y = 0; y < height; y += 50) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      break;
     case 'minimal':
       ctx.fillStyle = '#1a1a1a';
       ctx.fillRect(0, 0, width, height);
@@ -220,19 +382,60 @@ function drawBackground(ctx, width, height) {
 }
 
 function drawStandardCountdown(ctx, daysRemaining, width, height) {
-  const isLarge = countdownStyle.value === 'large';
   const isLight = wallpaperStyle.value === 'light';
+  const style = countdownStyle.value;
   
-  // Set text color based on background
-  ctx.fillStyle = isLight ? '#333333' : '#ffffff';
-  
-  // Draw countdown number
-  ctx.font = `bold ${isLarge ? 180 : 120}px Roboto, Arial, sans-serif`;
+  // Draw countdown number with style
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
+  
+  if (style === 'modern') {
+    // Create gradient text
+    const textGradient = ctx.createLinearGradient(width/2 - 150, height/2, width/2 + 150, height/2);
+    textGradient.addColorStop(0, '#ffffff');
+    textGradient.addColorStop(1, '#f0f0f0');
+    ctx.fillStyle = textGradient;
+    ctx.font = `bold 180px Roboto, Arial, sans-serif`;
+  } else if (style === 'neon') {
+    // Create neon glow effect
+    ctx.shadowColor = '#0073e6';
+    ctx.shadowBlur = 20;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `bold 160px Roboto, Arial, sans-serif`;
+  } else if (style === 'minimal') {
+    ctx.fillStyle = isLight ? '#333333' : '#ffffff';
+    ctx.font = `bold 150px Roboto, Arial, sans-serif`;
+    
+    // Draw underline
+    ctx.strokeStyle = '#ffcc00';
+    ctx.lineWidth = 4;
+  } else {
+    // Default styles
+    ctx.fillStyle = isLight ? '#333333' : '#ffffff';
+    ctx.font = `bold ${style === 'large' ? 180 : 120}px Roboto, Arial, sans-serif`;
+  }
+  
+  // Draw text
   ctx.fillText(`${daysRemaining}天`, width / 2, height / 2 - 50);
   
+  // Draw underline for minimal style
+  if (style === 'minimal') {
+    ctx.beginPath();
+    ctx.moveTo(width/2 - 150, height/2 + 20);
+    ctx.lineTo(width/2 + 150, height/2 + 20);
+    ctx.stroke();
+    
+    // Reset shadow
+    ctx.shadowBlur = 0;
+  }
+  
+  // Reset shadow for other styles
+  ctx.shadowBlur = 0;
+  
   // Draw date text
+  ctx.fillStyle = isLight ? '#333333' : '#ffffff';
   ctx.font = '40px Noto Sans TC, sans-serif';
   ctx.fillText('統測日期: 2025/4/26 - 2025/4/27', width / 2, height / 2 + 70);
   
@@ -248,17 +451,52 @@ function drawCircleCountdown(ctx, daysRemaining, width, height) {
   const centerX = width / 2;
   const centerY = height / 2;
   const radius = Math.min(width, height) * 0.15;
+  const style = countdownStyle.value;
   
-  // Draw circle
+  // Draw circle with style
   ctx.beginPath();
   ctx.arc(centerX, centerY - 30, radius, 0, Math.PI * 2);
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-  ctx.fill();
   
-  // Draw circle border
-  ctx.lineWidth = 6;
-  ctx.strokeStyle = 'rgba(255, 204, 0, 0.8)';
-  ctx.stroke();
+  if (style === 'circle-modern') {
+    // Create glass effect
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+    ctx.stroke();
+    
+    // Add subtle gradient overlay
+    const glassGradient = ctx.createRadialGradient(
+      centerX, centerY - 50, 0,
+      centerX, centerY - 30, radius
+    );
+    glassGradient.addColorStop(0, 'rgba(255, 255, 255, 0.15)');
+    glassGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = glassGradient;
+    ctx.fill();
+  } else if (style === 'circle-accent') {
+    // Create accent style with glow
+    ctx.fillStyle = 'rgba(255, 204, 0, 0.15)';
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(255, 204, 0, 0.8)';
+    ctx.stroke();
+    
+    // Add subtle glow
+    ctx.shadowColor = 'rgba(255, 204, 0, 0.5)';
+    ctx.shadowBlur = 15;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  } else {
+    // Default circle style
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fill();
+    ctx.lineWidth = 6;
+    ctx.strokeStyle = 'rgba(255, 204, 0, 0.8)';
+    ctx.stroke();
+  }
   
   // Draw countdown number
   ctx.font = `bold ${radius * 0.8}px Roboto, Arial, sans-serif`;
