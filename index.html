@@ -15,14 +15,10 @@
   <meta name="twitter:title" content="2025年統測倒數計時器">
   <meta name="twitter:description" content="隨時掌握統測剩餘時間，科學管理你的讀書計畫">
   <link rel="canonical" href="https://你的網站網址.com">
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="mobile-styles.css">
   <!-- 添加 Font Awesome 圖標 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="wallpaper.css">
 </head>
 <body>
   <div class="floating-shapes" id="floating-shapes"></div>
@@ -42,6 +38,7 @@
       <a href="https://ceecc.vercel.app/" target="_blank">學測倒數</a>
       <a href="#" id="dark-mode-toggle">切換主題</a>
       <a href="#" id="notification-settings-btn">通知設定</a>
+      <a href="#" id="wallpaper-btn">產生桌布</a>
     </nav>
   </header>
   
@@ -188,6 +185,51 @@
     </div>
   </div>
 
+  <!-- 桌布生成模態窗口 -->
+  <div id="wallpaper-modal" class="modal">
+    <div class="modal-header">
+      <h2>產生倒數桌布</h2>
+      <button class="close-modal">&times;</button>
+    </div>
+    <div id="wallpaper-section" class="feature-card">
+      <div class="wallpaper-options">
+        <div class="wallpaper-option">
+          <label>桌布類型</label>
+          <select id="wallpaper-type">
+            <option value="desktop">電腦桌布</option>
+            <option value="mobile">手機桌布</option>
+          </select>
+        </div>
+        <div class="wallpaper-option">
+          <label>背景風格</label>
+          <select id="wallpaper-style">
+            <option value="gradient">漸層</option>
+            <option value="minimal">簡約</option>
+            <option value="dark">深色</option>
+            <option value="light">淺色</option>
+          </select>
+        </div>
+        <div class="wallpaper-option">
+          <label>倒數樣式</label>
+          <select id="countdown-style">
+            <option value="large">大數字</option>
+            <option value="small">小數字</option>
+            <option value="circle">圓形</option>
+          </select>
+        </div>
+        <div class="wallpaper-option">
+          <label>個人化文字</label>
+          <input type="text" id="custom-text" placeholder="加油！你可以的！">
+        </div>
+      </div>
+      <div class="wallpaper-preview-container">
+        <div id="wallpaper-preview"></div>
+      </div>
+      <button id="generate-wallpaper" class="feature-btn">生成桌布</button>
+      <button id="download-wallpaper" class="feature-btn" disabled>下載桌布</button>
+    </div>
+  </div>
+
   <footer class="site-footer">
     <p> <span id="copyright-year"></span> 2025 統測倒數計時器 | 版權所有</p>
   </footer>
@@ -196,14 +238,6 @@
   <script type="module" src="script.js"></script>
   <script type="module" src="mobile.js"></script>
   <script type="module" src="notifications.js"></script>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H9X7EC127P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-H9X7EC127P');
-</script>
+  <script type="module" src="wallpaper.js"></script>
 </body>
 </html>

@@ -557,14 +557,14 @@ function initModals() {
   });
 }
 
-function openModal(modal) {
+export function openModal(modal) {
   closeAllModals(); // 確保其他模態窗口已關閉
   modalOverlay.classList.add('active');
   modal.classList.add('active');
   document.body.classList.add('modal-open');
 }
 
-function closeAllModals() {
+export function closeAllModals() {
   const modals = document.querySelectorAll('.modal');
   modals.forEach(modal => {
     modal.classList.remove('active');

@@ -1,0 +1,124 @@
+/* 桌布生成相關樣式 */
+.wallpaper-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.wallpaper-option {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.wallpaper-option label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.wallpaper-option select,
+.wallpaper-option input {
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: inherit;
+}
+
+.wallpaper-preview-container {
+  width: 100%;
+  height: 250px;
+  margin: 15px 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+#wallpaper-preview {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #24243e, #302b63, #0f0c29);
+}
+
+.preview-mobile {
+  width: 40% !important;
+  margin: 0 auto;
+  border-radius: 15px;
+}
+
+.preview-countdown {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+}
+
+.preview-date {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.preview-text {
+  font-size: 1.2rem;
+  color: rgba(255, 204, 0, 1);
+  margin-top: 15px;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.countdown-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  border: 3px solid rgba(255, 204, 0, 0.8);
+}
+
+.countdown-circle .preview-countdown {
+  margin-bottom: 0;
+  font-size: 2.5rem;
+}
+
+.countdown-circle .preview-date {
+  font-size: 0.8rem;
+}
+
+#download-wallpaper {
+  background-color: rgba(255, 204, 0, 0.5);
+  font-weight: bold;
+}
+
+#download-wallpaper:hover:not(:disabled) {
+  background-color: rgba(255, 204, 0, 0.8);
+}
+
+@media (max-width: 768px) {
+  .wallpaper-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .preview-countdown {
+    font-size: 2.5rem;
+  }
+  
+  .wallpaper-preview-container {
+    height: 200px;
+  }
+}
+
