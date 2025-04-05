@@ -1,0 +1,52 @@
+/* Dark theme specific styles */
+body.dark-mode {
+  --bg-gradient-start: #0f0c29;
+  --bg-gradient-mid: #302b63;
+  --bg-gradient-end: #24243e;
+  --text-color: #fff;
+  --accent-color: #ffcc00;
+  --accent-color-alt: #ff8800;
+  --card-bg: rgba(0, 0, 0, 0.4);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.1);
+  --feature-btn-bg: rgba(255, 255, 255, 0.2);
+  --feature-btn-hover: rgba(255, 204, 0, 0.4);
+  --item-bg: rgba(255, 255, 255, 0.15);
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  
+  background: var(--bg-gradient-end);
+  background: -webkit-linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end));
+  background: linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end));
+  color: var(--text-color);
+}
+
+body.dark-mode h1 {
+  background: linear-gradient(to right, #fff, #ffcc00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+body.dark-mode .site-header {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+body.dark-mode .site-header a {
+  color: #fff;
+}
+
+body.dark-mode .menu-toggle {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .menu-toggle span {
+  background-color: #fff;
+}
+
+body.dark-mode .site-footer {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .site-footer p {
+  color: rgba(255, 255, 255, 0.7);
+}
+

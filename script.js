@@ -210,25 +210,24 @@ function initDarkMode() {
   
   if (isDarkMode) {
     document.body.classList.add('dark-mode');
+    document.body.classList.remove('light-mode');
   } else if (isLightMode) {
     document.body.classList.add('light-mode');
+    document.body.classList.remove('dark-mode');
   }
   
   darkModeToggle.addEventListener('click', (e) => {
     e.preventDefault();
     
-    // Remove both classes first
-    document.body.classList.remove('dark-mode');
-    document.body.classList.remove('light-mode');
-    
-    // Determine which mode to apply
     if (document.body.classList.contains('light-mode')) {
       // If already in light mode, switch to dark mode
+      document.body.classList.remove('light-mode');
       document.body.classList.add('dark-mode');
       localStorage.setItem('darkMode', 'true');
       localStorage.setItem('lightMode', 'false');
     } else if (document.body.classList.contains('dark-mode')) {
       // If already in dark mode, switch to light mode
+      document.body.classList.remove('dark-mode');
       document.body.classList.add('light-mode');
       localStorage.setItem('lightMode', 'true');
       localStorage.setItem('darkMode', 'false');
