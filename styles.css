@@ -22,20 +22,20 @@
   --overlay-bg: rgba(0, 0, 0, 0.5);
 }
 
-body.dark-mode {
-  --bg-gradient-start: #0a0a0a;
-  --bg-gradient-mid: #1a1a1a;
-  --bg-gradient-end: #0a0a0a;
-  --text-color: #e0e0e0;
-  --accent-color: #5c8aff;
-  --accent-color-alt: #3367f2;
-  --card-bg: rgba(25, 25, 25, 0.8);
-  --card-border: rgba(150, 150, 150, 0.2);
-  --input-bg: rgba(255, 255, 255, 0.05);
-  --feature-btn-bg: rgba(255, 255, 255, 0.1);
-  --feature-btn-hover: rgba(92, 138, 255, 0.4);
-  --item-bg: rgba(255, 255, 255, 0.1);
-  --overlay-bg: rgba(0, 0, 0, 0.7);
+body.light-mode {
+  --bg-gradient-start: #e0eafc;
+  --bg-gradient-mid: #cfdef3;
+  --bg-gradient-end: #e0eafc;
+  --text-color: #333333;
+  --accent-color: #3367f2;
+  --accent-color-alt: #5c8aff;
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --card-border: rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.05);
+  --feature-btn-bg: rgba(0, 0, 0, 0.1);
+  --feature-btn-hover: rgba(51, 103, 242, 0.2);
+  --item-bg: rgba(0, 0, 0, 0.05);
+  --overlay-bg: rgba(0, 0, 0, 0.2);
 }
 
 body {
@@ -897,14 +897,6 @@ body.modal-open {
   overflow: hidden;
 }
 
-/* 增加原有特性卡片容器的CSS為模態樣式 */
-.modal .feature-card {
-  box-shadow: none;
-  background: transparent;
-  border: none;
-  padding: 0;
-}
-
 /* 調整模態內部的滾動條 */
 .modal::-webkit-scrollbar {
   width: 6px;
@@ -917,6 +909,14 @@ body.modal-open {
 .modal::-webkit-scrollbar-thumb {
   background: var(--accent-color);
   border-radius: 10px;
+}
+
+/* 增加原有特性卡片容器的CSS為模態樣式 */
+.modal .feature-card {
+  box-shadow: none;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 @media (max-width: 768px) {

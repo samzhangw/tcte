@@ -206,16 +206,58 @@ messageElement.style.transition = 'opacity 0.5s ease';
 function initDarkMode() {
   // 檢查本地存儲
   const isDarkMode = localStorage.getItem('darkMode') === 'true';
+  const isLightMode = localStorage.getItem('lightMode') === 'true';
   
   if (isDarkMode) {
     document.body.classList.add('dark-mode');
+  } else if (isLightMode) {
+    document.body.classList.add('light-mode');
   }
   
   darkModeToggle.addEventListener('click', (e) => {
     e.preventDefault();
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    
+    // Remove both classes first
+    document.body.classList.remove('dark-mode');
+    document.body.classList.remove('light-mode');
+    
+    // Determine which mode to apply
+    if (document.body.classList.contains('light-mode')) {
+      // If already in light mode, switch to dark mode
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('darkMode', 'true');
+      localStorage.setItem('lightMode', 'false');
+    } else if (document.body.classList.contains('dark-mode')) {
+      // If already in dark mode, switch to light mode
+      document.body.classList.add('light-mode');
+      localStorage.setItem('lightMode', 'true');
+      localStorage.setItem('darkMode', 'false');
+    } else {
+      // Default mode is normal, switch to light mode
+      document.body.classList.add('light-mode');
+      localStorage.setItem('lightMode', 'true');
+      localStorage.setItem('darkMode', 'false');
+    }
+    
+    // Update the button text
+    updateThemeToggleText();
   });
+  
+  // Set initial button text
+  updateThemeToggleText();
+}
+
+function updateThemeToggleText() {
+  const darkModeToggle = document.getElementById('dark-mode-toggle');
+  if (!darkModeToggle) return;
+  
+  if (document.body.classList.contains('light-mode')) {
+    darkModeToggle.textContent = '切換至深色模式';
+  } else if (document.body.classList.contains('dark-mode')) {
+    darkModeToggle.textContent = '切換至淺色模式';
+  } else {
+    darkModeToggle.textContent = '切換主題';
+  }
 }
 
 // ----- 計時器功能 -----
@@ -340,7 +382,7 @@ function notifyTimerEnd() {
   }
   
   // 播放音效
-  const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLHPM7tiJNwgZXrfq4aFJEA1QqOjjt14dCkSc5OXLdSsGOI/h6dd8MwU2iuD1324hBj2S5fXTdSsJPJXk5bTskWq80eKnYCgPK2281vjtqW0lCjqR1uj2mVscDUSW0+P4w4AuDEONy9/n7q9pKA4VRrbZ+faXXBsbK3S92/zdkFsVChpKqN/4s2sgFiU2gtfzxapkLBMbM5nW6ed8VCMVJjqL0fPgqXAjExgtis/qj9n6v3gsExl2hs/0nN34nVsXFAIWgsrtntvzolwJDBkyfsTmxt/tvl8NDyUlbK3QxuDYgmEbCW0XUrTZztZNN2VxYRlViNffmUU6UFNRS2KOsph4XmD/sGYkFUhQh7OUbGJxalA5RHaMRU1sisSEWEqmmH5rYYGQi25XUqK2mHKFc4OIgmZee6ewfGJ5mIt6a2mAlYlweHiJioFycG97jId7dnR9kJOEcGx1iZOIbWBpeoJ6bXJ1d4aHfHh0eYOEf3l3dn2CgXt3dHp/gIB6dnV4foB/eXZ1eX9/fHh2dn6AfXh2d3l+f316eXh8f4B8enh5fH5+e3p4e31+fnx8e3x9fn58fHx8fX5+fHx7fH1+fn18e3x9fn5+fXx8fX1+fn19fH19fn5+fX19fX1+fn58LTA0OWyHmH1IHjxcf5uRTBsuT3SOjFwVKkt0kpBNFyxPcH+JhXBfbnqCf3ToW+tcN2lthxDTj4whIY2CGidTdkguXp5nvVdphUk0cZFxtlZyiDcpZId1pkx3kz0mYYZ5oUV5k0AkQlJ1jFJJfyUbMFJ6e00jN5E+HDFXjnt3Mk2BQhskPW2Hg4BuPUVaTkRQgH9xd3dQRFJPfIB6c3yBS0xLTHd4enZ/fVVMDEQqZJyESkqpbRxDj5ewl1AdRHZpYnGbXSJalZlWG0ipi4csIIiidhlZoYt9Y1x6p6qXYkd8g3p3gYd1bBE4cZtwb3aDgnBpCzFvlmJwf46Hd2sgVZyFa3ZveYWKf3UhR4KHY3R5cnd9gX11JUuFi3R2gHJxcG9+gHIRcZNrdH58dm8jQWx0eHFycIKFgXQdN3aOdGt0fYiBfXclV3+Demxue3p+fXgWRIF6aG94enF9gH0Tb5dye3CEd25pc4OBeBs+aHx8eHx+eXh2fH93FUt/enFucYB9dnR5f38aSX99c3R4Pnx69HR7fH4cSH16cXN1eHl6Nnh8fhs2fYBwY3N89W12fHt2G0p+fG9vcHHwcXp7fHchXX6Ab25vPnp4cXJ5fX0iQX+Bb2xveHx5n25zfH0hQH9+cHBwcvZ2eXt4dR5HfoJycHJzYHV8e3nvI0iIdnBvcHELdHl7en0aR3x9cnFzdRt1e3t4eR1JfXtvbnB1Cnd7e3p4HEd8e4BudXYHdXx7e30aRH19c3JzdxR2e3x3eCFKfHxycXN0CHh7e3h4I058fHNxcngHdnx7xngeSnv9cXFzdgV4e3sveCFMfH1zcXJ3AvZ7e754HUl7/XFwcncB+Ht7InoiTXt+c3FxeP/3e3sweSRNe/9zcHF5//d7eyx6FUp8/3NwcXn/93x7HHkfTXugcXByev/3PG8Ieh9Le/9yb3F6//d8ewp6Gk1, //iAPAGIgOwGQkBxQG4gMAGYkA2AGQBZQU4gBFAC4ABQUABYQhYCVkAA');
+  const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLHPM7tiJNwgZXrfq4aFJEA1QqOjjt14dCkSc5OXLdSsGOI/h6dd8MwU2iuD1324hBj2S5fXTdSsJPJXk5bTskWq80eKnYCgPK2281vjtqW0lCjqR1uj2mVscDUSW0+P4w4AuDEONy9/n7q9pKA4VRrbZ+faXXBsbK3S92/zdkFsVChpKqN/4s2sgFiU2gtfzxapkLBMbM5nW6ed8VCMVJjqL0fPgqXAjExgtis/qj9n6v3gsExl2hs/0nN34nVsXFAIWgsrtntvzolwJDBkyfsTmxt/tvl8NDyUlbK3QxuDYgmEbCW0XUrTZztZNN2VxYRlViNffmUU6UFNRS2KOsph4XmD/sGYkFUhQh7OUbGJxalA5RHaMRU1sisSEWEqmmH5rYYGQi25XUqK2mHKFc4OIgmZee6ewfGJ5mIt6a2mAlYlweHiJioFycG97jId7dnR9kJOEcGx1iZOIbWBpeoJ6bXJ1d4aHfHh0eYOEf3l3dn2CgXt3dHp/gIB6dnV4foB/eXZ1eX9/fHh2dn6AfXh2d3l+f316eXh8f4B8enh5fH5+e3p4e31+fnx8e3x9fn58fHx8fX5+fHx7fH1+fn18e3x9fn5+fXx8fX1+fn19fH19fn5+fX19fX1+fn58LTA0OWyHmH1IHjxcf5uRTBsuT3SOjFwVKkt0kpBNFyxPcH+JhXBfbnqCf3ToW+tcN2lthxDTj4whIY2CGidTdkguXp5nvVdphUk0cZFxtlZyiDcpZId1pkx3kz0mYYZ5oUV5k0AkQlJ1jFJJfyUbMFJ6e00jN5E+HDFXjnt3Mk2BQhskPW2Hg4BuPUVaTkRQgH9xd3dQRFJPfIB6c3yBS0xLTHd4enZ/fVVMDEQqZJyESkqpbRxDj5ewl1AdRHZpYnGbXSJalZlWG0ipi4csIIiidhlZoYt9Y1x6p6qXYkd8g3p3gYd1bBE4cZtwb3aDgnBpCzFvlmJwf46Hd2sgVZyFa3ZveYWKf3UhR4KHY3R5cnd9gX11JUuFi3R2gHJxcG9+gHIRcZNrdH58dm8jQWx0eHFycIKFgXQdN3aOdGt0fYiBfXclV3+Demxue3p+fXgWRIF6aG94enF9gH0Tb5dye3CEd25pc4OBeBs+aHx8eHx+eXh2fH93FUt/enFucYB9dnR5f38aSX99c3R4Pnx69HR7fH4cSH16cXN1eHl6Nnh8fhs2fYBwY3N89W12fHt2G0p+fG9vcHHwcXp7fHchXX6Ab25vPnp4cXJ5fX0iQX+Bb2xveHx5n25zfH0hQH9+cHBwcvZ2eXt4dR5HfoJycHJzYHV8e3nvI0iIdnBvcHELdHl7en0aR3x9cnFzdRt1e3t4eR1JfXtvbnB1Cnd7e3p4HEd8e4BudXYHdXx7e30aRH19c3JzdxR9f3x3eCFKfHxycXN0CHh7e3h4I058fHNxcngHdnx7xngeSnv9cXFzdgV4e3sveCFMfH1zcXJ3AvZ7e754HUl7/XFwcncB+Ht7InoiTXt+c3FxeP/3e3sweSRNe/9zcHF5//d7eyx6FUp8/3NwcXn/93x7HHkfTXugcXByev/3PG8Ieh9Le/9yb3F6//d8ewp6Gk1, //iAPAGIgOwGQkBxQG4gMAGYkA2AGQBZQU4gBFAC4ABQUABYQhYCVkAA');
   audio.play();
 }
 
