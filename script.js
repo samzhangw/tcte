@@ -22,11 +22,13 @@ const todoModal = document.getElementById('todo-modal');
 const subjectModal = document.getElementById('subject-modal');
 const notificationModal = document.getElementById('notification-modal');
 const congratulationModal = document.getElementById('congratulation-modal');
+const progressModal = document.getElementById('progress-modal');
 const modalOverlay = document.getElementById('modal-overlay');
 const timerBtn = document.getElementById('timer-btn');
 const todoBtn = document.getElementById('todo-btn');
 const subjectBtn = document.getElementById('subject-btn');
 const notificationBtn = document.getElementById('notification-settings-btn');
+const progressLink = document.getElementById('progress-link');
 const closeButtons = document.querySelectorAll('.close-modal');
 
 // 更新版權年份
@@ -123,6 +125,29 @@ function updateCountdown() {
     }
     
     return;
+  }
+  
+  // 檢查是否是考試當天
+  const examDay = new Date(EXAM_DATE);
+  examDay.setHours(0, 0, 0, 0);
+  const currentDay = new Date(currentTime);
+  currentDay.setHours(0, 0, 0, 0);
+  
+  // 考試當天但還未結束
+  if (currentDay.getTime() === examDay.getTime()) {
+    messageElement.textContent = '統測進行中，加油！';
+    progressLink.style.backgroundColor = 'var(--accent-color)';
+    progressLink.style.animation = 'pulse 2s infinite';
+    
+    // 顯示考試進行中提示（每隔一段時間，避免干擾）
+    if (!sessionStorage.getItem('progressShownTime') || 
+        (currentTime - new Date(parseInt(sessionStorage.getItem('progressShownTime')))) > 3600000) { // 1小時顯示一次
+      openModal(progressModal);
+      sessionStorage.setItem('progressShownTime', currentTime.getTime());
+    }
+  } else {
+    progressLink.style.backgroundColor = '';
+    progressLink.style.animation = '';
   }
   
   // 計算剩餘時間
@@ -586,6 +611,12 @@ function initModals() {
   notificationBtn.addEventListener('click', (e) => {
     e.preventDefault();
     openModal(notificationModal);
+  });
+  
+  // 考試進行中按鈕
+  progressLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal(progressModal);
   });
   
   // 關閉模態窗口
