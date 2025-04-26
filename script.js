@@ -21,6 +21,7 @@ const timerModal = document.getElementById('timer-modal');
 const todoModal = document.getElementById('todo-modal');
 const subjectModal = document.getElementById('subject-modal');
 const notificationModal = document.getElementById('notification-modal');
+const congratulationModal = document.getElementById('congratulation-modal');
 const modalOverlay = document.getElementById('modal-overlay');
 const timerBtn = document.getElementById('timer-btn');
 const todoBtn = document.getElementById('todo-btn');
@@ -113,6 +114,14 @@ function updateCountdown() {
     messageElement.textContent = '統測已經結束！';
     progressBarElement.style.width = '100%';
     progressPercentageElement.textContent = '100%';
+    
+    // 顯示感謝和祝福模態窗口（只在第一次結束時顯示）
+    if (!sessionStorage.getItem('congratulationShown')) {
+      openModal(congratulationModal);
+      createFireworks();
+      sessionStorage.setItem('congratulationShown', 'true');
+    }
+    
     return;
   }
   
@@ -625,9 +634,92 @@ initNotifications();
 // 每秒更新一次倒數計時
 setInterval(updateCountdown, 1000);
 
+// 初始化
 updateCountdown();
 createFloatingShapes();
 createParticles();
 updateCopyrightYear();
 initMenu();
 checkNotificationPermission();
+
+// 如果考試已結束，立即顯示感謝模態窗口
+if (new Date() >= EXAM_DATE && !sessionStorage.getItem('congratulationShown')) {
+  setTimeout(() => {
+    openModal(congratulationModal);
+    createFireworks();
+    sessionStorage.setItem('congratulationShown', 'true');
+  }, 1000);
+}
+
+// 創建煙火動畫效果
+function createFireworks() {
+  const fireworksContainer = document.getElementById('fireworks-container');
+  if (!fireworksContainer) return;
+  
+  // 清空容器
+  fireworksContainer.innerHTML = '';
+  
+  // 創建多個煙火
+  for (let i = 0; i < 5; i++) {
+    setTimeout(() => {
+      createSingleFirework(fireworksContainer);
+    }, i * 800); // 每0.8秒發射一個煙火
+  }
+}
+
+// 創建單個煙火
+function createSingleFirework(container) {
+  // 煙火發射點
+  const x = Math.random() * 100; // 發射點水平位置 (百分比)
+  
+  // 創建煙火元素
+  const firework = document.createElement('div');
+  firework.className = 'firework';
+  firework.style.left = `${x}%`;
+  container.appendChild(firework);
+  
+  // 煙火爆炸後的粒子數量
+  const particleCount = 30 + Math.floor(Math.random() * 20);
+  
+  // 創建爆炸效果
+  setTimeout(() => {
+    // 移除煙火發射元素
+    firework.remove();
+    
+    // 創建爆炸粒子
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'firework-particle';
+      
+      // 隨機顏色
+      const hue = Math.floor(Math.random() * 360);
+      particle.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
+      
+      // 設置粒子初始位置
+      particle.style.left = `${x}%`;
+      particle.style.top = '50%';
+      
+      // 設置粒子動畫 - 使用隨機方向
+      const angle = Math.random() * Math.PI * 2; // 隨機角度
+      const speed = 2 + Math.random() * 3; // 隨機速度
+      const size = 2 + Math.random() * 4; // 隨機大小
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      
+      // 直接設置動畫方向
+      const directionX = Math.cos(angle) * speed * 50;
+      const directionY = Math.sin(angle) * speed * 50;
+      
+      particle.style.setProperty('--move-x', `${directionX}px`);
+      particle.style.setProperty('--move-y', `${directionY}px`);
+      
+      container.appendChild(particle);
+      
+      // 一段時間後移除粒子
+      setTimeout(() => {
+        particle.remove();
+      }, 1000 + Math.random() * 1000);
+    }
+  }, 500); // 煙火上升時間
+}

@@ -1071,3 +1071,114 @@ body.modal-open {
     font-size: 0.9rem;
   }
 }
+
+/* 感謝與預祝金榜題名模態窗口樣式 */
+.congratulation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  min-height: 300px;
+}
+
+.congratulation-image {
+  margin-bottom: 20px;
+}
+
+.congratulation-image i {
+  font-size: 80px;
+  color: #ffd700;
+  animation: float 3s ease-in-out infinite;
+}
+
+.congratulation-message {
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.congratulation-message h3 {
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+}
+
+.gold-wish {
+  color: #ffd700;
+  font-size: 2rem !important;
+  margin: 30px 0 !important;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  animation: glow 2s ease-in-out infinite;
+}
+
+.fireworks-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 煙火動畫 */
+.firework {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  animation: launchFirework 0.5s ease-out forwards;
+}
+
+.firework-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  animation: explodeFirework 1s ease-out forwards;
+  opacity: 1;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.7);
+  }
+}
+
+@keyframes launchFirework {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-300px);
+    opacity: 0;
+  }
+}
+
+@keyframes explodeFirework {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--move-x), var(--move-y));
+    opacity: 0;
+  }
+}
