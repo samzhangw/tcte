@@ -1,8 +1,8 @@
 // 考試日期設定
-export const EXAM_DATE = new Date('2025-04-26T08:00:00');
+export const EXAM_DATE = new Date('2026-04-25T08:00:00');
 
 // 開始計算的日期（從何時開始準備統測）
-export const START_DATE = new Date('2024-01-01T00:00:00');
+export const START_DATE = new Date('2025-04-28T00:00:00');
 
 // 動機訊息
 export const MESSAGES = [
