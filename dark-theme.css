@@ -50,3 +50,88 @@ body.dark-mode .site-footer p {
   color: rgba(255, 255, 255, 0.7);
 }
 
+:root {
+  --primary-color: #64b5f6;
+  --secondary-color: #1a1a1a;
+  --accent-color: #ff8a80;
+  --text-color: #ffffff;
+  --background-color: #121212;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --gradient-start: #64b5f6;
+  --gradient-end: #81c784;
+}
+
+body {
+  background: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  background: rgba(26, 26, 26, 0.95);
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.countdown-item {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+}
+
+.feature-button {
+  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+  color: white;
+}
+
+.feature-button::before {
+  background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+}
+
+.modal {
+  background: var(--background-color);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.modal-header {
+  border-bottom: 2px solid var(--gradient-start);
+}
+
+.feature-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+input[type="text"],
+input[type="time"],
+select {
+  background: rgba(255,255,255,0.05);
+  border: 2px solid var(--gradient-start);
+  color: var(--text-color);
+}
+
+input[type="text"]:focus,
+input[type="time"]:focus,
+select:focus {
+  border-color: var(--gradient-end);
+  box-shadow: 0 0 0 3px rgba(100,181,246,0.2);
+}
+
+.todo-item,
+.subject-item {
+  background: rgba(255,255,255,0.05);
+}
+
+.todo-item:hover,
+.subject-item:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.progress-bar-container {
+  background: rgba(255,255,255,0.1);
+}
+
+.progress-container {
+  background: rgba(26, 26, 26, 0.9);
+}
+
+.feature-button i {
+  color: var(--primary-color);
+}
+
