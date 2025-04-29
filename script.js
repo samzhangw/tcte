@@ -75,6 +75,9 @@ const examDate = new Date('April 25, 2026 00:00:00').getTime();
     
     // 初始化滾動相關功能
     initScrollFeatures();
+    
+    // 初始化資源詳情功能
+    initResourceDetails();
 });
 
 // 粒子效果函數
@@ -380,6 +383,7 @@ function initModals() {
     // 設置打開彈窗的事件
     // 主導航按鈕
     const openScheduleBtn = document.getElementById('open-schedule-section');
+    const openResourcesBtn = document.getElementById('open-resources-section');
     
     if (openScheduleBtn) {
         openScheduleBtn.addEventListener('click', (e) => {
@@ -388,13 +392,28 @@ function initModals() {
         });
     }
     
+    if (openResourcesBtn) {
+        openResourcesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('resources-section-modal');
+        });
+    }
+    
     // 底部快速導航按鈕
     const quickScheduleBtn = document.getElementById('quick-open-schedule');
+    const quickResourcesBtn = document.getElementById('quick-open-resources');
     
     if (quickScheduleBtn) {
         quickScheduleBtn.addEventListener('click', (e) => {
             e.preventDefault();
             openModal('schedule-section-modal');
+        });
+    }
+    
+    if (quickResourcesBtn) {
+        quickResourcesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('resources-section-modal');
         });
     }
     
@@ -443,15 +462,13 @@ function openModal(modalId) {
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden'; // 防止背景滾動
         
-        // 添加動畫效果
+        // 添加動畫效果，僅使用透明度變化
         const modalContent = modal.querySelector('.modal-content');
         if (modalContent) {
-            modalContent.style.transform = 'scale(0.8)';
             modalContent.style.opacity = '0';
             
             setTimeout(() => {
-                modalContent.style.transition = 'all 0.3s ease';
-                modalContent.style.transform = 'scale(1)';
+                modalContent.style.transition = 'opacity 0.3s ease';
                 modalContent.style.opacity = '1';
             }, 50);
         }
@@ -466,12 +483,10 @@ function closeModal(modalId) {
         const modalContent = modal.querySelector('.modal-content');
         
         if (modalContent) {
-            modalContent.style.transform = 'scale(0.8)';
             modalContent.style.opacity = '0';
             
             setTimeout(() => {
                 modal.style.display = 'none';
-                modalContent.style.transform = 'scale(1)';
                 document.body.style.overflow = 'auto'; // 恢復背景滾動
             }, 300);
         } else {
@@ -573,6 +588,203 @@ function initScrollFeatures() {
                     behavior: 'smooth'
                 });
             }
+        });
+    });
+}
+
+// 初始化資源詳情功能
+function initResourceDetails() {
+    // 資源詳情數據
+    const resourceData = {
+        'video': {
+            title: '教學影片',
+            icon: 'video',
+            items: [
+                { title: '國文：重要文法解析', link: '#', description: '針對統測常考文法進行詳細講解' },
+                { title: '英文：考前單字速記', link: '#', description: '快速記憶統測常考單字的技巧' },
+                { title: '數學：函數與極限', link: '#', description: '解析函數與極限概念，附有練習題' },
+                { title: '物理：力學基礎講解', link: '#', description: '從基礎開始理解物理力學概念' },
+                { title: '化學：有機化學入門', link: '#', description: '簡單易懂的有機化學概念講解' }
+            ]
+        },
+        'paper': {
+            title: '考古題庫',
+            icon: 'file-alt',
+            items: [
+                { title: '110年統測國文科試題與解析', link: '#', description: '完整試題與詳解' },
+                { title: '111年統測英文科試題與解析', link: '#', description: '完整試題與詳解' },
+                { title: '112年統測數學科試題與解析', link: '#', description: '完整試題與詳解' },
+                { title: '113年統測專業科目試題與解析', link: '#', description: '完整試題與詳解' },
+                { title: '114年統測模擬試題', link: '#', description: '模擬試題與詳解' }
+            ]
+        },
+        'note': {
+            title: '學習筆記',
+            icon: 'clipboard-list',
+            items: [
+                { title: '國文：古文30篇重點整理', link: '#', description: '統測常考古文的重點筆記' },
+                { title: '英文：文法重點整理', link: '#', description: '英文文法系統性整理與例句' },
+                { title: '數學：三角函數公式表', link: '#', description: '完整三角函數公式與應用' },
+                { title: '物理：公式推導與應用', link: '#', description: '物理公式的來源與應用場景' },
+                { title: '化學：元素週期表記憶法', link: '#', description: '快速記憶元素週期表的方法' }
+            ]
+        },
+        'group': {
+            title: '讀書會',
+            icon: 'users',
+            items: [
+                { title: '線上英文讀書會 (每週三晚上)', link: '#', description: '透過視訊一起學習英文' },
+                { title: '數學解題小組 (每週六下午)', link: '#', description: '一起解決數學難題' },
+                { title: '國文寫作討論群 (不定期)', link: '#', description: '互相批改作文，提升寫作能力' },
+                { title: '理科實驗小組 (每週日)', link: '#', description: '討論物理、化學實驗與概念' },
+                { title: '考前衝刺群 (考前一個月)', link: '#', description: '臨考前互相督促與解惑' }
+            ]
+        }
+    };
+    
+    // 添加點擊事件到資源卡片
+    const resourceLinks = document.querySelectorAll('.resource-link');
+    resourceLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // 獲取資源類別
+            const resourceCard = link.closest('.resource-card');
+            const icon = resourceCard.querySelector('.resource-icon i');
+            let resourceType = '';
+            
+            if (icon.classList.contains('fa-video')) resourceType = 'video';
+            else if (icon.classList.contains('fa-file-alt')) resourceType = 'paper';
+            else if (icon.classList.contains('fa-clipboard-list')) resourceType = 'note';
+            else if (icon.classList.contains('fa-users')) resourceType = 'group';
+            
+            // 顯示資源詳情在現有的資源模態框中
+            displayResourceDetail(resourceType, resourceData);
+        });
+    });
+    
+    // 創建返回按鈕
+    const resourcesModal = document.getElementById('resources-section-modal');
+    if (resourcesModal) {
+        const backButton = document.createElement('button');
+        backButton.id = 'resource-back-btn';
+        backButton.className = 'btn back-btn';
+        backButton.innerHTML = '<i class="fas fa-arrow-left"></i> 返回';
+        backButton.style.display = 'none';
+        
+        // 插入返回按鈕到模態框標題旁
+        const modalHeader = resourcesModal.querySelector('.modal-header');
+        if (modalHeader) {
+            modalHeader.appendChild(backButton);
+        }
+        
+        // 返回按鈕點擊事件
+        backButton.addEventListener('click', () => {
+            showMainResourceView();
+        });
+    }
+}
+
+// 顯示資源詳情在現有的資源模態框中
+function displayResourceDetail(type, data) {
+    if (!data[type]) return;
+    
+    const modal = document.getElementById('resources-section-modal');
+    const mainContent = modal.querySelector('.resources-section');
+    const backButton = document.getElementById('resource-back-btn');
+    
+    // 儲存主要內容
+    if (!modal.hasAttribute('data-original-content')) {
+        modal.setAttribute('data-original-content', mainContent.innerHTML);
+    }
+    
+    // 顯示返回按鈕
+    if (backButton) {
+        backButton.style.display = 'block';
+    }
+    
+    // 更新模態框標題
+    const modalTitle = modal.querySelector('.modal-title');
+    if (modalTitle) {
+        modalTitle.innerHTML = `<i class="fas fa-${data[type].icon}"></i> ${data[type].title}`;
+    }
+    
+    // 清空並更新內容
+    mainContent.innerHTML = '';
+    
+    // 創建資源列表
+    const resourceList = document.createElement('div');
+    resourceList.className = 'resource-detail-list';
+    
+    // 填充資源列表
+    data[type].items.forEach(item => {
+        const resourceItem = document.createElement('div');
+        resourceItem.className = 'resource-item';
+        
+        const resourceTitle = document.createElement('h4');
+        resourceTitle.className = 'resource-item-title';
+        resourceTitle.textContent = item.title;
+        
+        const resourceDesc = document.createElement('p');
+        resourceDesc.className = 'resource-item-desc';
+        resourceDesc.textContent = item.description;
+        
+        const resourceLink = document.createElement('a');
+        resourceLink.className = 'resource-item-link';
+        resourceLink.href = item.link;
+        resourceLink.textContent = '前往學習';
+        resourceLink.target = '_blank';
+        
+        resourceItem.appendChild(resourceTitle);
+        resourceItem.appendChild(resourceDesc);
+        resourceItem.appendChild(resourceLink);
+        
+        resourceList.appendChild(resourceItem);
+    });
+    
+    mainContent.appendChild(resourceList);
+}
+
+// 顯示主要資源視圖
+function showMainResourceView() {
+    const modal = document.getElementById('resources-section-modal');
+    const mainContent = modal.querySelector('.resources-section');
+    const backButton = document.getElementById('resource-back-btn');
+    
+    // 恢復原始內容
+    if (modal.hasAttribute('data-original-content')) {
+        mainContent.innerHTML = modal.getAttribute('data-original-content');
+    }
+    
+    // 恢復原始標題
+    const modalTitle = modal.querySelector('.modal-title');
+    if (modalTitle) {
+        modalTitle.innerHTML = '學習資源';
+    }
+    
+    // 隱藏返回按鈕
+    if (backButton) {
+        backButton.style.display = 'none';
+    }
+    
+    // 重新綁定資源卡片事件
+    const resourceLinks = mainContent.querySelectorAll('.resource-link');
+    resourceLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // 獲取資源類別
+            const resourceCard = link.closest('.resource-card');
+            const icon = resourceCard.querySelector('.resource-icon i');
+            let resourceType = '';
+            
+            if (icon.classList.contains('fa-video')) resourceType = 'video';
+            else if (icon.classList.contains('fa-file-alt')) resourceType = 'paper';
+            else if (icon.classList.contains('fa-clipboard-list')) resourceType = 'note';
+            else if (icon.classList.contains('fa-users')) resourceType = 'group';
+            
+            // 顯示資源詳情在現有的資源模態框中
+            displayResourceDetail(resourceType, resourceData);
         });
     });
 } 
