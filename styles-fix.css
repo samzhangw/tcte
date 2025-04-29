@@ -161,4 +161,55 @@ a:focus, button:focus, input:focus, select:focus, textarea:focus {
     .action-btn:active, .social-link:active, .quick-nav-item:active {
         transform: scale(0.95) !important;
     }
+}
+
+/* 進度條樣式 */
+.progress-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.progress-fill {
+    height: 100%;
+    background: #43e97b; /* 移除漸變，使用單一顏色 */
+    border-radius: 20px;
+    width: 0%;
+    transition: width 0.8s ease-in-out;
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.3); /* 替換漸變為單一顏色 */
+    animation: shimmer 1.5s infinite;
+    transform: translateX(-100%);
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.progress-text {
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, 0.8);
 } 
