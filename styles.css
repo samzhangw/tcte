@@ -124,26 +124,13 @@ body {
     min-height: 100vh;
     height: 100%;
     background: linear-gradient(135deg, #3494e6, #ec6ead);
-    background-size: 400% 400%;
+    background-size: 100% 100%;
     background-attachment: fixed; /* 固定背景 */
-    animation: gradientBG 15s ease infinite;
     color: #fff;
     position: relative;
     overflow-x: hidden;
     padding-top: 130px; /* 為版權宣告和導航欄留出空間 */
     margin: 0;
-}
-
-@keyframes gradientBG {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
 }
 
 /* 添加浮動圓點背景 */
@@ -180,7 +167,7 @@ body::before {
 
 .container:hover {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    transform: translateY(-5px);
+    transform: translateY(-3px); /* 降低變換效果 */
 }
 
 /* 裝飾光影效果 */
@@ -212,19 +199,8 @@ h1 {
     font-size: 2.7rem;
     margin-bottom: 30px;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(90deg, #fff, #f0f0f0, #fff);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: textShine 3s linear infinite;
+    color: #fff;
     position: relative;
-}
-
-@keyframes textShine {
-    to {
-        background-position: 200% center;
-    }
 }
 
 h1::after {
@@ -266,7 +242,7 @@ h1::after {
 }
 
 .countdown-box:hover {
-    transform: translateY(-8px) scale(1.05);
+    transform: translateY(-5px); /* 降低變換效果 */
     box-shadow: 0 15px 25px rgba(0, 0, 0, 0.25), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -290,16 +266,7 @@ h1::after {
     padding: 15px;
     background-color: rgba(0, 0, 0, 0.15);
     border-radius: 15px;
-    animation: pulse 2s infinite alternate;
-}
-
-@keyframes pulse {
-    from {
-        box-shadow: 0 0 0 rgba(255, 255, 255, 0.1);
-    }
-    to {
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    }
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .exam-date {
@@ -369,14 +336,7 @@ h1::after {
 
 /* 添加粒子背景 */
 .particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
+    display: none; /* 禁用粒子效果 */
 }
 
 .header-icon {
@@ -387,16 +347,6 @@ h1::after {
     font-size: 4rem;
     color: #fff;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-    animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-15px);
-    }
 }
 
 .countdown-label {
@@ -410,7 +360,6 @@ h1::after {
 .info-icon {
     font-size: 1.5rem;
     margin-bottom: 10px;
-    animation: pulse 2s infinite alternate;
 }
 
 .quote-mark {
@@ -428,24 +377,8 @@ h1::after {
 }
 
 .shine-animation {
-    animation: spin-shine 3s linear infinite;
     color: gold;
     margin-left: 5px;
-}
-
-@keyframes spin-shine {
-    0% {
-        transform: rotate(0deg);
-        opacity: 0.5;
-    }
-    50% {
-        transform: rotate(180deg);
-        opacity: 1;
-    }
-    100% {
-        transform: rotate(360deg);
-        opacity: 0.5;
-    }
 }
 
 /* 移除原有的引號，因為我們在HTML中添加了新的引號 */

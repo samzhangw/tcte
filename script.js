@@ -45,25 +45,17 @@ const examDate = new Date('April 25, 2026 00:00:00').getTime();
     // 每秒更新一次
     setInterval(updateCountdown, 1000);
     
-    // 添加動畫效果
+    // 簡化倒數計時盒子的加載效果
     const countdownBoxes = document.querySelectorAll('.countdown-box');
-    countdownBoxes.forEach((box, index) => {
-        // 設置延遲進入動畫
-        box.style.opacity = '0';
-        box.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            box.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            box.style.opacity = '1';
-            box.style.transform = 'translateY(0)';
-        }, 100 * index);
+    countdownBoxes.forEach(box => {
+        box.style.opacity = '1';
     });
     
-    // 創建粒子效果
-    createParticles();
+    // 禁用粒子效果
+    // createParticles();
     
-    // 版權宣告動畫效果
-    animateCopyrightBanner();
+    // 簡化版權宣告加載效果
+    document.querySelector('.copyright-banner').style.opacity = '1';
     
     // 頁首導航效果
     initHeaderNav();
@@ -80,117 +72,17 @@ const examDate = new Date('April 25, 2026 00:00:00').getTime();
     initResourceDetails();
 });
 
-// 粒子效果函數
+// 粒子效果函數 - 已禁用，保留函數定義但不實際使用
 function createParticles() {
-    const particlesContainer = document.querySelector('.particles');
-    const particleCount = 50;
-
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.style.position = 'absolute';
-        particle.style.width = Math.random() * 5 + 2 + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.backgroundColor = 'rgba(255, 255, 255, ' + (Math.random() * 0.3 + 0.1) + ')';
-        particle.style.borderRadius = '50%';
-        particle.style.top = Math.random() * 100 + '%';
-        particle.style.left = Math.random() * 100 + '%';
-        
-        // 粒子動畫
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
-        
-        particle.style.animation = `floatParticle ${duration}s linear ${delay}s infinite`;
-        
-        // 創建粒子浮動動畫
-        const keyframes = `
-        @keyframes floatParticle {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            25% {
-                transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg);
-            }
-            50% {
-                transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg);
-            }
-            75% {
-                transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(360deg);
-            }
-        }`;
-        
-        // 添加動畫樣式
-        const style = document.createElement('style');
-        style.innerHTML = keyframes;
-        document.head.appendChild(style);
-        
-        particlesContainer.appendChild(particle);
-    }
+    // 函數內容保留但不執行，避免可能的程式碼引用問題
+    console.log("粒子效果已禁用");
 }
 
-// 添加互動效果 - 點擊效果
+// 添加互動效果 - 點擊效果（簡化版本）
 document.querySelector('.container').addEventListener('click', function(e) {
-    const clickEffect = document.createElement('div');
-    clickEffect.className = 'click-effect';
-    clickEffect.style.position = 'absolute';
-    clickEffect.style.width = '5px';
-    clickEffect.style.height = '5px';
-    clickEffect.style.borderRadius = '50%';
-    clickEffect.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
-    clickEffect.style.top = (e.pageY - this.offsetTop) + 'px';
-    clickEffect.style.left = (e.pageX - this.offsetLeft) + 'px';
-    clickEffect.style.animation = 'clickWave 1s ease-out forwards';
-    
-    this.appendChild(clickEffect);
-    
-    setTimeout(() => {
-        clickEffect.remove();
-    }, 1000);
+    // 簡化或禁用點擊效果以避免性能問題
+    // 目前版本不產生視覺效果，節省資源
 });
-
-// 為點擊波浪添加動畫
-const clickWaveKeyframes = `
-@keyframes clickWave {
-    0% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(50);
-        opacity: 0;
-    }
-}`;
-
-const style = document.createElement('style');
-style.innerHTML = clickWaveKeyframes;
-document.head.appendChild(style);
-
-// 版權宣告動畫效果
-function animateCopyrightBanner() {
-    const copyright = document.querySelector('.copyright-banner');
-    
-    // 初始隱藏
-    copyright.style.transform = 'translateY(-100%)';
-    copyright.style.opacity = '0';
-    
-    // 延遲顯示
-    setTimeout(() => {
-        copyright.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-        copyright.style.transform = 'translateY(0)';
-        copyright.style.opacity = '1';
-    }, 500);
-    
-    // 滑鼠懸停效果
-    copyright.addEventListener('mouseover', () => {
-        copyright.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
-    });
-    
-    copyright.addEventListener('mouseout', () => {
-        copyright.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-    });
-}
 
 // 頁首導航功能
 function initHeaderNav() {
@@ -594,6 +486,59 @@ function initScrollFeatures() {
 
 // 初始化資源詳情功能
 function initResourceDetails() {
+    // 創建返回按鈕
+    const resourcesModal = document.getElementById('resources-section-modal');
+    if (resourcesModal) {
+        const backButton = document.createElement('button');
+        backButton.id = 'resource-back-btn';
+        backButton.className = 'btn back-btn';
+        backButton.innerHTML = '<i class="fas fa-arrow-left"></i> 返回';
+        backButton.style.display = 'none';
+        
+        // 插入返回按鈕到模態框標題旁
+        const modalHeader = resourcesModal.querySelector('.modal-header');
+        if (modalHeader) {
+            modalHeader.appendChild(backButton);
+        }
+        
+        // 返回按鈕點擊事件
+        backButton.addEventListener('click', () => {
+            showMainResourceView();
+        });
+    }
+    
+    // 初始綁定資源卡片事件
+    bindResourceCardEvents();
+}
+
+// 顯示主要資源視圖
+function showMainResourceView() {
+    const modal = document.getElementById('resources-section-modal');
+    const mainContent = modal.querySelector('.resources-section');
+    const backButton = document.getElementById('resource-back-btn');
+    
+    // 恢復原始內容
+    if (modal.hasAttribute('data-original-content')) {
+        mainContent.innerHTML = modal.getAttribute('data-original-content');
+    }
+    
+    // 恢復原始標題
+    const modalTitle = modal.querySelector('.modal-title');
+    if (modalTitle) {
+        modalTitle.innerHTML = '<i class="fas fa-book"></i> 學習資源';
+    }
+    
+    // 隱藏返回按鈕
+    if (backButton) {
+        backButton.style.display = 'none';
+    }
+    
+    // 重新綁定資源卡片事件，並使其能訪問到全局的資源數據
+    bindResourceCardEvents();
+}
+
+// 綁定資源卡片事件的獨立函數
+function bindResourceCardEvents() {
     // 資源詳情數據
     const resourceData = {
         'video': {
@@ -641,15 +586,19 @@ function initResourceDetails() {
             ]
         }
     };
-    
-    // 添加點擊事件到資源卡片
+
     const resourceLinks = document.querySelectorAll('.resource-link');
     resourceLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+        // 首先移除所有現有的點擊事件處理器
+        const linkClone = link.cloneNode(true);
+        link.parentNode.replaceChild(linkClone, link);
+        
+        // 然後添加新的點擊事件
+        linkClone.addEventListener('click', (e) => {
             e.preventDefault();
             
             // 獲取資源類別
-            const resourceCard = link.closest('.resource-card');
+            const resourceCard = linkClone.closest('.resource-card');
             const icon = resourceCard.querySelector('.resource-icon i');
             let resourceType = '';
             
@@ -662,27 +611,6 @@ function initResourceDetails() {
             displayResourceDetail(resourceType, resourceData);
         });
     });
-    
-    // 創建返回按鈕
-    const resourcesModal = document.getElementById('resources-section-modal');
-    if (resourcesModal) {
-        const backButton = document.createElement('button');
-        backButton.id = 'resource-back-btn';
-        backButton.className = 'btn back-btn';
-        backButton.innerHTML = '<i class="fas fa-arrow-left"></i> 返回';
-        backButton.style.display = 'none';
-        
-        // 插入返回按鈕到模態框標題旁
-        const modalHeader = resourcesModal.querySelector('.modal-header');
-        if (modalHeader) {
-            modalHeader.appendChild(backButton);
-        }
-        
-        // 返回按鈕點擊事件
-        backButton.addEventListener('click', () => {
-            showMainResourceView();
-        });
-    }
 }
 
 // 顯示資源詳情在現有的資源模態框中
@@ -743,48 +671,4 @@ function displayResourceDetail(type, data) {
     });
     
     mainContent.appendChild(resourceList);
-}
-
-// 顯示主要資源視圖
-function showMainResourceView() {
-    const modal = document.getElementById('resources-section-modal');
-    const mainContent = modal.querySelector('.resources-section');
-    const backButton = document.getElementById('resource-back-btn');
-    
-    // 恢復原始內容
-    if (modal.hasAttribute('data-original-content')) {
-        mainContent.innerHTML = modal.getAttribute('data-original-content');
-    }
-    
-    // 恢復原始標題
-    const modalTitle = modal.querySelector('.modal-title');
-    if (modalTitle) {
-        modalTitle.innerHTML = '學習資源';
-    }
-    
-    // 隱藏返回按鈕
-    if (backButton) {
-        backButton.style.display = 'none';
-    }
-    
-    // 重新綁定資源卡片事件
-    const resourceLinks = mainContent.querySelectorAll('.resource-link');
-    resourceLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            // 獲取資源類別
-            const resourceCard = link.closest('.resource-card');
-            const icon = resourceCard.querySelector('.resource-icon i');
-            let resourceType = '';
-            
-            if (icon.classList.contains('fa-video')) resourceType = 'video';
-            else if (icon.classList.contains('fa-file-alt')) resourceType = 'paper';
-            else if (icon.classList.contains('fa-clipboard-list')) resourceType = 'note';
-            else if (icon.classList.contains('fa-users')) resourceType = 'group';
-            
-            // 顯示資源詳情在現有的資源模態框中
-            displayResourceDetail(resourceType, resourceData);
-        });
-    });
 } 
