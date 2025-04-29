@@ -1,725 +1,578 @@
-import { EXAM_DATE, START_DATE, MESSAGES, TIMER_SETTINGS, DEFAULT_SUBJECTS, UI_SETTINGS } from './config.js';
-import { initNotifications, checkNotificationPermission } from './notifications.js';
+document.addEventListener('DOMContentLoaded', () => {
+   // 設定115年統測的日期 (2026年4月25日)
+const examDate = new Date('April 25, 2026 00:00:00').getTime();
 
-// DOM 元素
-const daysElement = document.getElementById('days');
-const hoursElement = document.getElementById('hours');
-const minutesElement = document.getElementById('minutes');
-const secondsElement = document.getElementById('seconds');
-const messageElement = document.getElementById('message');
-const progressBarElement = document.getElementById('progress-bar');
-const progressPercentageElement = document.getElementById('progress-percentage');
-const floatingShapesElement = document.getElementById('floating-shapes');
-const copyrightYearElement = document.getElementById('copyright-year');
-const menuToggle = document.getElementById('menu-toggle');
-const siteHeader = document.getElementById('site-header');
-const menuOverlay = document.getElementById('menu-overlay');
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-
-// 模態窗口相關元素
-const timerModal = document.getElementById('timer-modal');
-const todoModal = document.getElementById('todo-modal');
-const subjectModal = document.getElementById('subject-modal');
-const notificationModal = document.getElementById('notification-modal');
-const congratulationModal = document.getElementById('congratulation-modal');
-const modalOverlay = document.getElementById('modal-overlay');
-const timerBtn = document.getElementById('timer-btn');
-const todoBtn = document.getElementById('todo-btn');
-const subjectBtn = document.getElementById('subject-btn');
-const notificationBtn = document.getElementById('notification-settings-btn');
-const closeButtons = document.querySelectorAll('.close-modal');
-
-// 更新版權年份
-function updateCopyrightYear() {
-  const currentYear = new Date().getFullYear();
-  copyrightYearElement.textContent = currentYear;
-}
-
-// 添加浮動形狀
-function createFloatingShapes() {
-  for (let i = 0; i < 15; i++) {
-    const shape = document.createElement('div');
-    shape.classList.add('shape');
     
-    // 隨機大小, 位置和延遲
-    const size = Math.random() * 80 + 20;
-    shape.style.width = `${size}px`;
-    shape.style.height = `${size}px`;
-    shape.style.left = `${Math.random() * 100}%`;
-    shape.style.top = `${Math.random() * 100 + 100}%`;
-    shape.style.animationDelay = `${Math.random() * 15}s`;
-    shape.style.animationDuration = `${Math.random() * 15 + 15}s`;
+    // 獲取要顯示倒數的元素
+    const daysElement = document.getElementById('days');
+    const hoursElement = document.getElementById('hours');
+    const minutesElement = document.getElementById('minutes');
+    const secondsElement = document.getElementById('seconds');
     
-    floatingShapesElement.appendChild(shape);
-  }
-}
-
-// 添加粒子效果
-function createParticles() {
-  const particlesContainer = document.getElementById('floating-shapes');
-  const numberOfParticles = 100;
-  
-  for (let i = 0; i < numberOfParticles; i++) {
-    const particle = document.createElement('div');
-    particle.classList.add('particle');
-    
-    const size = Math.random() * 5 + 1;
-    const posX = Math.random() * window.innerWidth;
-    const posY = Math.random() * window.innerHeight;
-    const opacity = Math.random() * 0.5 + 0.1;
-    const animDuration = Math.random() * 20 + 10;
-    
-    particle.style.width = `${size}px`;
-    particle.style.height = `${size}px`;
-    particle.style.left = `${posX}px`;
-    particle.style.top = `${posY}px`;
-    particle.style.opacity = opacity;
-    
-    particlesContainer.appendChild(particle);
-    
-    animateParticle(particle);
-  }
-}
-
-function animateParticle(particle) {
-  const startPosX = parseFloat(particle.style.left);
-  const startPosY = parseFloat(particle.style.top);
-  const speed = Math.random() * 1 + 0.5;
-  
-  function update() {
-    const time = Date.now() * 0.001;
-    const newX = startPosX + Math.sin(time * speed) * 50;
-    const newY = startPosY + Math.cos(time * speed) * 30;
-    
-    particle.style.left = `${newX}px`;
-    particle.style.top = `${newY}px`;
-    
-    requestAnimationFrame(update);
-  }
-  
-  update();
-}
-
-// 更新倒數計時器
-function updateCountdown() {
-  const currentTime = new Date();
-  const timeDifference = EXAM_DATE - currentTime;
-  
-  // 如果已經過了考試日期
-  if (timeDifference <= 0) {
-    daysElement.textContent = '0';
-    hoursElement.textContent = '0';
-    minutesElement.textContent = '0';
-    secondsElement.textContent = '0';
-    messageElement.textContent = '統測已經結束！';
-    progressBarElement.style.width = '100%';
-    progressPercentageElement.textContent = '100%';
-    
-    // 顯示感謝和祝福模態窗口（只在第一次結束時顯示）
-    if (!sessionStorage.getItem('congratulationShown')) {
-      openModal(congratulationModal);
-      createFireworks();
-      sessionStorage.setItem('congratulationShown', 'true');
+    // 更新倒數計時的函數
+    function updateCountdown() {
+        // 獲取當前時間
+        const now = new Date().getTime();
+        
+        // 計算剩餘時間
+        const timeLeft = examDate - now;
+        
+        // 如果已經到考試日期
+        if (timeLeft < 0) {
+            daysElement.textContent = '00';
+            hoursElement.textContent = '00';
+            minutesElement.textContent = '00';
+            secondsElement.textContent = '00';
+            return;
+        }
+        
+        // 計算天、時、分、秒
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+        
+        // 更新顯示
+        daysElement.textContent = days < 10 ? `0${days}` : days;
+        hoursElement.textContent = hours < 10 ? `0${hours}` : hours;
+        minutesElement.textContent = minutes < 10 ? `0${minutes}` : minutes;
+        secondsElement.textContent = seconds < 10 ? `0${seconds}` : seconds;
     }
     
-    return;
-  }
-  
-  // 計算剩餘時間
-  const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
-  
-  // 更新UI
-  daysElement.textContent = days;
-  hoursElement.textContent = hours < 10 ? `0${hours}` : hours;
-  minutesElement.textContent = minutes < 10 ? `0${minutes}` : minutes;
-  secondsElement.textContent = seconds < 10 ? `0${seconds}` : seconds;
-  
-  // 計算進度百分比
-  const totalPreparationTime = EXAM_DATE - START_DATE;
-  const elapsedPreparationTime = currentTime - START_DATE;
-  const progressPercentage = Math.min(100, Math.max(0, Math.floor((elapsedPreparationTime / totalPreparationTime) * 100)));
-  
-  progressBarElement.style.width = `${progressPercentage}%`;
-  progressPercentageElement.textContent = `${progressPercentage}%`;
-  
-  // 顯示隨機鼓勵訊息
-  if (!messageElement.textContent) {
-    updateMotivationalMessage();
-  }
-}
-
-// 更新鼓勵訊息
-function updateMotivationalMessage() {
-  messageElement.style.opacity = '0';
-  
-  setTimeout(() => {
-    const randomIndex = Math.floor(Math.random() * MESSAGES.length);
-    messageElement.textContent = MESSAGES[randomIndex];
-    messageElement.style.opacity = '1';
-  }, 500);
-}
-
-// 菜單切換
-function toggleMenu() {
-  menuToggle.classList.toggle('open');
-  siteHeader.classList.toggle('open');
-  menuOverlay.classList.toggle('open');
-  document.body.classList.toggle('menu-open');
-}
-
-// 初始化菜單
-function initMenu() {
-  menuToggle.addEventListener('click', toggleMenu);
-  menuOverlay.addEventListener('click', toggleMenu);
-  
-  // 點擊連結後關閉菜單
-  document.querySelectorAll('#site-header a').forEach(link => {
-    link.addEventListener('click', () => {
-      toggleMenu();
+    // 初次載入時立即更新一次
+    updateCountdown();
+    
+    // 每秒更新一次
+    setInterval(updateCountdown, 1000);
+    
+    // 添加動畫效果
+    const countdownBoxes = document.querySelectorAll('.countdown-box');
+    countdownBoxes.forEach((box, index) => {
+        // 設置延遲進入動畫
+        box.style.opacity = '0';
+        box.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            box.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            box.style.opacity = '1';
+            box.style.transform = 'translateY(0)';
+        }, 100 * index);
     });
-  });
-}
-
-// 每30秒更換一次鼓勵訊息
-setInterval(updateMotivationalMessage, 30000);
-
-// 每秒更新一次倒數計時
-setInterval(updateCountdown, 1000);
-
-// 頁面載入時立即更新
-updateCountdown();
-createFloatingShapes();
-createParticles();
-updateCopyrightYear();
-initMenu();
-checkNotificationPermission();
-
-// 添加倒數數字動畫效果
-document.querySelectorAll('.countdown-item').forEach(item => {
-  item.addEventListener('mouseenter', () => {
-    item.style.transform = 'translateY(-10px) scale(1.05)';
-  });
-  
-  item.addEventListener('mouseleave', () => {
-    item.style.transform = 'translateY(-5px)';
-  });
+    
+    // 創建粒子效果
+    createParticles();
+    
+    // 版權宣告動畫效果
+    animateCopyrightBanner();
+    
+    // 頁首導航效果
+    initHeaderNav();
+    
+    // 初始化新功能
+    initTabs();
+    initQuotes();
+    initModals();
+    
+    // 初始化滾動相關功能
+    initScrollFeatures();
 });
 
-// 添加消息淡入淡出效果
-messageElement.style.transition = 'opacity 0.5s ease';
+// 粒子效果函數
+function createParticles() {
+    const particlesContainer = document.querySelector('.particles');
+    const particleCount = 50;
 
-// 深色模式切換
-function initDarkMode() {
-  // 檢查本地存儲
-  const isDarkMode = localStorage.getItem('darkMode') === 'true';
-  const isLightMode = localStorage.getItem('lightMode') === 'true';
-  
-  if (isDarkMode) {
-    document.body.classList.add('dark-mode');
-    document.body.classList.remove('light-mode');
-  } else if (isLightMode) {
-    document.body.classList.add('light-mode');
-    document.body.classList.remove('dark-mode');
-  }
-  
-  darkModeToggle.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    if (document.body.classList.contains('light-mode')) {
-      // If already in light mode, switch to dark mode
-      document.body.classList.remove('light-mode');
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('darkMode', 'true');
-      localStorage.setItem('lightMode', 'false');
-    } else if (document.body.classList.contains('dark-mode')) {
-      // If already in dark mode, switch to light mode
-      document.body.classList.remove('dark-mode');
-      document.body.classList.add('light-mode');
-      localStorage.setItem('lightMode', 'true');
-      localStorage.setItem('darkMode', 'false');
-    } else {
-      // Default mode is normal, switch to light mode
-      document.body.classList.add('light-mode');
-      localStorage.setItem('lightMode', 'true');
-      localStorage.setItem('darkMode', 'false');
-    }
-    
-    // Update the button text
-    updateThemeToggleText();
-  });
-  
-  // Set initial button text
-  updateThemeToggleText();
-}
-
-function updateThemeToggleText() {
-  const darkModeToggle = document.getElementById('dark-mode-toggle');
-  if (!darkModeToggle) return;
-  
-  if (document.body.classList.contains('light-mode')) {
-    darkModeToggle.textContent = '切換至深色模式';
-  } else if (document.body.classList.contains('dark-mode')) {
-    darkModeToggle.textContent = '切換至淺色模式';
-  } else {
-    darkModeToggle.textContent = '切換主題';
-  }
-}
-
-// ----- 計時器功能 -----
-let timerInterval;
-let timerMinutes = TIMER_SETTINGS.pomodoro;
-let timerSeconds = 0;
-let timerRunning = false;
-
-const timerMinutesElement = document.getElementById('timer-minutes');
-const timerSecondsElement = document.getElementById('timer-seconds');
-const startTimerButton = document.getElementById('start-timer');
-const pauseTimerButton = document.getElementById('pause-timer');
-const resetTimerButton = document.getElementById('reset-timer');
-const pomodoroButton = document.getElementById('pomodoro-btn');
-const shortBreakButton = document.getElementById('short-break-btn');
-const longBreakButton = document.getElementById('long-break-btn');
-
-function initTimer() {
-  updateTimerDisplay();
-  
-  startTimerButton.addEventListener('click', startTimer);
-  pauseTimerButton.addEventListener('click', pauseTimer);
-  resetTimerButton.addEventListener('click', resetTimer);
-  
-  pomodoroButton.addEventListener('click', () => setTimerMode('pomodoro'));
-  shortBreakButton.addEventListener('click', () => setTimerMode('shortBreak'));
-  longBreakButton.addEventListener('click', () => setTimerMode('longBreak'));
-}
-
-function updateTimerDisplay() {
-  timerMinutesElement.textContent = timerMinutes < 10 ? `0${timerMinutes}` : timerMinutes;
-  timerSecondsElement.textContent = timerSeconds < 10 ? `0${timerSeconds}` : timerSeconds;
-}
-
-function startTimer() {
-  if (timerRunning) return;
-  
-  timerRunning = true;
-  startTimerButton.disabled = true;
-  pauseTimerButton.disabled = false;
-  
-  timerInterval = setInterval(() => {
-    if (timerSeconds > 0) {
-      timerSeconds--;
-    } else if (timerMinutes > 0) {
-      timerMinutes--;
-      timerSeconds = 59;
-    } else {
-      // 計時器結束
-      clearInterval(timerInterval);
-      timerRunning = false;
-      notifyTimerEnd();
-      return;
-    }
-    
-    updateTimerDisplay();
-  }, 1000);
-}
-
-function pauseTimer() {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  startTimerButton.disabled = false;
-  pauseTimerButton.disabled = true;
-}
-
-function resetTimer() {
-  clearInterval(timerInterval);
-  timerRunning = false;
-  setTimerMode(document.querySelector('.mode-btn.active').id.replace('-btn', ''));
-  startTimerButton.disabled = false;
-  pauseTimerButton.disabled = true;
-}
-
-function setTimerMode(mode) {
-  // 重置所有按鈕樣式
-  document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
-  
-  // 設置新的計時器模式
-  switch (mode) {
-    case 'pomodoro':
-      timerMinutes = TIMER_SETTINGS.pomodoro;
-      pomodoroButton.classList.add('active');
-      break;
-    case 'shortBreak':
-      timerMinutes = TIMER_SETTINGS.shortBreak;
-      shortBreakButton.classList.add('active');
-      break;
-    case 'longBreak':
-      timerMinutes = TIMER_SETTINGS.longBreak;
-      longBreakButton.classList.add('active');
-      break;
-  }
-  
-  timerSeconds = 0;
-  updateTimerDisplay();
-  
-  // 如果計時器正在運行，則停止它
-  if (timerRunning) {
-    pauseTimer();
-  }
-}
-
-function notifyTimerEnd() {
-  // 如果瀏覽器支持通知
-  if ('Notification' in window) {
-    if (Notification.permission === 'granted') {
-      new Notification('計時器結束', {
-        body: '休息一下或繼續下一個番茄鐘！',
-        icon: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="%23ffcc00"/></svg>'
-      });
-    } else if (Notification.permission !== 'denied') {
-      Notification.requestPermission().then(permission => {
-        if (permission === 'granted') {
-          new Notification('計時器結束', {
-            body: '休息一下或繼續下一個番茄鐘！',
-            icon: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><circle cx="12" cy="12" r="10" fill="%23ffcc00"/></svg>'
-          });
-        }
-      });
-    }
-  }
-  
-  // 播放音效
-  const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLHPM7tiJNwgZXrfq4aFJEA1QqOjjt14dCkSc5OXLdSsGOI/h6dd8MwU2iuD1324hBj2S5fXTdSsJPJXk5bTskWq80eKnYCgPK2281vjtqW0lCjqR1uj2mVscDUSW0+P4w4AuDEONy9/n7q9pKA4VRrbZ+faXXBsbK3S92/zdkFsVChpKqN/4s2sgFiU2gtfzxapkLBMbM5nW6ed8VCMVJjqL0fPgqXAjExgtis/qj9n6v3gsExl2hs/0nN34nVsXFAIWgsrtntvzolwJDBkyfsTmxt/tvl8NDyUlbK3QxuDYgmEbCW0XUrTZztZNN2VxYRlViNffmUU6UFNRS2KOsph4XmD/sGYkFUhQh7OUbGJxalA5RHaMRU1sisSEWEqmmH5rYYGQi25XUqK2mHKFc4OIgmZee6ewfGJ5mIt6a2mAlYlweHiJioFycG97jId7dnR9kJOEcGx1iZOIbWBpeoJ6bXJ1d4aHfHh0eYOEf3l3dn2CgXt3dHp/gIB6dnV4foB/eXZ1eX9/fHh2dn6AfXh2d3l+f316eXh8f4B8enh5fH5+e3p4e31+fnx8e3x9fn58fHx8fX5+fHx7fH1+fn18e3x9fn5+fXx8fX1+fn19fH19fn5+fX19fX1+fn58LTA0OWyHmH1IHjxcf5uRTBsuT3SOjFwVKkt0kpBNFyxPcH+JhXBfbnqCf3ToW+tcN2lthxDTj4whIY2CGidTdkguXp5nvVdphUk0cZFxtlZyiDcpZId1pkx3kz0mYYZ5oUV5k0AkQlJ1jFJJfyUbMFJ6e00jN5E+HDFXjnt3Mk2BQhskPW2Hg4BuPUVaTkRQgH9xd3dQRFJPfIB6c3yBS0xLTHd4enZ/fVVMDEQqZJyESkqpbRxDj5ewl1AdRHZpYnGbXSJalZlWG0ipi4csIIiidhlZoYt9Y1x6p6qXYkd8g3p3gYd1bBE4cZtwb3aDgnBpCzFvlmJwf46Hd2sgVZyFa3ZveYWKf3UhR4KHY3R5cnd9gX11JUuFi3R2gHJxcG9+gHIRcZNrdH58dm8jQWx0eHFycIKFgXQdN3aOdGt0fYiBfXclV3+Demxue3p+fXgWRIF6aG94enF9gH0Tb5dye3CEd25pc4OBeBs+aHx8eHx+eXh2fH93FUt/enFucYB9dnR5f38aSX99c3R4Pnx69HR7fH4cSH16cXN1eHl6Nnh8fhs2fYBwY3N89W12fHt2G0p+fG9vcHHwcXp7fHchXX6Ab25vPnp4cXJ5fX0iQX+Bb2xveHx5n25zfH0hQH9+cHBwcvZ2eXt4dR5HfoJycHJzYHV8e3nvI0iIdnBvcHELdHl7en0aR3x9cnFzdRt1e3t4eR1JfXtvbnB1Cnd7e3p4HEd8e4BudXYHdXx7e30aRH19c3JzdxR9f3x3eCFKfHxycXN0CHh7e3h4I058fHNxcngHdnx7xngeSnv9cXFzdgV4e3sveCFMfH1zcXJ3AvZ7e754HUl7/XFwcncB+Ht7InoiTXt+c3FxeP/3e3sweSRNe/9zcHF5//d7eyx6FUp8/3NwcXn/93x7HHkfTXugcXByev/3PG8Ieh9Le/9yb3F6//d8ewp6Gk1, //iAPAGIgOwGQkBxQG4gMAGYkA2AGQBZQU4gBFAC4ABQUABYQhYCVkAA');
-  audio.play();
-}
-
-// ----- 待辦事項功能 -----
-const todoInput = document.getElementById('todo-input');
-const addTodoButton = document.getElementById('add-todo');
-const todoList = document.getElementById('todo-list');
-
-let todos = JSON.parse(localStorage.getItem('todos')) || [];
-
-function initTodoList() {
-  addTodoButton.addEventListener('click', addTodo);
-  todoInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') {
-      addTodo();
-    }
-  });
-  
-  renderTodos();
-}
-
-function addTodo() {
-  const todoText = todoInput.value.trim();
-  if (todoText === '') return;
-  
-  todos.push({
-    id: Date.now().toString(),
-    text: todoText,
-    completed: false
-  });
-  
-  saveTodos();
-  todoInput.value = '';
-  renderTodos();
-}
-
-function deleteTodo(id) {
-  todos = todos.filter(todo => todo.id !== id);
-  saveTodos();
-  renderTodos();
-}
-
-function toggleTodo(id) {
-  todos = todos.map(todo => {
-    if (todo.id === id) {
-      return { ...todo, completed: !todo.completed };
-    }
-    return todo;
-  });
-  
-  saveTodos();
-  renderTodos();
-}
-
-function saveTodos() {
-  localStorage.setItem('todos', JSON.stringify(todos));
-}
-
-function renderTodos() {
-  todoList.innerHTML = '';
-  
-  todos.forEach(todo => {
-    const todoItem = document.createElement('li');
-    todoItem.classList.add('todo-item');
-    if (todo.completed) {
-      todoItem.classList.add('completed');
-    }
-    
-    todoItem.innerHTML = `
-      <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''}>
-      <span class="todo-text">${todo.text}</span>
-      <button class="delete-todo">×</button>
-    `;
-    
-    const checkbox = todoItem.querySelector('.todo-checkbox');
-    checkbox.addEventListener('change', () => toggleTodo(todo.id));
-    
-    const deleteButton = todoItem.querySelector('.delete-todo');
-    deleteButton.addEventListener('click', () => deleteTodo(todo.id));
-    
-    todoList.appendChild(todoItem);
-  });
-}
-
-// ----- 科目進度追蹤 -----
-const subjectList = document.getElementById('subject-list');
-const subjectInput = document.getElementById('subject-input');
-const addSubjectButton = document.getElementById('add-subject');
-
-let subjects = JSON.parse(localStorage.getItem('subjects')) || DEFAULT_SUBJECTS;
-
-function initSubjectProgress() {
-  addSubjectButton.addEventListener('click', addSubject);
-  subjectInput.addEventListener('keypress', e => {
-    if (e.key === 'Enter') {
-      addSubject();
-    }
-  });
-  
-  renderSubjects();
-}
-
-function addSubject() {
-  const subjectName = subjectInput.value.trim();
-  if (subjectName === '') return;
-  
-  subjects.push({
-    name: subjectName,
-    progress: 0
-  });
-  
-  saveSubjects();
-  subjectInput.value = '';
-  renderSubjects();
-}
-
-function deleteSubject(index) {
-  subjects.splice(index, 1);
-  saveSubjects();
-  renderSubjects();
-}
-
-function updateSubjectProgress(index, change) {
-  const newProgress = Math.max(0, Math.min(100, subjects[index].progress + change));
-  subjects[index].progress = newProgress;
-  saveSubjects();
-  renderSubjects();
-}
-
-function saveSubjects() {
-  localStorage.setItem('subjects', JSON.stringify(subjects));
-}
-
-function renderSubjects() {
-  subjectList.innerHTML = '';
-  
-  subjects.forEach((subject, index) => {
-    const subjectItem = document.createElement('div');
-    subjectItem.classList.add('subject-item');
-    
-    subjectItem.innerHTML = `
-      <div class="subject-name">
-        <span>${subject.name}</span>
-        <span>${subject.progress}%</span>
-      </div>
-      <div class="subject-progress-container">
-        <div class="subject-progress-bar" style="width: ${subject.progress}%"></div>
-      </div>
-      <div class="subject-actions">
-        <button class="subject-btn decrease">-5%</button>
-        <button class="subject-btn increase">+5%</button>
-        <button class="subject-btn increase-large">+10%</button>
-        <button class="subject-btn delete">刪除</button>
-      </div>
-    `;
-    
-    const decreaseBtn = subjectItem.querySelector('.decrease');
-    decreaseBtn.addEventListener('click', () => updateSubjectProgress(index, -5));
-    
-    const increaseBtn = subjectItem.querySelector('.increase');
-    increaseBtn.addEventListener('click', () => updateSubjectProgress(index, 5));
-    
-    const increaseLargeBtn = subjectItem.querySelector('.increase-large');
-    increaseLargeBtn.addEventListener('click', () => updateSubjectProgress(index, 10));
-    
-    const deleteBtn = subjectItem.querySelector('.delete');
-    deleteBtn.addEventListener('click', () => deleteSubject(index));
-    
-    subjectList.appendChild(subjectItem);
-  });
-}
-
-// 模態窗口控制
-function initModals() {
-  // Apply custom modal styling from config
-  document.querySelectorAll('.modal').forEach(modal => {
-    modal.style.backgroundColor = `rgba(48, 43, 99, ${UI_SETTINGS.modalOpacity})`;
-  });
-  
-  // 打開模態窗口
-  timerBtn.addEventListener('click', () => {
-    openModal(timerModal);
-  });
-  
-  todoBtn.addEventListener('click', () => {
-    openModal(todoModal);
-  });
-  
-  subjectBtn.addEventListener('click', () => {
-    openModal(subjectModal);
-  });
-  
-  notificationBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openModal(notificationModal);
-  });
-  
-  // 關閉模態窗口
-  closeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      closeAllModals();
-    });
-  });
-  
-  modalOverlay.addEventListener('click', () => {
-    closeAllModals();
-  });
-  
-  // 按Esc鍵關閉
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeAllModals();
-    }
-  });
-}
-
-export function openModal(modal) {
-  closeAllModals(); // 確保其他模態窗口已關閉
-  modalOverlay.classList.add('active');
-  modal.classList.add('active');
-  document.body.classList.add('modal-open');
-}
-
-export function closeAllModals() {
-  const modals = document.querySelectorAll('.modal');
-  modals.forEach(modal => {
-    modal.classList.remove('active');
-  });
-  modalOverlay.classList.remove('active');
-  document.body.classList.remove('modal-open');
-}
-
-// 初始化所有功能
-initDarkMode();
-initTimer();
-initTodoList();
-initSubjectProgress();
-initModals();
-initNotifications();
-
-// 每秒更新一次倒數計時
-setInterval(updateCountdown, 1000);
-
-// 初始化
-updateCountdown();
-createFloatingShapes();
-createParticles();
-updateCopyrightYear();
-initMenu();
-checkNotificationPermission();
-
-// 如果考試已結束，立即顯示感謝模態窗口
-if (new Date() >= EXAM_DATE && !sessionStorage.getItem('congratulationShown')) {
-  setTimeout(() => {
-    openModal(congratulationModal);
-    createFireworks();
-    sessionStorage.setItem('congratulationShown', 'true');
-  }, 1000);
-}
-
-// 創建煙火動畫效果
-function createFireworks() {
-  const fireworksContainer = document.getElementById('fireworks-container');
-  if (!fireworksContainer) return;
-  
-  // 清空容器
-  fireworksContainer.innerHTML = '';
-  
-  // 創建多個煙火
-  for (let i = 0; i < 5; i++) {
-    setTimeout(() => {
-      createSingleFirework(fireworksContainer);
-    }, i * 800); // 每0.8秒發射一個煙火
-  }
-}
-
-// 創建單個煙火
-function createSingleFirework(container) {
-  // 煙火發射點
-  const x = Math.random() * 100; // 發射點水平位置 (百分比)
-  
-  // 創建煙火元素
-  const firework = document.createElement('div');
-  firework.className = 'firework';
-  firework.style.left = `${x}%`;
-  container.appendChild(firework);
-  
-  // 煙火爆炸後的粒子數量
-  const particleCount = 30 + Math.floor(Math.random() * 20);
-  
-  // 創建爆炸效果
-  setTimeout(() => {
-    // 移除煙火發射元素
-    firework.remove();
-    
-    // 創建爆炸粒子
     for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'firework-particle';
-      
-      // 隨機顏色
-      const hue = Math.floor(Math.random() * 360);
-      particle.style.backgroundColor = `hsl(${hue}, 100%, 50%)`;
-      
-      // 設置粒子初始位置
-      particle.style.left = `${x}%`;
-      particle.style.top = '50%';
-      
-      // 設置粒子動畫 - 使用隨機方向
-      const angle = Math.random() * Math.PI * 2; // 隨機角度
-      const speed = 2 + Math.random() * 3; // 隨機速度
-      const size = 2 + Math.random() * 4; // 隨機大小
-      
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      
-      // 直接設置動畫方向
-      const directionX = Math.cos(angle) * speed * 50;
-      const directionY = Math.sin(angle) * speed * 50;
-      
-      particle.style.setProperty('--move-x', `${directionX}px`);
-      particle.style.setProperty('--move-y', `${directionY}px`);
-      
-      container.appendChild(particle);
-      
-      // 一段時間後移除粒子
-      setTimeout(() => {
-        particle.remove();
-      }, 1000 + Math.random() * 1000);
+        const particle = document.createElement('div');
+        particle.style.position = 'absolute';
+        particle.style.width = Math.random() * 5 + 2 + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.backgroundColor = 'rgba(255, 255, 255, ' + (Math.random() * 0.3 + 0.1) + ')';
+        particle.style.borderRadius = '50%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.left = Math.random() * 100 + '%';
+        
+        // 粒子動畫
+        const duration = Math.random() * 20 + 10;
+        const delay = Math.random() * 5;
+        
+        particle.style.animation = `floatParticle ${duration}s linear ${delay}s infinite`;
+        
+        // 創建粒子浮動動畫
+        const keyframes = `
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(90deg);
+            }
+            50% {
+                transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(180deg);
+            }
+            75% {
+                transform: translate(${Math.random() * 100 - 50}px, ${Math.random() * 100 - 50}px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }`;
+        
+        // 添加動畫樣式
+        const style = document.createElement('style');
+        style.innerHTML = keyframes;
+        document.head.appendChild(style);
+        
+        particlesContainer.appendChild(particle);
     }
-  }, 500); // 煙火上升時間
 }
+
+// 添加互動效果 - 點擊效果
+document.querySelector('.container').addEventListener('click', function(e) {
+    const clickEffect = document.createElement('div');
+    clickEffect.className = 'click-effect';
+    clickEffect.style.position = 'absolute';
+    clickEffect.style.width = '5px';
+    clickEffect.style.height = '5px';
+    clickEffect.style.borderRadius = '50%';
+    clickEffect.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+    clickEffect.style.top = (e.pageY - this.offsetTop) + 'px';
+    clickEffect.style.left = (e.pageX - this.offsetLeft) + 'px';
+    clickEffect.style.animation = 'clickWave 1s ease-out forwards';
+    
+    this.appendChild(clickEffect);
+    
+    setTimeout(() => {
+        clickEffect.remove();
+    }, 1000);
+});
+
+// 為點擊波浪添加動畫
+const clickWaveKeyframes = `
+@keyframes clickWave {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(50);
+        opacity: 0;
+    }
+}`;
+
+const style = document.createElement('style');
+style.innerHTML = clickWaveKeyframes;
+document.head.appendChild(style);
+
+// 版權宣告動畫效果
+function animateCopyrightBanner() {
+    const copyright = document.querySelector('.copyright-banner');
+    
+    // 初始隱藏
+    copyright.style.transform = 'translateY(-100%)';
+    copyright.style.opacity = '0';
+    
+    // 延遲顯示
+    setTimeout(() => {
+        copyright.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        copyright.style.transform = 'translateY(0)';
+        copyright.style.opacity = '1';
+    }, 500);
+    
+    // 滑鼠懸停效果
+    copyright.addEventListener('mouseover', () => {
+        copyright.style.backgroundColor = 'rgba(0, 0, 0, 0.85)';
+    });
+    
+    copyright.addEventListener('mouseout', () => {
+        copyright.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    });
+}
+
+// 頁首導航功能
+function initHeaderNav() {
+    // 菜單切換按鈕
+    const menuToggle = document.getElementById('menu-toggle');
+    const sideMenu = document.getElementById('side-menu');
+    const overlay = document.getElementById('overlay');
+    const closeSideMenu = document.querySelector('.close-side-menu');
+    
+    // 點擊菜單按鈕打開側邊欄
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            sideMenu.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 防止背景滾動
+        });
+    }
+    
+    // 點擊關閉按鈕關閉側邊欄
+    if (closeSideMenu) {
+        closeSideMenu.addEventListener('click', closeSideMenuFunc);
+    }
+    
+    // 點擊遮罩層關閉側邊欄
+    if (overlay) {
+        overlay.addEventListener('click', closeSideMenuFunc);
+    }
+    
+    // 點擊側邊欄選項關閉側邊欄
+    const sideNavItems = document.querySelectorAll('.side-nav li a');
+    sideNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            // 移除所有項目的 active 類別
+            document.querySelectorAll('.side-nav li').forEach(li => {
+                li.classList.remove('active');
+            });
+            
+            // 為被點擊的項目添加 active 類別
+            item.closest('li').classList.add('active');
+            
+            // 關閉側邊欄（如果不是跳轉到其他頁面的連結）
+            if (!item.getAttribute('href').startsWith('http')) {
+                setTimeout(closeSideMenuFunc, 300);
+            }
+        });
+    });
+    
+    // 關閉側邊欄函數
+    function closeSideMenuFunc() {
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = ''; // 恢復背景滾動
+    }
+    
+    // 初始化快速導航欄的點擊事件
+    const quickNavItems = document.querySelectorAll('.quick-nav-item');
+    quickNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            // 如果點擊的是側邊欄相關的項目，則打開側邊欄
+            if (item.id.includes('quick-open')) {
+                e.preventDefault();
+                const targetId = item.id.replace('quick-', '');
+                
+                // 點擊對應的側邊欄按鈕
+                const targetMenuItem = document.getElementById(targetId);
+                if (targetMenuItem) {
+                    // 首先開啟側邊欄
+                    sideMenu.classList.add('active');
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    
+                    // 模擬點擊對應的側邊欄項目
+                    setTimeout(() => {
+                        targetMenuItem.click();
+                    }, 300);
+                }
+            }
+            
+            // 更新活動項目
+            document.querySelectorAll('.quick-nav-item').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            item.classList.add('active');
+        });
+    });
+}
+
+// 初始化頁籤功能
+function initTabs() {
+    const tabHeaders = document.querySelectorAll('.tab-header');
+    
+    tabHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            // 移除所有頁籤的活動狀態
+            document.querySelectorAll('.tab-header').forEach(th => {
+                th.classList.remove('active');
+            });
+            
+            // 隱藏所有頁籤內容
+            document.querySelectorAll('.tab-pane').forEach(tp => {
+                tp.classList.remove('active');
+            });
+            
+            // 設置當前頁籤為活動狀態
+            header.classList.add('active');
+            
+            // 顯示對應的頁籤內容
+            const tabId = header.getAttribute('data-tab');
+            document.getElementById(tabId).classList.add('active');
+        });
+    });
+}
+
+// 初始化鼓勵語錄功能
+function initQuotes() {
+    const quotes = [
+        "成功不是偶然的，而是日積月累的結果。",
+        "今天付出的每一分努力，都是為了明天的成功。",
+        "不要因為一時的困難而放棄，堅持下去就會看到希望。",
+        "學習的道路上沒有捷徑，唯有踏實前進。",
+        "每個人都有自己的步調，不要與他人比較，只要向前走就好。",
+        "失敗是成功之母，從錯誤中學習並成長。",
+        "目標要明確，計劃要細緻，行動要堅決。",
+        "知識是無價的財富，永遠不會貶值。",
+        "心態決定一切，保持樂觀積極的心情。",
+        "相信自己，你比想像中的更強大。",
+        "機會總是留給有準備的人。",
+        "每天進步一點點，一年後就是質的飛躍。"
+    ];
+    
+    const quoteElement = document.getElementById('random-quote');
+    const newQuoteBtn = document.getElementById('new-quote-btn');
+    
+    if (quoteElement && newQuoteBtn) {
+        // 顯示一句隨機鼓勵語錄
+        showRandomQuote();
+        
+        // 換一句按鈕
+        newQuoteBtn.addEventListener('click', showRandomQuote);
+    }
+    
+    function showRandomQuote() {
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        quoteElement.textContent = quotes[randomIndex];
+        
+        // 添加淡入效果
+        quoteElement.style.opacity = '0';
+        setTimeout(() => {
+            quoteElement.style.transition = 'opacity 0.5s ease';
+            quoteElement.style.opacity = '1';
+        }, 100);
+    }
+}
+
+// 初始化模態框功能
+function initModals() {
+    // 關閉按鈕
+    const closeButtons = document.querySelectorAll('.close-modal, .cancel-btn');
+    closeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const modal = btn.closest('.modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+    
+    // 點擊模態框外的區域關閉
+    document.addEventListener('click', event => {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            // 確保點擊的是模態框本身，而不是模態框內容
+            if (event.target === modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+    
+    // 添加鍵盤ESC鍵關閉功能
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            // 關閉所有可見的模態框
+            const visibleModals = document.querySelectorAll('.modal[style*="display: flex"]');
+            visibleModals.forEach(modal => {
+                closeModal(modal.id);
+            });
+        }
+    });
+    
+    // 設置打開彈窗的事件
+    // 主導航按鈕
+    const openScheduleBtn = document.getElementById('open-schedule-section');
+    
+    if (openScheduleBtn) {
+        openScheduleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('schedule-section-modal');
+        });
+    }
+    
+    // 底部快速導航按鈕
+    const quickScheduleBtn = document.getElementById('quick-open-schedule');
+    
+    if (quickScheduleBtn) {
+        quickScheduleBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal('schedule-section-modal');
+        });
+    }
+    
+    // 首頁按鈕
+    const showQuoteBtn = document.getElementById('show-quote-btn');
+    const showExamInfoBtn = document.getElementById('show-exam-info-btn');
+    
+    if (showQuoteBtn) {
+        showQuoteBtn.addEventListener('click', () => {
+            openModal('quote-modal');
+        });
+    }
+    
+    if (showExamInfoBtn) {
+        showExamInfoBtn.addEventListener('click', () => {
+            openModal('exam-info-modal');
+        });
+    }
+    
+    // 查看完整考試時間表按鈕
+    const openFullExamInfoBtn = document.getElementById('open-full-exam-info');
+    if (openFullExamInfoBtn) {
+        openFullExamInfoBtn.addEventListener('click', () => {
+            closeModal('exam-info-modal');
+            openModal('schedule-section-modal');
+        });
+    }
+    
+    // 添加特定的取消按鈕事件
+    const cancelButtons = document.querySelectorAll('.cancel-btn');
+    cancelButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault(); // 防止表單提交
+            const modal = btn.closest('.modal');
+            if (modal) {
+                closeModal(modal.id);
+            }
+        });
+    });
+}
+
+// 開啟模態框
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // 防止背景滾動
+        
+        // 添加動畫效果
+        const modalContent = modal.querySelector('.modal-content');
+        if (modalContent) {
+            modalContent.style.transform = 'scale(0.8)';
+            modalContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                modalContent.style.transition = 'all 0.3s ease';
+                modalContent.style.transform = 'scale(1)';
+                modalContent.style.opacity = '1';
+            }, 50);
+        }
+    }
+}
+
+// 關閉模態框
+function closeModal(modalId) {
+    console.log('Closing modal:', modalId); // 調試用
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        const modalContent = modal.querySelector('.modal-content');
+        
+        if (modalContent) {
+            modalContent.style.transform = 'scale(0.8)';
+            modalContent.style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                modalContent.style.transform = 'scale(1)';
+                document.body.style.overflow = 'auto'; // 恢復背景滾動
+            }, 300);
+        } else {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // 恢復背景滾動
+        }
+    }
+}
+
+// 初始化滾動相關功能
+function initScrollFeatures() {
+    const scrollTopBtn = document.querySelector('.scroll-top-btn');
+    const quickNavItems = document.querySelectorAll('.quick-nav-item');
+    const sections = document.querySelectorAll('section[id]');
+    
+    // 監聽滾動事件
+    window.addEventListener('scroll', () => {
+        // 顯示/隱藏回到頂部按鈕
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
+        
+        // 更新快速導航高亮
+        updateActiveNavItem();
+    });
+    
+    // 回到頂部按鈕點擊事件
+    if (scrollTopBtn) {
+        scrollTopBtn.addEventListener('click', () => {
+            // 平滑滾動到頂部
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+    
+    // 快速導航點擊事件
+    quickNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // 獲取目標部分的ID
+            const targetId = item.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                // 平滑滾動到目標部分
+                window.scrollTo({
+                    top: targetSection.offsetTop - 140, // 減去頂部固定元素的高度
+                    behavior: 'smooth'
+                });
+                
+                // 更新活動狀態
+                quickNavItems.forEach(navItem => {
+                    navItem.classList.remove('active');
+                });
+                item.classList.add('active');
+            }
+        });
+    });
+    
+    // 更新活動導航項目
+    function updateActiveNavItem() {
+        let currentSection = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            
+            // 檢查當前滾動位置是否在部分範圍內
+            if (window.scrollY >= sectionTop - 200 && window.scrollY < sectionTop + sectionHeight - 200) {
+                currentSection = section.getAttribute('id');
+            }
+        });
+        
+        // 更新導航高亮
+        quickNavItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === `#${currentSection}`) {
+                item.classList.add('active');
+            }
+        });
+    }
+    
+    // 平滑滾動所有錨點連結
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const targetId = this.getAttribute('href');
+            
+            if (targetId !== '#' && document.querySelector(targetId)) {
+                e.preventDefault();
+                
+                const targetElement = document.querySelector(targetId);
+                window.scrollTo({
+                    top: targetElement.offsetTop - 140,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+} 
