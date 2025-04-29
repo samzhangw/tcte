@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
    // 設定115年統測的日期 (2026年4月25日)
 const examDate = new Date('April 25, 2026 00:00:00').getTime();
 
+    // 更新版權年份
+    updateCopyrightYear();
     
     // 獲取要顯示倒數的元素
     const daysElement = document.getElementById('days');
@@ -76,6 +78,19 @@ const examDate = new Date('April 25, 2026 00:00:00').getTime();
 function createParticles() {
     // 函數內容保留但不執行，避免可能的程式碼引用問題
     console.log("粒子效果已禁用");
+}
+
+// 更新版權年份的函數
+function updateCopyrightYear() {
+    const currentYear = new Date().getFullYear();
+    const copyrightElements = document.querySelectorAll('.copyright-content, .copyright-footer, .side-menu-footer p');
+    
+    copyrightElements.forEach(element => {
+        if (element) {
+            // 替換所有數字年份為當前年份
+            element.innerHTML = element.innerHTML.replace(/\d{4}/g, currentYear);
+        }
+    });
 }
 
 // 添加互動效果 - 點擊效果（簡化版本）
