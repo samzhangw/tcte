@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="統測加油站常見問題 - 解答您關於統測的各種疑問">
+    <meta name="keywords" content="統測,統一入學測驗,常見問題,FAQ,統測準備,技職考試">
+    <meta name="author" content="統測加油站">
+    
+    <!-- Favicon和圖標 -->
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <title>常見問題 | 統測加油站</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-fix.css">
+    <link rel="stylesheet" href="styles-pages.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="copyright-banner">
+        <div class="copyright-content">
+            <i class="fas fa-copyright"></i> 2024 統測加油站
+        </div>
+    </div>
+    
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <a href="index.html">
+                    <i class="fas fa-school"></i>
+                    <h2>統測加油站</h2>
+                </a>
+            </div>
+            <div class="mobile-menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    
+    <!-- 右側彈出菜單 -->
+    <div class="side-menu" id="side-menu">
+        <div class="side-menu-header">
+            <span class="close-side-menu">&times;</span>
+            <h3>功能選單</h3>
+        </div>
+        <nav class="side-nav">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> 首頁</a></li>
+                <li><a href="#" id="open-schedule-section"><i class="fas fa-calendar-check"></i> 考試時間表</a></li>
+                <li><a href="#" id="open-resources-section"><i class="fas fa-book"></i> 學習資源</a></li>
+                <li><a href="https://tyctw.github.io/114clock/" target="_blank"><i class="fas fa-graduation-cap"></i> 會考倒數</a></li>
+                <li><a href="https://ceecc.vercel.app/" target="_blank"><i class="fas fa-university"></i> 學測倒數</a></li>
+                <li><a href="https://ceeecc.vercel.app/" target="_blank"><i class="fas fa-pencil-alt"></i> 分科倒數</a></li>
+            </ul>
+        </nav>
+        <div class="side-menu-footer">
+            <p>統測加油站 &copy; 2024</p>
+        </div>
+    </div>
+    
+    <!-- 暗色覆蓋層 -->
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="particles"></div>
+    
+    <main class="main-content">
+        <section class="container page-content">
+            <div class="header-icon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+            <h1>常見問題</h1>
+            
+            <div class="content-section">
+                <div class="faq-search-container">
+                    <div class="faq-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="faq-search-input" placeholder="搜尋常見問題...">
+                    </div>
+                </div>
+                
+                <div class="faq-categories">
+                    <button class="faq-category-btn active" data-category="all">全部</button>
+                    <button class="faq-category-btn" data-category="exam">考試資訊</button>
+                    <button class="faq-category-btn" data-category="preparation">備考方法</button>
+                    <button class="faq-category-btn" data-category="admission">升學管道</button>
+                    <button class="faq-category-btn" data-category="website">網站使用</button>
+                </div>
+                
+                <div class="faq-container">
+                    <div class="faq-item" data-category="exam">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 統測是什麼？什麼人需要參加統測？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>統一入學測驗(簡稱統測)是技專校院招生委員會聯合會舉辦的考試，主要提供給高職、綜合高中專門學程畢業生報考四技二專所用。考試科目包含國文、英文、數學及專業科目。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="exam">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 統測的考試時間是什麼時候？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>115年統測的考試時間為115年4月25-26日（星期六、日），共兩天。詳細的考試時間表可以在我們網站的「考試時間表」中查看。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="preparation">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 如何有效準備統測？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>有效準備統測的方式包括：</p>
+                            <ul>
+                                <li>制定合理的讀書計畫，每日定時複習</li>
+                                <li>熟悉歷年考題和命題趨勢</li>
+                                <li>掌握各科目的重點和考試範圍</li>
+                                <li>培養良好的作息和健康的生活習慣</li>
+                                <li>尋找適合自己的學習資源和方法</li>
+                            </ul>
+                            <p>在我們網站的「學習資源」區塊，您可以找到更多有助於準備統測的教材和資源。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="exam">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 統測的成績如何計算？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>統測各科成績採級分制，最高15級分。各校系根據自己的招生規定，訂定各科目的加權係數，並以加權總級分作為錄取的依據。詳細的計分方式可以參考技專校院入學測驗中心的說明。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="admission">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 統測後的升學管道有哪些？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>統測後的主要升學管道包括：</p>
+                            <ul>
+                                <li>四技二專甄選入學</li>
+                                <li>四技二專聯合登記分發</li>
+                                <li>科技校院日間部四年制申請入學</li>
+                                <li>技優甄審入學</li>
+                                <li>其他特殊選才管道</li>
+                            </ul>
+                            <p>每個管道都有不同的申請條件和時程，建議依照自己的興趣和成績規劃最適合的升學路徑。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="admission">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 我的統測成績不理想，有什麼補救方法？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>如果統測成績不如預期，可以考慮以下方式：</p>
+                            <ul>
+                                <li>透過技專校院聯合登記分發，選擇適合自己成績的校系</li>
+                                <li>考慮就讀進修部或二專夜間部</li>
+                                <li>選擇參加單獨招生的學校</li>
+                                <li>重新準備明年的統測</li>
+                                <li>考慮其他升學管道，如軍警院校、運動績優等特殊管道</li>
+                            </ul>
+                            <p>無論選擇哪種方式，都應該根據自己的興趣和能力做出合適的決定。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="website">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 統測加油站提供什麼服務？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>統測加油站提供以下服務：</p>
+                            <ul>
+                                <li>統測倒數計時器，幫助考生掌握備考時間</li>
+                                <li>詳細的考試時間表和重要日期提醒</li>
+                                <li>各科學習資源和教材推薦</li>
+                                <li>激勵語錄和心理調適建議</li>
+                                <li>考試相關的最新資訊更新</li>
+                            </ul>
+                            <p>我們的目標是陪伴考生從準備到應考的全過程，提供全方位的支援。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="preparation">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 如何克服統測備考壓力？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>克服統測備考壓力的方法包括：</p>
+                            <ul>
+                                <li>建立合理的讀書計畫，避免過度透支</li>
+                                <li>每天保持規律作息和充足睡眠</li>
+                                <li>適當安排休息和放鬆的時間</li>
+                                <li>與同學或朋友分享心情，不要獨自承擔壓力</li>
+                                <li>培養健康的紓壓方式，如運動、聽音樂等</li>
+                                <li>專注於過程而不只是結果，每天進步一點點</li>
+                            </ul>
+                            <p>如果感到壓力過大，建議尋求家人、師長或專業輔導人員的協助。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="faq-item" data-category="exam">
+                        <div class="faq-question">
+                            <h3><i class="fas fa-chevron-right"></i> 統測考試時需要攜帶哪些物品？</h3>
+                        </div>
+                        <div class="faq-answer">
+                            <p>統測考試時必須攜帶的物品包括：</p>
+                            <ul>
+                                <li><strong>必帶物品</strong>：准考證、身分證正本、黑色2B鉛筆、橡皮擦、藍色或黑色原子筆</li>
+                                <li><strong>建議攜帶</strong>：削鉛筆器、手錶（不具計算及通訊功能）、口罩、額溫槍(如有需要)、飲用水</li>
+                                <li><strong>可帶物品</strong>：計算器（部分科目允許，須符合規定型號）</li>
+                            </ul>
+                            <p>注意：手機、智慧手錶、電子通訊設備等均不可帶入考場，違者依考試規則處理。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="faq-no-results" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <p>沒有找到符合條件的問題</p>
+                    <p>請嘗試其他關鍵詞或瀏覽全部問題</p>
+                </div>
+                
+                <div class="contact-cta">
+                    <p>沒有找到您想問的問題？歡迎前往<a href="contact.html">聯絡我們</a>頁面提出您的疑問！</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="footer">
+            <p>祝各位考生金榜題名 <i class="fas fa-star shine-animation"></i></p>
+            <div class="social-links">
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-links">
+                <a href="about.html">關於我們</a>
+                <a href="faq.html">常見問題</a>
+                <a href="contact.html">聯絡我們</a>
+                <a href="privacy.html">隱私政策</a>
+                <a href="terms.html">使用條款</a>
+            </div>
+            <div class="related-links">
+                <p>相關連結：</p>
+                <a href="https://www.tcte.edu.tw/" target="_blank" rel="noopener">技專校院入學測驗中心</a>
+                <a href="https://www.edu.tw/" target="_blank" rel="noopener">教育部</a>
+                <a href="https://techexpo.moe.edu.tw/" target="_blank" rel="noopener">技職博覽會</a>
+            </div>
+            <p class="copyright-footer">© 2024 統測加油站 | 版權所有</p>
+        </div>
+    </main>
+    
+    <!-- 回到頂部按鈕 -->
+    <div class="scroll-top-btn">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+    
+    <script src="script.js"></script>
+    <script src="faq.js"></script>
+    <style>
+        /* FAQ頁面的額外樣式 */
+        .faq-search-container {
+            margin-bottom: 30px;
+        }
+        
+        .faq-search {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .faq-search input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .faq-search input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 3px 15px rgba(52, 152, 219, 0.2);
+        }
+        
+        .faq-search i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+            font-size: 1.2rem;
+        }
+        
+        .faq-categories {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .faq-category-btn {
+            padding: 8px 15px;
+            background: #f1f2f3;
+            border: none;
+            border-radius: 20px;
+            color: #2c3e50;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-category-btn:hover {
+            background: #e5e7e9;
+        }
+        
+        .faq-category-btn.active {
+            background: #3498db;
+            color: white;
+        }
+        
+        .faq-no-results {
+            text-align: center;
+            padding: 40px 0;
+            color: #7f8c8d;
+        }
+        
+        .faq-no-results i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+        
+        @media (max-width: 768px) {
+            .faq-categories {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 10px;
+                justify-content: flex-start;
+            }
+            
+            .faq-category-btn {
+                flex-shrink: 0;
+            }
+        }
+    </style>
+    <script>
+        // FAQ頁面的額外功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化頁面淡入效果
+            document.querySelector('.page-content').classList.add('fade-in');
+            
+            // 處理分類按鈕
+            const categoryBtns = document.querySelectorAll('.faq-category-btn');
+            const faqItems = document.querySelectorAll('.faq-item');
+            const noResults = document.querySelector('.faq-no-results');
+            
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按鈕的active類
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    // 為當前按鈕添加active類
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    
+                    // 過濾FAQ項目
+                    let hasResults = false;
+                    faqItems.forEach(item => {
+                        if (category === 'all' || item.dataset.category === category) {
+                            item.style.display = 'block';
+                            hasResults = true;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // 顯示或隱藏無結果提示
+                    noResults.style.display = hasResults ? 'none' : 'block';
+                });
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('faq-search-input');
+            
+            searchInput.addEventListener('input', function() {
+                const searchText = this.value.toLowerCase().trim();
+                
+                // 重置分類按鈕
+                categoryBtns.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('[data-category="all"]').classList.add('active');
+                
+                let hasResults = false;
+                
+                faqItems.forEach(item => {
+                    const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                    
+                    if (searchText === '' || question.includes(searchText) || answer.includes(searchText)) {
+                        item.style.display = 'block';
+                        hasResults = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // 顯示或隱藏無結果提示
+                noResults.style.display = hasResults ? 'none' : 'block';
+            });
+        });
+    </script>
+</body>
+</html> 
