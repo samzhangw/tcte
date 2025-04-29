@@ -3,8 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>115年統測倒數計時</title>
+    <meta name="description" content="115年統測倒數計時器，提供考試日倒數、完整考試時間表、各科學習資源。為統測考生準備的最佳應考網站！">
+    <meta name="keywords" content="統測,統一入學測驗,115年統測,考試倒數,統測時間表,統測準備,技職考試">
+    <meta name="author" content="統測加油站">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.統測加油站.tw/">
+    <meta property="og:title" content="115年統測倒數計時器 | 考試資訊與學習資源整合平台">
+    <meta property="og:description" content="統測倒數計時、考試資訊、學習資源一站式服務，幫助考生掌握關鍵時間點，有效準備統一入學測驗。">
+    <meta property="og:image" content="https://www.統測加油站.tw/img/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.統測加油站.tw/">
+    <meta property="twitter:title" content="115年統測倒數計時器 | 考試資訊與學習資源整合平台">
+    <meta property="twitter:description" content="統測倒數計時、考試資訊、學習資源一站式服務，幫助考生掌握關鍵時間點，有效準備統一入學測驗。">
+    <meta property="twitter:image" content="https://www.統測加油站.tw/img/og-image.jpg">
+    
+    <!-- Favicon和圖標 -->
+    <link rel="icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <title>115年統測倒數計時 | 考試資訊與學習資源整合平台</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-fix.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
@@ -55,7 +82,7 @@
             <div class="header-icon">
                 <i class="fas fa-graduation-cap"></i>
             </div>
-            <h1>115年統測倒數</h1>
+            <h1>115年統一入學測驗倒數計時</h1>
             <div class="countdown-container">
                 <div class="countdown-box">
                     <span id="days">00</span>
@@ -80,8 +107,9 @@
             </div>
             <div class="info-container">
                 <i class="fas fa-calendar-alt info-icon"></i>
-                <p>距離115年統一入學測驗還有</p>
-                <p class="exam-date">115年4月25-26日</p>
+                <p>距離115年技專校院統一入學測驗還有</p>
+                <p class="exam-date">115年4月25-26日 (星期六、日)</p>
+                <p class="exam-info">包含國文、英文、數學及專業科目</p>
             </div>
             <div class="motivation">
                 <p><span class="quote-mark">"</span>加油！努力就會有收穫！<span class="quote-mark">"</span></p>
@@ -98,6 +126,19 @@
                 <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
                 <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="footer-links">
+                <a href="#">關於我們</a>
+                <a href="#">常見問題</a>
+                <a href="#">聯絡我們</a>
+                <a href="#">隱私政策</a>
+                <a href="#">使用條款</a>
+            </div>
+            <div class="related-links">
+                <p>相關連結：</p>
+                <a href="https://www.tcte.edu.tw/" target="_blank" rel="noopener">技專校院入學測驗中心</a>
+                <a href="https://www.edu.tw/" target="_blank" rel="noopener">教育部</a>
+                <a href="https://techexpo.moe.edu.tw/" target="_blank" rel="noopener">技職博覽會</a>
             </div>
             <p class="copyright-footer">© 2024 統測加油站 | 版權所有</p>
         </div>
@@ -358,5 +399,52 @@
     </div>
     
     <script src="script.js"></script>
+    <!-- 結構化數據 - 幫助搜尋引擎理解網站內容 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalWebsite",
+      "name": "115年統測倒數計時器",
+      "description": "為統測考生提供考試倒數計時、考試時間表與學習資源整合平台",
+      "url": "https://www.統測加油站.tw",
+      "potentialAction": {
+        "@type": "ReadAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.統測加油站.tw/#home"
+        }
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "統測加油站",
+        "logo": "https://www.統測加油站.tw/logo.png"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "TWD",
+        "availability": "https://schema.org/InStock"
+      },
+      "about": {
+        "@type": "Thing",
+        "name": "技專校院統一入學測驗",
+        "description": "針對115年技專校院統一入學測驗的倒數計時與資源整合網站"
+      },
+      "event": {
+        "@type": "EducationEvent",
+        "name": "115年統一入學測驗",
+        "startDate": "2026-04-25T00:00:00+08:00",
+        "endDate": "2026-04-26T23:59:59+08:00",
+        "location": {
+          "@type": "Place",
+          "name": "各考試中心",
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "TW"
+          }
+        }
+      }
+    }
+    </script>
 </body>
 </html> 

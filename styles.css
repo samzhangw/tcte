@@ -125,7 +125,7 @@ body {
     height: 100%;
     background: linear-gradient(135deg, #3494e6, #ec6ead);
     background-size: 100% 100%;
-    background-attachment: fixed; /* 固定背景 */
+    background-attachment: scroll; /* 改為滾動背景而非固定 */
     color: #fff;
     position: relative;
     overflow-x: hidden;
@@ -133,10 +133,10 @@ body {
     margin: 0;
 }
 
-/* 添加浮動圓點背景 */
+/* 確保背景圖案跟隨頁面滾動 */
 body::before {
     content: '';
-    position: fixed;
+    position: absolute; /* 改為 absolute 而非 fixed */
     top: 0;
     left: 0;
     right: 0;
@@ -144,6 +144,8 @@ body::before {
     background-image: radial-gradient(circle at center, rgba(255, 255, 255, 0.2) 0%, transparent 8%);
     background-size: 25px 25px;
     z-index: -1;
+    height: 100%; /* 確保覆蓋整個頁面 */
+    min-height: 100vh;
 }
 
 /* 通用容器樣式 */

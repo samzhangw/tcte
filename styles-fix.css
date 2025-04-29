@@ -1,0 +1,164 @@
+/* 修復頁面縮放問題的樣式 */
+
+/* 確保背景使用滾動而非固定方式 */
+body {
+    background-attachment: scroll !important;
+    overflow-x: hidden;
+    scroll-behavior: smooth !important; /* 平滑滾動效果 */
+}
+
+/* 確保背景圖案跟隨頁面滾動 */
+body::before {
+    position: absolute !important;
+    height: 100% !important;
+    min-height: 100vh !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+}
+
+/* 視覺優化 - 元素載入和互動動畫 */
+.container, .countdown-box, .footer, .motivation, .info-container {
+    animation: fadeInUp 0.6s ease-out backwards;
+}
+
+.countdown-box:nth-child(1) { animation-delay: 0.1s; }
+.countdown-box:nth-child(2) { animation-delay: 0.2s; }
+.countdown-box:nth-child(3) { animation-delay: 0.3s; }
+.countdown-box:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInUp {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 改進按鈕互動效果 */
+.action-btn, .social-link, .quick-nav-item {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease !important;
+}
+
+.action-btn:after, .social-link:after, .quick-nav-item:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.action-btn:hover:after, .social-link:hover:after, .quick-nav-item:hover:after {
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+/* 額外的 SEO 優化樣式 */
+.exam-info {
+    margin-top: 10px;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.footer-links {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.footer-links a {
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    opacity: 0.8;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+.footer-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: #fff;
+    transition: width 0.3s ease;
+}
+
+.footer-links a:hover::after {
+    width: 100%;
+}
+
+.related-links {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+}
+
+.related-links p {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.related-links a {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.related-links a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* 增強焦點和無障礙支援 */
+a:focus, button:focus, input:focus, select:focus, textarea:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.5) !important;
+    outline-offset: 2px !important;
+}
+
+/* 觸覺反饋優化 - 針對移動設備 */
+@media (hover: none) {
+    .action-btn:active, .social-link:active, .quick-nav-item:active {
+        transform: scale(0.95) !important;
+    }
+} 
