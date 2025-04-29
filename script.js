@@ -560,44 +560,44 @@ function bindResourceCardEvents() {
             title: '教學影片',
             icon: 'video',
             items: [
-                { title: '國文：重要文法解析', link: '#', description: '針對統測常考文法進行詳細講解' },
-                { title: '英文：考前單字速記', link: '#', description: '快速記憶統測常考單字的技巧' },
-                { title: '數學：函數與極限', link: '#', description: '解析函數與極限概念，附有練習題' },
-                { title: '物理：力學基礎講解', link: '#', description: '從基礎開始理解物理力學概念' },
-                { title: '化學：有機化學入門', link: '#', description: '簡單易懂的有機化學概念講解' }
+                { title: '國文：', link: '#', description: '歡迎合作' },
+                { title: '英文：', link: '#', description: '歡迎合作' },
+                { title: '數學：', link: '#', description: '歡迎合作' },
+                { title: '專一：', link: '#', description: '歡迎合作' },
+                { title: '專二：', link: '#', description: '歡迎合作' }
             ]
         },
         'paper': {
             title: '考古題庫',
             icon: 'file-alt',
             items: [
-                { title: '110年統測國文科試題與解析', link: '#', description: '完整試題與詳解' },
-                { title: '111年統測英文科試題與解析', link: '#', description: '完整試題與詳解' },
-                { title: '112年統測數學科試題與解析', link: '#', description: '完整試題與詳解' },
-                { title: '113年統測專業科目試題與解析', link: '#', description: '完整試題與詳解' },
-                { title: '114年統測模擬試題', link: '#', description: '模擬試題與詳解' }
+                { title: '110年統測歷屆試題', link: 'https://web1.tcte.edu.tw/EXAM/110_4y/', description: '完整試題與答案' },
+                { title: '111年統測歷屆試題', link: 'https://web1.tcte.edu.tw/EXAM/111_4y/', description: '完整試題與答案' },
+                { title: '112年統測歷屆試題', link: 'https://web1.tcte.edu.tw/EXAM/112_4y/', description: '完整試題與答案' },
+                { title: '113年統測歷屆試題', link: 'https://web1.tcte.edu.tw/EXAM/113_4y/', description: '完整試題與答案' },
+                { title: '114年統測歷屆試題', link: 'https://web1.tcte.edu.tw/EXAM/114_4y/', description: '完整試題與答案' }
             ]
         },
         'note': {
-            title: '學習筆記',
+            title: '歡迎合作',
             icon: 'clipboard-list',
             items: [
-                { title: '國文：古文30篇重點整理', link: '#', description: '統測常考古文的重點筆記' },
-                { title: '英文：文法重點整理', link: '#', description: '英文文法系統性整理與例句' },
-                { title: '數學：三角函數公式表', link: '#', description: '完整三角函數公式與應用' },
-                { title: '物理：公式推導與應用', link: '#', description: '物理公式的來源與應用場景' },
-                { title: '化學：元素週期表記憶法', link: '#', description: '快速記憶元素週期表的方法' }
+                { title: '國文：', link: '#', description: '歡迎合作' },
+                { title: '英文：', link: '#', description: '歡迎合作' },
+                { title: '數學：', link: '#', description: '歡迎合作' },
+                { title: '專一:', link: '#', description: '歡迎合作' },
+                { title: '專二:', link: '#', description: '歡迎合作' }
             ]
         },
         'group': {
-            title: '讀書會',
+            title: '歡迎合作',
             icon: 'users',
             items: [
-                { title: '線上英文讀書會 (每週三晚上)', link: '#', description: '透過視訊一起學習英文' },
-                { title: '數學解題小組 (每週六下午)', link: '#', description: '一起解決數學難題' },
-                { title: '國文寫作討論群 (不定期)', link: '#', description: '互相批改作文，提升寫作能力' },
-                { title: '理科實驗小組 (每週日)', link: '#', description: '討論物理、化學實驗與概念' },
-                { title: '考前衝刺群 (考前一個月)', link: '#', description: '臨考前互相督促與解惑' }
+                { title: '線上英文', link: '#', description: '歡迎合作' },
+                { title: '數學', link: '#', description: '歡迎合作' },
+                { title: '國文', link: '#', description: '歡迎合作' },
+                { title: '專一:', link: '#', description: '歡迎合作' },
+                { title: '專二:', link: '#', description: '歡迎合作' }
             ]
         }
     };
