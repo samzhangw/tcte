@@ -11,55 +11,110 @@ html {
     overflow-y: auto;
 }
 
-/* 版權宣告區域 */
+/* 版權宣告區域 - 全新設計 */
 .copyright-banner {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: rgba(255, 255, 255, 0.8);
-    padding: 8px 0;
+    background: linear-gradient(135deg, rgba(52, 148, 230, 0.95), rgba(36, 112, 181, 0.95));
+    color: #fff;
+    padding: 10px 0;
     text-align: center;
     font-size: 0.9rem;
     z-index: 100;
-    backdrop-filter: blur(5px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    animation: slideDownFade 0.5s ease-out;
+}
+
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .copyright-content {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 .copyright-content i {
-    margin-right: 5px;
+    margin-right: 8px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
 }
 
 .copyright-note {
     font-style: italic;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
-/* 頁首導航區域 */
+/* 頁首導航區域 - 全新玻璃擬態設計 */
 .main-header {
     position: fixed;
-    top: 37px; /* 版權宣告的高度 + 間距 */
+    top: 42px; /* 版權宣告的高度 + 間距 */
     left: 0;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     z-index: 99;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.main-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.6) 50%, 
+        transparent
+    );
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.main-header:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .header-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px 20px;
+    padding: 18px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -68,20 +123,48 @@ html {
 .logo-area {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 8px 15px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+}
+
+.logo-area:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255, 255, 255, 0.2);
 }
 
 .logo-area i {
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #fff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.6),
+                 0 0 30px rgba(52, 148, 230, 0.4);
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-5px) rotate(5deg);
+    }
 }
 
 .logo-area h2 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     color: #fff;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3),
+                 0 0 10px rgba(255, 255, 255, 0.3);
+    background: linear-gradient(45deg, #fff, #e0f7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .main-nav ul {
@@ -113,10 +196,57 @@ html {
 }
 
 .mobile-menu-toggle {
-    display: none;
-    font-size: 1.5rem;
+    display: block;
+    font-size: 1.6rem;
     color: #fff;
     cursor: pointer;
+    padding: 12px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.mobile-menu-toggle::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.mobile-menu-toggle:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+.mobile-menu-toggle:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.mobile-menu-toggle:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.mobile-menu-toggle i {
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-toggle:hover i {
+    transform: rotate(90deg);
 }
 
 /* 主體部分上移調整 */
@@ -1763,22 +1893,41 @@ input[type="color"] {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* 右側彈出菜單 */
+/* 右側彈出菜單 - 全新奢華設計 */
 .side-menu {
     position: fixed;
     top: 0;
-    right: -300px;
-    width: 300px;
+    right: -350px;
+    width: 350px;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
+    background: linear-gradient(180deg, 
+        rgba(20, 20, 40, 0.98) 0%,
+        rgba(30, 30, 50, 0.98) 50%,
+        rgba(20, 20, 40, 0.98) 100%
+    );
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     z-index: 1000;
-    padding: 20px 0;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
-    transition: right 0.3s ease;
+    padding: 0;
+    box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    border-left: 2px solid rgba(52, 148, 230, 0.5);
+}
+
+.side-menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(52, 148, 230, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(36, 112, 181, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .side-menu.active {
@@ -1789,31 +1938,72 @@ input[type="color"] {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 25px 25px 20px;
+    border-bottom: 2px solid rgba(52, 148, 230, 0.3);
     margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(52, 148, 230, 0.15), transparent);
+    position: relative;
+    z-index: 1;
+}
+
+.side-menu-header::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 30%;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(52, 148, 230, 0.8), transparent);
+    animation: slideRight 2s ease-in-out infinite;
+}
+
+@keyframes slideRight {
+    0%, 100% {
+        left: 0;
+        width: 30%;
+    }
+    50% {
+        left: 70%;
+        width: 30%;
+    }
 }
 
 .side-menu-header h3 {
     color: #fff;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(52, 148, 230, 0.5);
 }
 
 .close-side-menu {
     color: #fff;
-    font-size: 28px;
+    font-size: 32px;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .close-side-menu:hover {
     color: #ff6b6b;
-    transform: scale(1.1);
+    transform: rotate(90deg) scale(1.1);
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 107, 107, 0.1));
+    border-color: rgba(255, 107, 107, 0.5);
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
 }
 
 .side-nav {
     flex: 1;
+    position: relative;
+    z-index: 1;
 }
 
 .side-nav ul {
@@ -1822,56 +2012,114 @@ input[type="color"] {
 }
 
 .side-nav li {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    animation: menuItemSlideIn 0.5s ease-out backwards;
+}
+
+.side-nav li:nth-child(1) { animation-delay: 0.1s; }
+.side-nav li:nth-child(2) { animation-delay: 0.15s; }
+.side-nav li:nth-child(3) { animation-delay: 0.2s; }
+.side-nav li:nth-child(4) { animation-delay: 0.25s; }
+.side-nav li:nth-child(5) { animation-delay: 0.3s; }
+.side-nav li:nth-child(6) { animation-delay: 0.35s; }
+.side-nav li:nth-child(7) { animation-delay: 0.4s; }
+.side-nav li:nth-child(8) { animation-delay: 0.45s; }
+
+@keyframes menuItemSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .side-nav li a {
     color: #fff;
     text-decoration: none;
-    font-size: 1.1rem;
-    padding: 12px 15px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    font-size: 1.05rem;
+    padding: 15px 18px;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
-    gap: 12px;
-    background-color: rgba(255, 255, 255, 0.05);
+    gap: 15px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    font-weight: 500;
+}
+
+.side-nav li a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    background: linear-gradient(180deg, #3494e6, #2470b5);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
 }
 
 .side-nav li a i {
-    font-size: 1.2rem;
-    width: 24px;
+    font-size: 1.3rem;
+    width: 28px;
     text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
 .side-nav li a:hover, .side-nav li.active a {
-    background-color: rgba(255, 255, 255, 0.15);
-    transform: translateX(5px);
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, rgba(52, 148, 230, 0.25), rgba(36, 112, 181, 0.15));
+    transform: translateX(8px);
+    box-shadow: 0 5px 20px rgba(52, 148, 230, 0.3);
+    border-color: rgba(52, 148, 230, 0.5);
+}
+
+.side-nav li a:hover::before, .side-nav li.active a::before {
+    transform: scaleY(1);
+}
+
+.side-nav li a:hover i, .side-nav li.active a i {
+    transform: scale(1.15) rotate(5deg);
+    color: #3494e6;
+    text-shadow: 0 0 10px rgba(52, 148, 230, 0.5);
 }
 
 .side-menu-footer {
-    padding: 20px;
+    padding: 25px;
     text-align: center;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    border-top: 2px solid rgba(52, 148, 230, 0.3);
     margin-top: auto;
+    background: linear-gradient(135deg, rgba(52, 148, 230, 0.1), transparent);
+    position: relative;
+    z-index: 1;
 }
 
-/* 覆蓋層 */
+/* 覆蓋層 - 加強效果 */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px);
+    background: radial-gradient(circle at center, 
+        rgba(0, 0, 0, 0.5), 
+        rgba(0, 0, 0, 0.8)
+    );
+    backdrop-filter: blur(8px) saturate(80%);
+    -webkit-backdrop-filter: blur(8px) saturate(80%);
     z-index: 999;
     display: none;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .overlay.active {
@@ -1879,35 +2127,60 @@ input[type="color"] {
     opacity: 1;
 }
 
-/* 菜單切換按鈕重新調整 */
-.mobile-menu-toggle {
-    display: block;
-    font-size: 1.5rem;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+/* 菜單切換按鈕樣式已在上方定義 */
 
-.mobile-menu-toggle:hover {
-    transform: scale(1.1);
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
-
-/* 原導航欄的媒體查詢調整 */
+/* 響應式設計調整 */
 @media (max-width: 768px) {
     .mobile-menu-toggle {
         display: block;
+        padding: 10px;
+        font-size: 1.4rem;
     }
     
     .side-menu {
-        width: 280px;
+        width: 320px;
+        right: -320px;
+    }
+    
+    .header-container {
+        padding: 15px 20px;
+    }
+    
+    .logo-area h2 {
+        font-size: 1.4rem;
+    }
+    
+    .logo-area i {
+        font-size: 2rem;
     }
 }
 
 @media (max-width: 480px) {
     .side-menu {
-        width: 250px;
+        width: 280px;
+        right: -280px;
+    }
+    
+    .side-menu-header {
+        padding: 20px 20px 15px;
+    }
+    
+    .side-menu-header h3 {
+        font-size: 1.3rem;
+    }
+    
+    .side-nav li a {
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    
+    .logo-area h2 {
+        font-size: 1.2rem;
+    }
+    
+    .mobile-menu-toggle {
+        padding: 8px;
+        font-size: 1.3rem;
     }
 }
 
