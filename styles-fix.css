@@ -48,9 +48,8 @@ body::before {
     display: none; /* 禁用漣漪效果元素 */
 }
 
-.action-btn:hover:after, .social-link:hover:after, .quick-nav-item:hover:after {
     /* 移除漣漪動畫 */
-}
+
 
 @keyframes ripple {
     /* 移除動畫關鍵幀 */
