@@ -1,28 +1,20 @@
-# 115年統測倒數計時器
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-這是一個簡單的網頁應用，用於倒數計時115年統一入學測驗（2026年5月25-26日）的剩餘時間。
+# Run and deploy your AI Studio app
 
-## 功能
+This contains everything you need to run your app locally.
 
-- 顯示距離115年統測的天數、小時、分鐘和秒數
-- 響應式設計，適用於手機和桌面裝置
-- 簡潔美觀的界面
+View your app in AI Studio: https://ai.studio/apps/drive/14U3rHRj3RqGYt4AyKtV2auWvgpPrELq0
 
-## 如何使用
+## Run Locally
 
-1. 使用瀏覽器打開 `index.html` 檔案
-2. 即可看到動態更新的倒數計時
+**Prerequisites:**  Node.js
 
-## 技術說明
 
-- 使用原生 HTML、CSS 和 JavaScript 開發
-- 無需安裝額外的依賴項
-- 自動適應不同螢幕尺寸
-
-## 自訂修改
-
-如果想要修改計時器的外觀或行為：
-
-- 在 `styles.css` 調整視覺設計
-- 在 `script.js` 更改計時邏輯或動畫效果
-- 在 `index.html` 修改頁面結構或文字內容 
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
