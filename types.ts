@@ -1,25 +1,25 @@
 export interface ScheduleItem {
-  period: string;
-  time: string;
-  subject: string;
+  id: string;
   category: string;
-  isPrep?: boolean;
-}
-
-export interface DaySchedule {
-  date: string;
-  weekday: string;
-  events: ScheduleItem[];
-}
-
-export enum ResourceType {
-  MATH_B = 'Math B (高職數學B)',
-  MATH_C = 'Math C (高職數學C)'
-}
-
-export interface ResourceLink {
   title: string;
-  type: ResourceType;
-  tags: string[];
-  url: string;
+  startDate: string; // ISO 8601 format
+  endDate?: string;  // ISO 8601 format
+  description?: string;
+  isExamDay?: boolean; // Flag for the main event
+}
+
+export interface TimeLeft {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  isPast: boolean;
+}
+
+export interface ExamSession {
+  id: string;
+  title: string;
+  startTime: string; // ISO 8601 for the specific exam time
+  endTime: string;   // ISO 8601 for the specific exam time
+  day: 1 | 2;
 }

@@ -1,1036 +1,121 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="dark">
+<html lang="zh-TW">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>115年統測倒數計時</title>
-    <meta name="description" content="115年四技二專統一入學測驗倒數計時與考試日程表" />
+    <title>115學年度統測倒數</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Confetti Library for Celebration -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <script>
-      tailwind.config = {
-        darkMode: 'class',
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ['"Noto Sans TC"', 'Inter', 'sans-serif'],
-              mono: ['"JetBrains Mono"', 'monospace'],
-            },
-            colors: {
-              dark: {
-                900: '#0B0F19', // Deep background
-                800: '#151B2B', // Card background
-                700: '#2A3241', // Border
-                text: '#E2E8F0', // Main text
-                muted: '#94A3B8', // Secondary text
-              },
-              accent: {
-                cyan: '#22D3EE',
-                violet: '#A78BFA',
-                rose: '#FB7185',
-              }
-            },
-            animation: {
-              'glow': 'glow 2s ease-in-out infinite alternate',
-              'float': 'float 6s ease-in-out infinite',
-            },
-            keyframes: {
-              glow: {
-                '0%': { boxShadow: '0 0 5px #22D3EE20' },
-                '100%': { boxShadow: '0 0 20px #22D3EE60, 0 0 10px #22D3EE' }
-              },
-              float: {
-                '0%, 100%': { transform: 'translateY(0)' },
-                '50%': { transform: 'translateY(-10px)' },
-              }
-            }
-          }
-        }
-      }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
       body {
-        background-color: #0B0F19;
-        color: #E2E8F0;
-      }
-      /* Custom scrollbar for dark theme */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0B0F19;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #2A3241;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #475569;
+        font-family: 'Noto Sans TC', sans-serif;
+        background-color: #f1f5f9;
+        background-image: 
+          radial-gradient(at 0% 0%, rgba(199, 210, 254, 0.3) 0px, transparent 50%),
+          radial-gradient(at 100% 0%, rgba(221, 214, 254, 0.3) 0px, transparent 50%),
+          radial-gradient(at 100% 100%, rgba(204, 251, 241, 0.3) 0px, transparent 50%);
+        background-attachment: fixed;
+        color: #1e293b;
+        overflow-x: hidden;
       }
       
-      .glass-dark {
-        background: rgba(21, 27, 43, 0.7);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+      /* Animated Background */
+      .blob {
+        position: absolute;
+        filter: blur(90px);
+        z-index: -1;
+        opacity: 0.5;
+        animation: float 25s infinite ease-in-out alternate;
       }
       
-      /* Toggle Switch */
-      .toggle-checkbox:checked {
-        right: 0;
-        border-color: #22D3EE;
-      }
-      .toggle-checkbox:checked + .toggle-label {
-        background-color: #22D3EE;
+      @keyframes float {
+        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate(30px, 20px) scale(1.1) rotate(10deg); }
+        100% { transform: translate(-20px, 40px) scale(0.9) rotate(-10deg); }
       }
 
-      /* Modal transitions */
-      .modal-backdrop { transition: opacity 0.3s ease; }
-      .modal-content { transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-      .modal-hidden .modal-backdrop { opacity: 0; pointer-events: none; }
-      .modal-hidden .modal-content { opacity: 0; transform: translateY(10px) scale(0.95); }
-      .modal-visible .modal-backdrop { opacity: 1; pointer-events: auto; }
-      .modal-visible .modal-content { opacity: 1; transform: translateY(0) scale(1); }
+      /* Premium Glass Effect */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        box-shadow: 
+          0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+          0 2px 4px -1px rgba(0, 0, 0, 0.03),
+          inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+      }
+      
+      /* Interactive Glass Card */
+      .glass-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 
+          0 10px 15px -3px rgba(0, 0, 0, 0.05), 
+          0 4px 6px -2px rgba(0, 0, 0, 0.025),
+          inset 0 1px 0 0 rgba(255, 255, 255, 0.7);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.85);
+        transform: translateY(-4px) scale(1.01);
+        border-color: rgba(99, 102, 241, 0.3);
+        box-shadow: 
+          0 20px 25px -5px rgba(99, 102, 241, 0.1), 
+          0 10px 10px -5px rgba(99, 102, 241, 0.05),
+          0 0 0 1px rgba(99, 102, 241, 0.1);
+      }
+
+      /* Utility for monospaced numbers */
+      .font-mono-nums {
+        font-family: 'JetBrains Mono', monospace;
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* Shimmer Effect for upcoming events */
+      .shimmer {
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+        background-size: 200% 100%;
+        animation: shimmer 2s infinite linear;
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(203, 213, 225, 0.6);
+        border-radius: 99px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(148, 163, 184, 0.8);
+      }
     </style>
   <script type="importmap">
 {
   "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
   }
 }
 </script>
 <link rel="stylesheet" href="/index.css">
 </head>
-  <body class="antialiased selection:bg-cyan-500/30 selection:text-cyan-200 min-h-screen flex flex-col relative overflow-x-hidden">
-    
-    <!-- Ambient Background -->
-    <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
-      <div class="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-900/20 rounded-full blur-[100px] mix-blend-screen animate-pulse"></div>
-      <div class="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-cyan-900/10 rounded-full blur-[120px] mix-blend-screen"></div>
-      <!-- Grid Pattern -->
-      <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
-      <div class="absolute inset-0" style="background-image: radial-gradient(#2A3241 1px, transparent 1px); background-size: 40px 40px; opacity: 0.1;"></div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-40 glass-dark border-b border-dark-700/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex justify-between h-16">
-            <div class="flex items-center gap-3">
-              <div class="relative group">
-                <div class="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-                <div class="relative bg-dark-900 p-2 rounded-lg border border-dark-700">
-                  <i data-lucide="graduation-cap" class="text-cyan-400 h-5 w-5"></i>
-                </div>
-              </div>
-              <span class="font-black text-xl tracking-tight text-white">
-                統測戰士 <span class="text-cyan-400 font-mono">115</span>
-              </span>
-            </div>
-            <div class="flex items-center gap-2">
-               <!-- Notification Button -->
-               <button id="btn-notification" class="group relative flex items-center justify-center w-10 h-10 rounded-full bg-dark-800 border border-dark-700 hover:border-cyan-500/50 hover:bg-dark-700 transition-all duration-300">
-                 <i data-lucide="bell" class="text-dark-muted group-hover:text-cyan-400 w-5 h-5 transition-colors"></i>
-                 <span id="notification-badge" class="absolute top-0 right-0 -mt-1 -mr-1 flex h-3 w-3 hidden">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
-                 </span>
-               </button>
-
-               <button id="btn-open-menu" class="group flex items-center gap-2 px-4 py-2 rounded-full bg-dark-800 border border-dark-700 hover:border-cyan-500/50 hover:bg-dark-700 transition-all duration-300">
-                 <span class="hidden md:inline text-sm font-medium text-dark-muted group-hover:text-cyan-100">更多資訊</span>
-                 <i data-lucide="menu" class="text-cyan-500 w-5 h-5"></i>
-               </button>
-            </div>
-          </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 relative">
-        
-        <!-- Countdown Hero -->
-        <section class="relative z-10 mb-20 flex flex-col items-center">
-            
-            <!-- Quote -->
-            <div class="mb-10 text-center max-w-2xl mx-auto animate-float">
-                <div class="inline-block relative">
-                    <i data-lucide="quote" class="absolute -top-4 -left-6 text-dark-700 w-8 h-8 transform -scale-x-100"></i>
-                    <p id="daily-quote" class="text-lg md:text-xl font-medium text-dark-muted font-serif leading-relaxed tracking-wide italic">
-                        <!-- Quote inserted via JS -->
-                    </p>
-                    <i data-lucide="quote" class="absolute -bottom-4 -right-6 text-dark-700 w-8 h-8"></i>
-                </div>
-            </div>
-
-            <!-- Main Timer -->
-            <div class="relative mb-12">
-                <div class="absolute -inset-10 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 blur-3xl rounded-full opacity-50"></div>
-                <div id="timer-container" class="relative flex flex-wrap justify-center items-end gap-3 md:gap-6">
-                    <!-- Timer generated via JS -->
-                </div>
-
-                <!-- Status Messages -->
-                <div id="status-ongoing" class="hidden text-center py-10 relative z-10">
-                    <div class="inline-block p-4 rounded-full bg-yellow-500/10 border border-yellow-500/30 mb-4 backdrop-blur">
-                        <i data-lucide="zap" class="w-12 h-12 text-yellow-400 animate-pulse"></i>
-                    </div>
-                    <h2 class="text-4xl font-black text-white mb-2">考試進行中</h2>
-                    <p class="text-dark-muted">全神貫注，你一定行！</p>
-                </div>
-
-                <!-- Finished Status with Celebration & Link -->
-                <div id="status-finished" class="hidden text-center py-10 max-w-2xl mx-auto relative z-10">
-                    <div class="inline-block p-4 rounded-full bg-emerald-500/10 border border-emerald-500/30 mb-6 backdrop-blur animate-bounce">
-                        <i data-lucide="party-popper" class="w-12 h-12 text-emerald-400"></i>
-                    </div>
-                    <h2 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-300 mb-4">
-                        考試圓滿結束
-                    </h2>
-                    <p class="text-dark-muted text-lg mb-8">辛苦了！美好的未來正等著你。</p>
-                    
-                    <!-- Important Schedule Reminder -->
-                    <div class="bg-dark-800/80 rounded-2xl p-6 border border-emerald-500/30 shadow-[0_0_30px_rgba(16,185,129,0.1)]">
-                        <h3 class="text-xl font-bold text-white mb-4 flex items-center justify-center gap-2">
-                            <i data-lucide="alert-circle" class="text-emerald-400"></i>
-                            下一步：關注重要日程
-                        </h3>
-                        <p class="text-sm text-dark-muted mb-6">
-                            成績單寄發、複查申請、各管道報名截止日，千萬別錯過。
-                        </p>
-                        <a href="https://tctee.vercel.app/" target="_blank" class="block w-full py-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold text-lg shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
-                            查看 統測重要時程表
-                        </a>
-                        <p class="text-xs text-dark-muted mt-3 font-mono">tctee.vercel.app</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-             <div class="flex flex-col sm:flex-row gap-4 items-center relative z-20">
-                <button id="btn-open-schedule" class="group relative overflow-hidden rounded-full bg-dark-800 border border-cyan-500/30 px-8 py-3.5 transition-all hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] active:scale-95 w-full sm:w-auto">
-                    <div class="relative flex items-center justify-center gap-3">
-                        <i data-lucide="calendar-days" class="text-cyan-400 w-5 h-5 group-hover:animate-bounce"></i>
-                        <span class="font-bold text-cyan-50">查看考試日程</span>
-                    </div>
-                </button>
-                <button id="btn-open-tools" class="group relative overflow-hidden rounded-full bg-dark-800 border border-rose-500/30 px-8 py-3.5 transition-all hover:border-rose-400 hover:shadow-[0_0_20px_rgba(251,113,133,0.3)] active:scale-95 w-full sm:w-auto">
-                    <div class="relative flex items-center justify-center gap-3">
-                        <i data-lucide="briefcase" class="text-rose-400 w-5 h-5 group-hover:rotate-12 transition-transform"></i>
-                        <span class="font-bold text-rose-50">備考工具箱</span>
-                    </div>
-                </button>
-             </div>
-        </section>
-
-        <!-- Ad Slot: TVE Schedule (Dark Neumorphic) -->
-        <div id="ad-schedule-card" class="mb-24 relative group">
-            <div class="absolute -inset-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl opacity-30 group-hover:opacity-70 blur transition duration-500"></div>
-            <a href="https://tctee.vercel.app/" target="_blank" class="relative block bg-dark-800 rounded-2xl p-6 md:p-8 border border-dark-700 overflow-hidden">
-                <div class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-2xl"></div>
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div class="flex items-center gap-5">
-                        <div class="w-16 h-16 rounded-xl bg-dark-900 border border-dark-700 flex items-center justify-center text-emerald-400 shadow-inner">
-                            <i data-lucide="calendar-range" class="w-8 h-8"></i>
-                        </div>
-                        <div class="text-center md:text-left">
-                            <h3 class="text-xl font-bold text-white flex items-center justify-center md:justify-start gap-3">
-                                統測重要時程表
-                                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 tracking-wider">OFFICIAL</span>
-                            </h3>
-                            <p class="text-dark-muted text-sm mt-1 max-w-md">一覽所有關鍵日期：報名截止、准考證寄發、成績公佈，不再錯過任何細節。</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center text-emerald-400 font-bold text-sm group-hover:translate-x-1 transition-transform">
-                        立即查看 <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
-                    </div>
-                </div>
-            </a>
-        </div>
-
-        <!-- Resources Section -->
-        <section class="mb-24">
-            <div class="flex flex-col md:flex-row items-end justify-between mb-10 gap-4 border-b border-dark-700 pb-4">
-                <div>
-                    <h2 class="text-3xl font-black text-white flex items-center gap-3">
-                        <i data-lucide="library" class="text-indigo-400"></i>
-                        老蘇就數學
-                    </h2>
-                    <p class="text-dark-muted mt-2">最強數學影音課程，陪你從基礎打底到考前衝刺。</p>
-                </div>
-                <span class="text-xs font-mono text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-full bg-indigo-500/10">
-                    PREMIUM CONTENT
-                </span>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Math B -->
-                <div class="bg-dark-800/50 rounded-3xl p-6 border border-dark-700 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full blur-2xl"></div>
-                    <div class="flex items-center gap-4 mb-6 relative z-10">
-                        <span class="text-5xl font-black text-blue-500/20 absolute -left-2 -top-2 select-none">B</span>
-                        <h3 class="text-xl font-bold text-white pl-8">高職數學 B</h3>
-                        <span class="text-xs text-dark-muted ml-auto font-mono">商管/外語/設計/農業</span>
-                    </div>
-                    <div id="resources-math-b" class="grid sm:grid-cols-2 gap-4 relative z-10"></div>
-                </div>
-
-                <!-- Math C -->
-                <div class="bg-dark-800/50 rounded-3xl p-6 border border-dark-700 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl"></div>
-                    <div class="flex items-center gap-4 mb-6 relative z-10">
-                        <span class="text-5xl font-black text-purple-500/20 absolute -left-2 -top-2 select-none">C</span>
-                        <h3 class="text-xl font-bold text-white pl-8">高職數學 C</h3>
-                        <span class="text-xs text-dark-muted ml-auto font-mono">工科/電資</span>
-                    </div>
-                    <div id="resources-math-c" class="grid sm:grid-cols-2 gap-4 relative z-10"></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="border-t border-dark-700 bg-dark-900/80 backdrop-blur-sm mt-auto">
-        <div class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div class="text-center md:text-left">
-              <p class="text-white font-bold">統測倒數計時</p>
-              <p class="text-dark-muted text-xs mt-1">&copy; 2026 為夢想而戰</p>
-          </div>
-          <div class="flex items-center gap-6 text-sm text-dark-muted flex-wrap justify-center">
-             <a href="mailto:tyctw.analyze@gmail.com" class="flex items-center gap-2 hover:text-cyan-400 transition-colors px-3 py-1 rounded-lg hover:bg-dark-800">
-                <i data-lucide="mail" class="w-4 h-4"></i>
-                tyctw.analyze@gmail.com
-             </a>
-             <span class="hidden md:inline text-dark-700">|</span>
-             <span class="font-mono text-xs">DESIGN FOR TVE</span>
-          </div>
-        </div>
-    </footer>
-
-    <!-- Side Menu Modal (Dark) -->
-    <div id="side-menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 transition-opacity duration-500 opacity-0 pointer-events-none"></div>
-    <div id="side-menu-drawer" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-dark-900 border-l border-dark-700 z-50 transform transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) translate-x-full flex flex-col shadow-2xl shadow-black">
-        <div class="p-6 flex justify-between items-center border-b border-dark-700">
-            <h2 class="text-lg font-bold text-white tracking-tight flex items-center gap-2">
-                <i data-lucide="link" class="w-4 h-4 text-cyan-400"></i> 更多資源
-            </h2>
-            <button id="btn-close-menu" class="p-2 rounded-full bg-dark-800 text-dark-muted hover:text-white hover:bg-dark-700 transition-colors">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-        </div>
-        <div class="flex-1 overflow-y-auto p-6">
-            <div id="external-links-container" class="space-y-3">
-                <!-- Links injected via JS -->
-            </div>
-            <div class="mt-8 p-5 bg-indigo-900/10 rounded-2xl border border-indigo-500/20">
-                <h3 class="font-bold text-indigo-300 mb-2 text-sm flex items-center gap-2">
-                    <i data-lucide="info" class="w-4 h-4"></i> 說明
-                </h3>
-                <p class="text-xs text-indigo-200/60 leading-relaxed">
-                  此區提供會考、分科測驗及統測相關的外部連結，協助同學掌握完整考試時程。
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Schedule Modal (Dark) -->
-    <div id="schedule-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 invisible modal-hidden">
-        <div id="schedule-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-backdrop"></div>
-        
-        <div id="schedule-content" class="relative bg-dark-900 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col overflow-hidden border border-dark-700 ring-1 ring-white/10 modal-content">
-            <!-- Header -->
-            <div class="flex items-center justify-between px-6 py-5 border-b border-dark-700 bg-dark-900 sticky top-0 z-20">
-                <div class="flex items-center gap-4">
-                   <div class="bg-cyan-900/20 p-2.5 rounded-xl text-cyan-400 border border-cyan-900/30">
-                      <i data-lucide="clock" class="w-6 h-6"></i>
-                   </div>
-                   <div>
-                      <h2 class="text-xl font-bold text-white">考試日程表</h2>
-                      <p class="text-dark-muted text-xs font-mono mt-0.5">115 ACADEMIC YEAR</p>
-                   </div>
-                </div>
-                <button id="btn-close-schedule" class="p-2 rounded-full hover:bg-dark-800 text-dark-muted hover:text-white transition-all">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-
-            <!-- Tabs -->
-            <div class="flex p-2 bg-dark-800 border-b border-dark-700 gap-2">
-                <button id="tab-day-0" class="flex-1 py-3 px-4 rounded-xl text-center transition-all duration-200 relative group bg-dark-700 text-cyan-400 border border-dark-600 shadow-lg">
-                    <div class="flex flex-col items-center">
-                        <span class="text-[10px] font-bold uppercase tracking-wider opacity-70 mb-1">DAY 1</span>
-                        <span class="text-base font-bold">4月25日 (六)</span>
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full h-1 bg-cyan-500 rounded-b-xl opacity-100"></div>
-                </button>
-                <button id="tab-day-1" class="flex-1 py-3 px-4 rounded-xl text-center transition-all duration-200 relative group text-dark-muted hover:bg-dark-700 hover:text-white">
-                    <div class="flex flex-col items-center">
-                        <span class="text-[10px] font-bold uppercase tracking-wider opacity-70 mb-1">DAY 2</span>
-                        <span class="text-base font-bold">4月26日 (日)</span>
-                    </div>
-                    <div class="absolute bottom-0 left-0 w-full h-1 bg-cyan-500 rounded-b-xl opacity-0"></div>
-                </button>
-            </div>
-
-            <!-- Scrollable Content -->
-            <div class="overflow-y-auto p-6 sm:p-10 bg-dark-900">
-                <div id="schedule-list" class="relative space-y-8">
-                    <!-- List injected via JS -->
-                </div>
-            </div>
-            
-            <div class="p-4 border-t border-dark-700 bg-dark-800 text-center sm:hidden">
-               <button id="btn-close-schedule-mobile" class="w-full bg-white text-dark-900 py-3 rounded-xl font-bold active:scale-95 transition-transform">
-                 關閉
-               </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 1. Tools Selection Menu Modal -->
-    <div id="tools-menu-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 invisible modal-hidden">
-        <div id="tools-menu-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-backdrop"></div>
-        <div id="tools-menu-content" class="relative bg-dark-900 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-dark-700 ring-1 ring-white/10 modal-content">
-            <div class="p-6 border-b border-dark-700 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-white flex items-center gap-3">
-                    <i data-lucide="briefcase" class="text-rose-400"></i>
-                    備考工具箱
-                </h2>
-                <button id="btn-close-tools-menu" class="p-2 rounded-full hover:bg-dark-800 text-dark-muted hover:text-white">
-                    <i data-lucide="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            <div class="p-6 grid gap-4 sm:grid-cols-3">
-                <button id="btn-launch-pomo" class="bg-dark-800 p-6 rounded-2xl border border-dark-700 hover:border-rose-500/50 hover:bg-dark-700/50 transition-all group text-left">
-                    <div class="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-lucide="timer" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-lg">專注番茄鐘</h3>
-                    <p class="text-sm text-dark-muted mt-2">25分鐘專注 + 5分鐘休息，提升讀書效率。</p>
-                </button>
-                <button id="btn-launch-todo" class="bg-dark-800 p-6 rounded-2xl border border-dark-700 hover:border-cyan-500/50 hover:bg-dark-700/50 transition-all group text-left">
-                    <div class="w-12 h-12 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-lucide="check-square" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-lg">代辦事項</h3>
-                    <p class="text-sm text-dark-muted mt-2">記錄每日進度，按部就班完成目標。</p>
-                </button>
-                <button id="btn-launch-calc" class="bg-dark-800 p-6 rounded-2xl border border-dark-700 hover:border-emerald-500/50 hover:bg-dark-700/50 transition-all group text-left">
-                    <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
-                        <i data-lucide="calculator" class="w-6 h-6"></i>
-                    </div>
-                    <h3 class="font-bold text-white text-lg">分數試算</h3>
-                    <p class="text-sm text-dark-muted mt-2">依照權重計算總分，掌握落點。</p>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. Pomodoro Modal -->
-    <div id="pomo-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 invisible modal-hidden">
-        <div id="pomo-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-backdrop"></div>
-        <div id="pomo-content" class="relative bg-dark-900 rounded-3xl shadow-2xl w-full max-w-md overflow-hidden border border-dark-700 ring-1 ring-white/10 modal-content">
-             <!-- Header -->
-             <div class="flex items-center justify-between px-6 py-4 border-b border-dark-700 bg-dark-900">
-                <button id="btn-back-pomo" class="text-sm font-medium text-dark-muted hover:text-white flex items-center gap-1">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> 選單
-                </button>
-                <h2 class="text-lg font-bold text-white">專注番茄鐘</h2>
-                <button id="btn-close-pomo" class="p-1 rounded-full hover:bg-dark-800 text-dark-muted hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="p-8 flex flex-col items-center relative overflow-hidden">
-                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 to-orange-500"></div>
-                 <div class="absolute inset-0 bg-rose-500/5 pointer-events-none"></div>
-
-                 <div class="flex gap-1 p-1 bg-dark-800/80 rounded-lg border border-dark-700 mb-8 relative z-10">
-                     <button id="btn-mode-focus" class="px-4 py-1.5 rounded text-xs font-bold text-white bg-rose-500/20 border border-rose-500/50 transition-all">專注</button>
-                     <button id="btn-mode-short" class="px-4 py-1.5 rounded text-xs font-bold text-dark-muted hover:text-white transition-all">短休</button>
-                     <button id="btn-mode-long" class="px-4 py-1.5 rounded text-xs font-bold text-dark-muted hover:text-white transition-all">長休</button>
-                 </div>
-
-                 <div class="relative mb-8 py-2">
-                     <div class="absolute inset-0 bg-rose-500/10 blur-3xl rounded-full animate-pulse"></div>
-                     <div class="text-7xl font-mono font-black text-white tracking-wider relative z-10 drop-shadow-[0_0_15px_rgba(251,113,133,0.3)]" id="pomo-display">25:00</div>
-                     <div class="text-rose-400 text-xs font-bold mt-2 tracking-[0.3em] uppercase opacity-80 text-center" id="pomo-status">READY TO FOCUS</div>
-                 </div>
-
-                 <div class="flex gap-6 relative z-10">
-                     <button id="btn-pomo-toggle" class="w-20 h-20 rounded-full bg-gradient-to-b from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500 text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(251,113,133,0.3)] border border-rose-400/30">
-                         <i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>
-                     </button>
-                     <button id="btn-pomo-reset" class="w-20 h-20 rounded-full bg-dark-800 hover:bg-dark-700 text-dark-muted hover:text-white flex items-center justify-center transition-all hover:scale-105 active:scale-95 border border-dark-600">
-                         <i data-lucide="rotate-ccw" class="w-7 h-7"></i>
-                     </button>
-                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. Todo Modal -->
-    <div id="todo-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 invisible modal-hidden">
-        <div id="todo-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-backdrop"></div>
-        <div id="todo-content" class="relative bg-dark-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-dark-700 ring-1 ring-white/10 modal-content">
-             <!-- Header -->
-             <div class="flex items-center justify-between px-6 py-4 border-b border-dark-700 bg-dark-900">
-                <button id="btn-back-todo" class="text-sm font-medium text-dark-muted hover:text-white flex items-center gap-1">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> 選單
-                </button>
-                <h2 class="text-lg font-bold text-white">今日代辦事項</h2>
-                <button id="btn-close-todo" class="p-1 rounded-full hover:bg-dark-800 text-dark-muted hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="p-6 bg-dark-900 h-[500px] flex flex-col relative">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-blue-500"></div>
-                
-                <div class="flex gap-2 mb-6 mt-2">
-                    <input type="text" id="todo-input" placeholder="新增事項 (Ex: 數學B Ch3)" class="flex-1 bg-dark-800 border border-dark-700 rounded-xl px-4 py-3 text-sm text-white placeholder-dark-muted focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-all">
-                    <button id="btn-add-todo" class="bg-cyan-500 hover:bg-cyan-400 text-dark-900 font-bold px-4 py-3 rounded-xl transition-colors shadow-lg shadow-cyan-500/20">
-                        <i data-lucide="plus" class="w-5 h-5"></i>
-                    </button>
-                </div>
-
-                <div id="todo-list" class="flex-1 overflow-y-auto space-y-2 pr-2 custom-scrollbar">
-                     <!-- Content via JS -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. Calculator Modal -->
-    <div id="calc-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 invisible modal-hidden">
-        <div id="calc-backdrop" class="absolute inset-0 bg-black/80 backdrop-blur-sm modal-backdrop"></div>
-        <div id="calc-content" class="relative bg-dark-900 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden border border-dark-700 ring-1 ring-white/10 modal-content">
-             <!-- Header -->
-             <div class="flex items-center justify-between px-6 py-4 border-b border-dark-700 bg-dark-900">
-                <button id="btn-back-calc" class="text-sm font-medium text-dark-muted hover:text-white flex items-center gap-1">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> 選單
-                </button>
-                <h2 class="text-lg font-bold text-white">統測分數試算</h2>
-                <button id="btn-close-calc" class="p-1 rounded-full hover:bg-dark-800 text-dark-muted hover:text-white">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="p-6 bg-dark-900 relative">
-                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 to-teal-500"></div>
-                 
-                 <div class="flex flex-col gap-6">
-                    <div class="grid grid-cols-3 gap-4">
-                         <div class="space-y-1">
-                            <label class="text-[10px] text-dark-muted uppercase font-bold pl-1">國文</label>
-                            <input type="number" id="calc-chinese" placeholder="0-100" class="w-full bg-dark-800 border border-dark-700 rounded-xl px-3 py-3 text-white text-center focus:border-emerald-500/50 outline-none transition-colors font-mono">
-                         </div>
-                         <div class="space-y-1">
-                            <label class="text-[10px] text-dark-muted uppercase font-bold pl-1">英文</label>
-                            <input type="number" id="calc-english" placeholder="0-100" class="w-full bg-dark-800 border border-dark-700 rounded-xl px-3 py-3 text-white text-center focus:border-emerald-500/50 outline-none transition-colors font-mono">
-                         </div>
-                         <div class="space-y-1">
-                            <label class="text-[10px] text-dark-muted uppercase font-bold pl-1">數學</label>
-                            <input type="number" id="calc-math" placeholder="0-100" class="w-full bg-dark-800 border border-dark-700 rounded-xl px-3 py-3 text-white text-center focus:border-emerald-500/50 outline-none transition-colors font-mono">
-                         </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4 p-4 bg-dark-800/50 rounded-2xl border border-dark-700/50">
-                         <div class="space-y-1">
-                            <label class="text-[10px] text-emerald-400 uppercase font-bold pl-1">專一 (x2)</label>
-                            <input type="number" id="calc-pro1" placeholder="0-100" class="w-full bg-dark-900 border border-emerald-500/30 rounded-xl px-3 py-3 text-white text-center focus:border-emerald-500 outline-none transition-colors font-mono font-bold">
-                         </div>
-                         <div class="space-y-1">
-                            <label class="text-[10px] text-emerald-400 uppercase font-bold pl-1">專二 (x2)</label>
-                            <input type="number" id="calc-pro2" placeholder="0-100" class="w-full bg-dark-900 border border-emerald-500/30 rounded-xl px-3 py-3 text-white text-center focus:border-emerald-500 outline-none transition-colors font-mono font-bold">
-                         </div>
-                    </div>
-
-                    <button id="btn-calc" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98]">
-                        開始計算
-                    </button>
-
-                    <div class="flex flex-col items-center justify-center p-6 bg-dark-800 rounded-2xl border border-dark-700">
-                        <span class="text-xs text-dark-muted font-bold uppercase tracking-widest mb-2">預估總分</span>
-                        <div class="text-6xl font-black text-white font-mono tracking-tight" id="calc-result">0</div>
-                        <span class="text-[10px] text-dark-muted mt-2">滿分 700</span>
-                    </div>
-                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- JavaScript Logic -->
-    <script>
-        /**
-         * Constants & Data
-         */
-        const EXAM_DATE = new Date('2026-04-25T10:20:00');
-        const EXAM_END_DATE = new Date('2026-04-26T17:40:00');
-
-        const EXAM_SCHEDULE = [
-            {
-                date: '4月25日',
-                weekday: '星期六',
-                events: [
-                    { period: '預備', time: '10:15', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '上午第1節', time: '10:20 - 12:00', subject: '專業科目（二）', category: '03、07、12、15、51～53、55～56' },
-                    { period: '預備', time: '13:25', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '下午第2節', time: '13:30 - 15:10', subject: '國文', category: '全體考生 (01～20、51～56)' },
-                    { period: '預備', time: '15:55', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '下午第3節', time: '16:00 - 17:40', subject: '英文', category: '全體考生 (01～20、51～56)' },
-                ]
-            },
-            {
-                date: '4月26日',
-                weekday: '星期日',
-                events: [
-                    { period: '預備', time: '08:25', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '上午第1節', time: '08:30 - 10:10', subject: '專業科目（二）', category: '01～02、04～06、08～11、13～14、17～20、51～54、56' },
-                    { period: '預備', time: '10:55', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '上午第2節', time: '11:00 - 12:20', subject: '數學', category: '全體考生 (01～20、51～56)' },
-                    { period: '預備', time: '13:25', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '下午第3節', time: '13:30 - 15:10', subject: '專業科目（一）', category: '全體考生 (01～20、51～56)' },
-                    { period: '預備', time: '15:55', subject: '預備鈴響', category: '持准考證入場', isPrep: true },
-                    { period: '下午第4節', time: '16:00 - 17:40', subject: '專業科目（二）', category: '16、54～56' },
-                ]
-            }
-        ];
-
-        const RESOURCES = [
-            { title: '基礎', type: 'MATH_B', tags: ['打底', '必修'], url: 'https://oldsumathpass.com/' },
-            { title: '精選', type: 'MATH_B', tags: ['進階', '題庫'], url: 'https://oldsumathpass.com/' },
-            { title: '重點', type: 'MATH_B', tags: ['複習', '筆記'], url: 'https://oldsumathpass.com/' },
-            { title: '考前猜題', type: 'MATH_B', tags: ['衝刺', '預測'], url: 'https://oldsumathpass.com/' },
-            { title: '基礎', type: 'MATH_C', tags: ['打底', '必修'], url: 'https://oldsumathpass.com/' },
-            { title: '精選', type: 'MATH_C', tags: ['進階', '題庫'], url: 'https://oldsumathpass.com/' },
-            { title: '重點', type: 'MATH_C', tags: ['複習', '筆記'], url: 'https://oldsumathpass.com/' },
-            { title: '考前猜題', type: 'MATH_C', tags: ['衝刺', '預測'], url: 'https://oldsumathpass.com/' },
-        ];
-
-        const EXTERNAL_LINKS = [
-            { title: '會考倒數', url: 'https://tyctw.github.io/115clock/' },
-            { title: '分科倒數', url: 'https://ceeecc.vercel.app/' },
-            { title: '統測重要日程', url: 'https://tctee.vercel.app/' },
-        ];
-
-        const MOTIVATIONAL_QUOTES = [
-          "每一份努力，都是未來的幸運伏筆。", "夢想不會逃跑，逃跑的永遠是自己。", "現在的你也許很累，但未來的你會感謝現在的自己。", "不要等待機會，而要創造機會。", "成功的路上並不擁擠，因為堅持的人不多。", "努力不一定會成功，但不努力一定很輕鬆——但也只是輕鬆一陣子，後悔一輩子。", "將來的你，一定會感謝現在拚命的自己。", "失敗只有一種，那就是半途而廢。", "沒有奇蹟，只有累積。", "你的負擔將變成禮物，你受的苦將照亮你的路。", "為了最好的結果，讓我們把瘋狂進行到底。", "不為模糊的未來擔憂，只為清楚的現在努力。", "堅持不是因為看到了希望，而是因為堅持了才有希望。", "只要路是對的，就不怕路遠。", "每天進步一點點，是卓越的開始。", "學習是為了讓自己有更多的選擇權。", "你想過什麼樣的生活，就得先付出什麼樣的代價。", "與其抱怨環境，不如改變自己。", "專注當下，這就是最好的準備。", "可以哭，可以累，但絕不可以放棄。", "只有極致的自律，才能帶來極致的自由。", "用實力讓情懷落地。", "既然選擇了遠方，便只顧風雨兼程。", "比你優秀的人還在努力，你憑什麼休息？", "每一次跌倒，都是為了更高地飛翔。", "看似不起眼的日復一日，會在將來的某一天，讓你看到堅持的意義。", "別讓配不上你的野心，也辜負了所受的苦難。", "沒有白走的路，每一步都算數。", "星光不問趕路人，時光不負有心人。", "乾坤未定，你我皆是黑馬。", "所謂光輝歲月，並不是以後閃耀的日子，而是無人問津時，你對夢想的偏執。", "這世界很公平，你想要最好，就一定會給你最痛。", "不要假裝努力，結果不會陪你演戲。", "現在偷的懶，都是未來流的淚。", "擁有夢想只是一種智力，實現夢想才是一種能力。", "耐得住寂寞，才守得住繁華。", "種一棵樹最好的時間是十年前，其次是現在。", "你必須非常努力，才能看起來毫不費力。", "人生沒有彩排，每一天都是現場直播。", "努力成為自己喜歡的樣子。", "生活從來都不容易，當你覺得容易的時候，肯定是有人在替你承擔屬於你的那份不容易。", "不要讓未來的你，討厭現在的自己。", "成功的反義詞不是失敗，而是什麼都不做。", "最可怕的敵人，是沒有堅強信念的自己。", "越努力，越幸運。", "不要因為走得太遠，而忘記為什麼出發。", "行動是治癒恐懼的良藥，而猶豫、拖延將不斷滋養恐懼。", "只要心中有光，黑暗就無法將你吞噬。", "這一秒不放棄，下一秒就有希望。", "含淚播種的人，一定能含笑收穫。"
-        ];
-
-        /**
-         * Logic
-         */
-        document.addEventListener('DOMContentLoaded', () => {
-            let hasCelebrated = false;
-
-            // 1. Notification
-            const btnNotify = document.getElementById('btn-notification');
-            const updateNotifyButton = () => {
-                const icon = btnNotify.querySelector('i');
-                if (Notification.permission === 'granted') {
-                   icon.classList.replace('text-dark-muted', 'text-cyan-400');
-                   icon.classList.add('fill-cyan-400/20');
-                } else if (Notification.permission === 'denied') {
-                   icon.classList.replace('text-cyan-400', 'text-red-400');
-                }
-            };
-            btnNotify.onclick = async () => {
-                if (!('Notification' in window)) return alert('您的瀏覽器不支援通知功能');
-                if (Notification.permission === 'granted') {
-                    new Notification('通知已開啟', { body: '我們將在考試重要時刻提醒您。' });
-                } else if (Notification.permission !== 'denied') {
-                    const permission = await Notification.requestPermission();
-                    updateNotifyButton();
-                    if (permission === 'granted') new Notification('通知開啟成功', { body: '加油！祝金榜題名。' });
-                }
-            };
-            updateNotifyButton();
-
-            // 2. Quote
-            const setDailyQuote = () => {
-                const now = new Date();
-                const start = new Date(now.getFullYear(), 0, 0);
-                const diff = now.getTime() - start.getTime();
-                const oneDay = 1000 * 60 * 60 * 24;
-                const dayOfYear = Math.floor(diff / oneDay);
-                document.getElementById('daily-quote').textContent = MOTIVATIONAL_QUOTES[dayOfYear % MOTIVATIONAL_QUOTES.length];
-            };
-            setDailyQuote();
-
-            // 3. Timer & Celebration
-            const updateTimer = () => {
-                const now = new Date();
-                const isBefore = now < EXAM_DATE;
-                const isDuring = now >= EXAM_DATE && now <= EXAM_END_DATE;
-                const isFinished = now > EXAM_END_DATE;
-
-                const timerContainer = document.getElementById('timer-container');
-                const statusOngoing = document.getElementById('status-ongoing');
-                const statusFinished = document.getElementById('status-finished');
-                const adCard = document.getElementById('ad-schedule-card');
-
-                if (isBefore) {
-                    const diff = EXAM_DATE.getTime() - now.getTime();
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-                    const minutes = Math.floor((diff / 1000 / 60) % 60);
-                    const seconds = Math.floor((diff / 1000) % 60);
-
-                    const createUnit = (val, label, color) => `
-                        <div class="flex flex-col items-center">
-                            <div class="relative bg-dark-800 border border-dark-700 rounded-2xl w-20 h-24 md:w-28 md:h-32 flex flex-col items-center justify-center shadow-2xl overflow-hidden group hover:border-cyan-500/50 transition-colors">
-                                <div class="absolute top-0 inset-x-0 h-1/2 bg-white/5 pointer-events-none"></div>
-                                <span class="text-4xl md:text-6xl font-black font-mono ${color} drop-shadow-lg z-10">${val.toString().padStart(2, '0')}</span>
-                            </div>
-                            <span class="mt-3 text-dark-muted text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase">${label}</span>
-                        </div>
-                    `;
-                    const sep = `<div class="h-24 md:h-32 flex items-center pb-4"><span class="text-2xl md:text-4xl font-black text-dark-700 animate-pulse">:</span></div>`;
-
-                    timerContainer.innerHTML = 
-                        createUnit(days, 'DAYS', 'text-white') + sep +
-                        createUnit(hours, 'HOURS', 'text-cyan-400') + sep +
-                        createUnit(minutes, 'MINUTES', 'text-white') + 
-                        `<div class="h-24 md:h-32 hidden md:flex items-center pb-4"><span class="text-2xl md:text-4xl font-black text-dark-700 animate-pulse">:</span></div>
-                         <div class="hidden md:block">${createUnit(seconds, 'SECONDS', 'text-purple-400')}</div>`;
-                    
-                    timerContainer.classList.remove('hidden');
-                    statusOngoing.classList.add('hidden');
-                    statusFinished.classList.add('hidden');
-                    adCard.classList.remove('hidden');
-                } else if (isDuring) {
-                    timerContainer.classList.add('hidden');
-                    statusOngoing.classList.remove('hidden');
-                    statusFinished.classList.add('hidden');
-                    adCard.classList.remove('hidden');
-                } else if (isFinished) {
-                    timerContainer.classList.add('hidden');
-                    statusOngoing.classList.add('hidden');
-                    statusFinished.classList.remove('hidden');
-                    adCard.classList.add('hidden');
-                    if (!hasCelebrated) {
-                        hasCelebrated = true;
-                        confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
-                    }
-                }
-            };
-            setInterval(updateTimer, 1000);
-            updateTimer();
-
-            // 4. Resources
-            const renderResourceCard = (res, theme) => {
-                let iconName = 'play-circle';
-                let borderClass = theme === 'blue' ? 'hover:border-blue-500/50' : 'hover:border-purple-500/50';
-                let textClass = theme === 'blue' ? 'group-hover:text-blue-400' : 'group-hover:text-purple-400';
-                let bgIconClass = theme === 'blue' ? 'bg-blue-500/10 text-blue-400' : 'bg-purple-500/10 text-purple-400';
-
-                if (res.title.includes('重點')) iconName = 'bookmark';
-                else if (res.title.includes('猜題')) iconName = 'trending-up';
-                else if (res.title.includes('精選')) iconName = 'star';
-
-                return `
-                <a href="${res.url}" onclick="event.preventDefault(); alert('即將前往觀看: ${res.type} - ${res.title}'); window.location.href='${res.url}'" 
-                   class="group block bg-dark-800 border border-dark-700 rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${borderClass}">
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="w-10 h-10 rounded-xl ${bgIconClass} flex items-center justify-center shadow-inner">
-                            <i data-lucide="${iconName}" class="w-5 h-5"></i>
-                        </div>
-                        <div class="flex gap-2">
-                            ${res.tags.map(tag => `<span class="text-[10px] font-bold px-2 py-1 bg-dark-900 border border-dark-700 rounded-md text-dark-muted uppercase">${tag}</span>`).join('')}
-                        </div>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold text-white mb-1 ${textClass} transition-colors">${res.title}</h3>
-                        <p class="text-xs font-medium text-dark-muted flex items-center gap-1">老蘇就數學</p>
-                    </div>
-                </a>`;
-            };
-            document.getElementById('resources-math-b').innerHTML = RESOURCES.filter(r => r.type === 'MATH_B').map(r => renderResourceCard(r, 'blue')).join('');
-            document.getElementById('resources-math-c').innerHTML = RESOURCES.filter(r => r.type === 'MATH_C').map(r => renderResourceCard(r, 'indigo')).join('');
-
-
-            // ============================
-            // MODAL & TOOLS LOGIC
-            // ============================
-            
-            // Helper: Modal Controller
-            const toggleModal = (modalId, show) => {
-                const modal = document.getElementById(modalId);
-                const backdrop = modal.querySelector('.modal-backdrop');
-                const content = modal.querySelector('.modal-content');
-                
-                if (show) {
-                    modal.classList.remove('invisible', 'modal-hidden');
-                    modal.classList.add('modal-visible');
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    modal.classList.remove('modal-visible');
-                    modal.classList.add('modal-hidden');
-                    setTimeout(() => {
-                        modal.classList.add('invisible');
-                        // Only reset overflow if no other modals are open (simplification)
-                        if(!document.querySelector('.modal-visible')) document.body.style.overflow = '';
-                    }, 300);
-                }
-            };
-
-            // Setup Generic Modal Listeners
-            const setupModal = (id, closeBtnId, backBtnId = null, parentModalId = null) => {
-                document.getElementById(closeBtnId).onclick = () => toggleModal(id, false);
-                const backdrop = document.getElementById(id).querySelector('.modal-backdrop');
-                backdrop.onclick = () => toggleModal(id, false);
-
-                if (backBtnId && parentModalId) {
-                    document.getElementById(backBtnId).onclick = () => {
-                        toggleModal(id, false);
-                        setTimeout(() => toggleModal(parentModalId, true), 300);
-                    };
-                }
-            };
-
-            // 1. Tools Menu
-            document.getElementById('btn-open-tools').onclick = () => toggleModal('tools-menu-modal', true);
-            setupModal('tools-menu-modal', 'btn-close-tools-menu');
-
-            // 2. Pomodoro Logic
-            setupModal('pomo-modal', 'btn-close-pomo', 'btn-back-pomo', 'tools-menu-modal');
-            document.getElementById('btn-launch-pomo').onclick = () => {
-                toggleModal('tools-menu-modal', false);
-                setTimeout(() => toggleModal('pomo-modal', true), 300);
-            };
-
-            let pomoTimer = null;
-            let pomoTimeLeft = 25 * 60;
-            let pomoIsRunning = false;
-            let pomoMode = 'focus';
-            
-            const btnPomoToggle = document.getElementById('btn-pomo-toggle');
-            const btnPomoReset = document.getElementById('btn-pomo-reset');
-            const pomoDisplay = document.getElementById('pomo-display');
-            const pomoStatus = document.getElementById('pomo-status');
-
-            const updatePomoDisplay = () => {
-                const m = Math.floor(pomoTimeLeft / 60).toString().padStart(2, '0');
-                const s = (pomoTimeLeft % 60).toString().padStart(2, '0');
-                pomoDisplay.textContent = `${m}:${s}`;
-                document.title = pomoIsRunning ? `(${m}:${s}) 專注計時中` : '115年統測倒數計時';
-            };
-
-            const setPomoMode = (mode) => {
-                pomoMode = mode;
-                pomoIsRunning = false;
-                clearInterval(pomoTimer);
-                btnPomoToggle.innerHTML = '<i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>';
-                lucide.createIcons();
-
-                const btns = { focus: 'btn-mode-focus', short: 'btn-mode-short', long: 'btn-mode-long' };
-                Object.values(btns).forEach(id => {
-                    const el = document.getElementById(id);
-                    el.className = "px-4 py-1.5 rounded text-xs font-bold transition-all text-dark-muted hover:text-white border border-transparent";
-                });
-
-                const activeBtn = document.getElementById(btns[mode]);
-                activeBtn.className = "px-4 py-1.5 rounded text-xs font-bold transition-all bg-rose-500/20 text-white border border-rose-500/50";
-
-                if (mode === 'focus') { pomoTimeLeft = 25 * 60; pomoStatus.textContent = "READY TO FOCUS"; }
-                else if (mode === 'short') { pomoTimeLeft = 5 * 60; pomoStatus.textContent = "SHORT BREAK"; }
-                else { pomoTimeLeft = 15 * 60; pomoStatus.textContent = "LONG BREAK"; }
-                updatePomoDisplay();
-            };
-
-            document.getElementById('btn-mode-focus').onclick = () => setPomoMode('focus');
-            document.getElementById('btn-mode-short').onclick = () => setPomoMode('short');
-            document.getElementById('btn-mode-long').onclick = () => setPomoMode('long');
-            
-            btnPomoToggle.onclick = () => {
-                if (pomoIsRunning) {
-                    clearInterval(pomoTimer);
-                    pomoIsRunning = false;
-                    btnPomoToggle.innerHTML = '<i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>';
-                } else {
-                    pomoIsRunning = true;
-                    btnPomoToggle.innerHTML = '<i data-lucide="pause" class="w-8 h-8 fill-current"></i>';
-                    pomoTimer = setInterval(() => {
-                        if (pomoTimeLeft > 0) {
-                            pomoTimeLeft--;
-                            updatePomoDisplay();
-                        } else {
-                            clearInterval(pomoTimer);
-                            pomoIsRunning = false;
-                            btnPomoToggle.innerHTML = '<i data-lucide="play" class="w-8 h-8 fill-current ml-1"></i>';
-                            if (Notification.permission === 'granted') new Notification('時間到！', { body: '休息一下吧！' });
-                            else alert('時間到！');
-                        }
-                    }, 1000);
-                }
-                lucide.createIcons();
-            };
-            btnPomoReset.onclick = () => setPomoMode(pomoMode);
-
-
-            // 3. Todo Logic
-            setupModal('todo-modal', 'btn-close-todo', 'btn-back-todo', 'tools-menu-modal');
-            document.getElementById('btn-launch-todo').onclick = () => {
-                toggleModal('tools-menu-modal', false);
-                setTimeout(() => toggleModal('todo-modal', true), 300);
-            };
-
-            let todos = JSON.parse(localStorage.getItem('tve_todos') || '[]');
-            const todoList = document.getElementById('todo-list');
-            const todoInput = document.getElementById('todo-input');
-
-            const renderTodos = () => {
-                if (todos.length === 0) {
-                    todoList.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-dark-muted/30 py-4"><i data-lucide="clipboard-list" class="w-10 h-10 mb-2"></i><p class="text-xs">無待辦事項</p></div>`;
-                } else {
-                    todoList.innerHTML = todos.map((t, i) => `
-                        <div class="flex items-center justify-between p-3 bg-dark-800 rounded-xl border border-dark-700 group hover:border-dark-600 transition-colors">
-                            <div class="flex items-center gap-3 overflow-hidden">
-                                <button onclick="toggleTodo(${i})" class="flex-shrink-0 w-5 h-5 rounded-full border-2 ${t.completed ? 'bg-cyan-500 border-cyan-500' : 'border-dark-muted hover:border-cyan-500'} flex items-center justify-center transition-colors">
-                                    ${t.completed ? '<i data-lucide="check" class="w-3 h-3 text-dark-900 stroke-[4]"></i>' : ''}
-                                </button>
-                                <span class="text-sm font-medium truncate ${t.completed ? 'text-dark-muted line-through' : 'text-white'}">${t.text}</span>
-                            </div>
-                            <button onclick="deleteTodo(${i})" class="text-dark-700 hover:text-rose-400 p-1 rounded-lg transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
-                        </div>
-                    `).join('');
-                }
-                lucide.createIcons();
-            };
-            const addTodo = () => {
-                const text = todoInput.value.trim();
-                if (text) {
-                    todos.push({ text, completed: false });
-                    localStorage.setItem('tve_todos', JSON.stringify(todos));
-                    renderTodos();
-                    todoInput.value = '';
-                }
-            };
-            document.getElementById('btn-add-todo').onclick = addTodo;
-            todoInput.addEventListener('keypress', e => e.key === 'Enter' && addTodo());
-            window.toggleTodo = i => { todos[i].completed = !todos[i].completed; localStorage.setItem('tve_todos', JSON.stringify(todos)); renderTodos(); };
-            window.deleteTodo = i => { todos.splice(i, 1); localStorage.setItem('tve_todos', JSON.stringify(todos)); renderTodos(); };
-            renderTodos();
-
-
-            // 4. Calculator Logic
-            setupModal('calc-modal', 'btn-close-calc', 'btn-back-calc', 'tools-menu-modal');
-            document.getElementById('btn-launch-calc').onclick = () => {
-                toggleModal('tools-menu-modal', false);
-                setTimeout(() => toggleModal('calc-modal', true), 300);
-            };
-
-            document.getElementById('btn-calc').onclick = () => {
-                const getVal = id => parseFloat(document.getElementById(id).value) || 0;
-                const total = getVal('calc-chinese') + getVal('calc-english') + getVal('calc-math') + (getVal('calc-pro1') * 2) + (getVal('calc-pro2') * 2);
-                
-                const resultEl = document.getElementById('calc-result');
-                let start = parseInt(resultEl.innerText), end = total, duration = 500, startTime = performance.now();
-                
-                const animate = (time) => {
-                    const progress = Math.min((time - startTime) / duration, 1);
-                    resultEl.innerText = Math.floor(start + (end - start) * (1 - Math.pow(1 - progress, 3)));
-                    if (progress < 1) requestAnimationFrame(animate);
-                    else resultEl.innerText = total;
-                };
-                requestAnimationFrame(animate);
-            };
-
-            // 5. Schedule Modal Logic
-            const renderScheduleList = (dayIndex) => {
-                const day = EXAM_SCHEDULE[dayIndex];
-                document.getElementById('schedule-list').innerHTML = `
-                    <div class="absolute left-[27px] sm:left-[139px] top-4 bottom-4 w-px bg-dark-700"></div>
-                    ${day.events.map(event => `
-                        <div class="relative flex flex-col sm:flex-row sm:gap-10 group ${event.isPrep ? 'opacity-60' : ''}">
-                            <div class="hidden sm:block w-24 text-right pt-3">
-                                <span class="block font-mono font-bold text-lg ${event.isPrep ? 'text-dark-muted' : 'text-cyan-400'}">${event.time.split(' - ')[0]}</span>
-                                <span class="block text-xs text-dark-muted font-medium mt-1">${event.time.split(' - ')[1] ? 'to ' + event.time.split(' - ')[1] : ''}</span>
-                            </div>
-                            <div class="absolute left-[14px] sm:left-[126px] top-4 w-7 h-7 rounded-full border-4 border-dark-900 z-10 flex items-center justify-center bg-dark-800">
-                                <div class="w-2 h-2 rounded-full ${event.isPrep ? 'bg-dark-muted' : 'bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]'}"></div>
-                            </div>
-                            <div class="flex-1 pl-12 sm:pl-0">
-                                <div class="rounded-2xl p-5 border transition-all duration-300 ${event.isPrep ? 'bg-dark-800/30 border-dashed border-dark-700' : 'bg-dark-800 border-dark-700 hover:border-cyan-500/30 hover:bg-dark-800/80'}">
-                                    <div class="sm:hidden mb-3 flex items-center gap-2 text-sm font-mono font-bold text-dark-muted"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${event.time}</div>
-                                    <div class="flex flex-wrap items-start justify-between gap-3">
-                                        <div>
-                                            <div class="flex items-center gap-2 mb-2"><span class="text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wider ${event.isPrep ? 'bg-dark-700 text-dark-muted' : 'bg-cyan-900/30 text-cyan-300 border border-cyan-900/50'}">${event.period}</span></div>
-                                            <h3 class="text-xl font-bold ${event.isPrep ? 'text-dark-muted' : 'text-white'}">${event.subject}</h3>
-                                        </div>
-                                        ${event.isPrep ? `<div class="flex items-center gap-1.5 text-amber-500 bg-amber-900/20 border border-amber-900/30 px-3 py-1.5 rounded-full text-xs font-bold"><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i><span>持准考證</span></div>` : ''}
-                                    </div>
-                                    ${!event.isPrep ? `<div class="mt-4 pt-4 border-t border-dark-700"><p class="text-sm text-dark-muted leading-relaxed"><span class="font-bold text-dark-500 mr-2">適用群類:</span>${event.category}</p></div>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    `).join('')}
-                `;
-                lucide.createIcons();
-            };
-
-            document.getElementById('btn-open-schedule').onclick = () => { toggleModal('schedule-modal', true); renderScheduleList(0); };
-            setupModal('schedule-modal', 'btn-close-schedule');
-            document.getElementById('btn-close-schedule-mobile').onclick = () => toggleModal('schedule-modal', false);
-
-            document.getElementById('tab-day-0').onclick = () => {
-                document.getElementById('tab-day-0').classList.add('bg-dark-700','text-cyan-400','border-dark-600','shadow-lg');
-                document.getElementById('tab-day-0').classList.remove('text-dark-muted','hover:bg-dark-700','hover:text-white','border-transparent');
-                document.getElementById('tab-day-0').querySelector('.absolute').classList.remove('opacity-0');
-                
-                document.getElementById('tab-day-1').classList.remove('bg-dark-700','text-cyan-400','border-dark-600','shadow-lg');
-                document.getElementById('tab-day-1').classList.add('text-dark-muted','hover:bg-dark-700','hover:text-white','border-transparent');
-                document.getElementById('tab-day-1').querySelector('.absolute').classList.add('opacity-0');
-                renderScheduleList(0);
-            };
-            document.getElementById('tab-day-1').onclick = () => {
-                document.getElementById('tab-day-1').classList.add('bg-dark-700','text-cyan-400','border-dark-600','shadow-lg');
-                document.getElementById('tab-day-1').classList.remove('text-dark-muted','hover:bg-dark-700','hover:text-white','border-transparent');
-                document.getElementById('tab-day-1').querySelector('.absolute').classList.remove('opacity-0');
-                
-                document.getElementById('tab-day-0').classList.remove('bg-dark-700','text-cyan-400','border-dark-600','shadow-lg');
-                document.getElementById('tab-day-0').classList.add('text-dark-muted','hover:bg-dark-700','hover:text-white','border-transparent');
-                document.getElementById('tab-day-0').querySelector('.absolute').classList.add('opacity-0');
-                renderScheduleList(1);
-            };
-
-            // 6. Side Menu
-            const menuBackdrop = document.getElementById('side-menu-backdrop');
-            const menuDrawer = document.getElementById('side-menu-drawer');
-            document.getElementById('external-links-container').innerHTML = EXTERNAL_LINKS.map((link, idx) => `
-                <a href="${link.url}" target="_blank" class="group block bg-dark-800 rounded-xl p-4 border border-dark-700 hover:border-cyan-500/30 hover:bg-dark-700 transition-all duration-200">
-                    <div class="flex items-center gap-4">
-                        <div class="w-8 h-8 rounded-lg bg-dark-900 flex items-center justify-center text-dark-muted group-hover:text-cyan-400 transition-colors shrink-0"><i data-lucide="${idx === 2 ? 'calendar' : 'link'}" class="w-4 h-4"></i></div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center justify-between"><span class="font-bold text-white group-hover:text-cyan-300 transition-colors">${link.title}</span><i data-lucide="external-link" class="w-3 h-3 text-dark-700 group-hover:text-cyan-500/50"></i></div>
-                        </div>
-                    </div>
-                </a>
-            `).join('');
-            document.getElementById('btn-open-menu').onclick = () => { menuBackdrop.classList.remove('opacity-0', 'pointer-events-none'); menuDrawer.classList.remove('translate-x-full'); document.body.style.overflow = 'hidden'; };
-            const closeMenu = () => { menuBackdrop.classList.add('opacity-0', 'pointer-events-none'); menuDrawer.classList.add('translate-x-full'); document.body.style.overflow = ''; };
-            document.getElementById('btn-close-menu').onclick = closeMenu;
-            menuBackdrop.onclick = closeMenu;
-
-            lucide.createIcons();
-        });
-    </script>
+  <body>
+    <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
-        <script src="script.js"></script>
-  <script type="module" src="/index.tsx"></script>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-H9X7EC127P"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-H9X7EC127P');
-</script>
 </body>
 </html>
